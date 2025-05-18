@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PageHeader from './common/PageHeader';
+import CoachInfoCard from './common/CoachInfoCard';
 
 const CoachPendingLessonDetail = () => {
   // 状态管理
@@ -9,6 +10,19 @@ const CoachPendingLessonDetail = () => {
   const [cancelReason, setCancelReason] = useState('');
   const [cancelReasonError, setCancelReasonError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // 学生数据
+  const studentData = {
+    id: '1',
+    name: 'Alex Johnson',
+    rating: 4.8,
+    reviews: 12,
+    price: 0, 
+    distance: 0.7,
+    lessonsCompleted: 24,
+    location: 'London',
+    qualifications: ['Beginner', 'Intermediate'],
+  };
   
   // 处理确认课程
   const handleConfirm = () => {
@@ -92,6 +106,11 @@ const CoachPendingLessonDetail = () => {
   const handleBack = () => {
     // 在实际应用中，这里会导航回上一页
     console.log('Navigate back');
+  };
+
+  // 处理学生资料点击
+  const handleStudentClick = (student) => {
+    console.log('View student profile', student);
   };
   
   // 渲染确认对话框
@@ -234,33 +253,19 @@ const CoachPendingLessonDetail = () => {
         {/* 学生信息 */}
         <section className="mb-4" aria-labelledby="student-heading">
           <h2 id="student-heading" className="text-lg font-semibold mb-3 text-gray-800">Student</h2>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center">
-              <div className="h-16 w-16 bg-gray-200 rounded-full mr-3 flex-shrink-0" aria-hidden="true">
-                <span className="material-icons-round text-gray-400 w-full h-full flex items-center justify-center text-4xl">person</span>
-              </div>
-              <div>
-                <h3 className="text-base font-medium text-gray-800">Alex Johnson</h3>
-                <p className="text-sm text-gray-600">Beginner • First lesson</p>
-                
-                <div className="mt-2 flex space-x-2">
-                  <button 
-                    className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 flex items-center focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    aria-label="View profile of Alex Johnson"
-                  >
-                    <span className="material-icons-round text-gray-500 mr-1 text-base">person</span>
-                    Profile
-                  </button>
-                  <button 
-                    className="px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 flex items-center focus:outline-none focus:ring-2 focus:ring-gray-300"
-                    aria-label="Message Alex Johnson"
-                  >
-                    <span className="material-icons-round text-gray-500 mr-1 text-base">chat</span>
-                    Message
-                  </button>
-                </div>
-              </div>
-            </div>
+          <CoachInfoCard 
+            coach={studentData}
+            showLocation={true}
+            showQualifications={true}
+          />
+          <div className="mt-3 flex space-x-2">
+            <button 
+              className="flex-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-300"
+              aria-label="Message Alex Johnson"
+            >
+              <span className="material-icons-round text-gray-500 mr-1 text-base">chat</span>
+              Message
+            </button>
           </div>
         </section>
         
@@ -346,15 +351,14 @@ const CoachPendingLessonDetail = () => {
                 <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">info</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Lesson Content</h3>
-                  <p className="text-gray-700 mb-2">Focus areas:</p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-blue-100 text-blue-600 text-xs font-medium rounded">
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
                       Forehand
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-blue-100 text-blue-600 text-xs font-medium rounded">
+                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
                       Backhand
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-blue-100 text-blue-600 text-xs font-medium rounded">
+                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
                       Serving
                     </span>
                   </div>
