@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const StudentCancelLesson = () => {
   const [selectedReason, setSelectedReason] = useState('');
@@ -13,6 +14,12 @@ const StudentCancelLesson = () => {
     { id: 'venue', text: 'Issue with venue/location' },
     { id: 'other', text: 'Other reason' }
   ];
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
   
   // 处理取消原因选择
   const handleReasonSelect = (reasonId) => {
@@ -41,17 +48,7 @@ const StudentCancelLesson = () => {
     return (
       <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
         {/* 顶部导航栏 */}
-        <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-          <button className="p-1">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-700">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-          </button>
-          <div className="flex-1 flex justify-center">
-            <h1 className="text-lg font-semibold text-gray-800">Cancel Lesson</h1>
-          </div>
-          <div className="w-6"></div>
-        </div>
+        <PageHeader title="Cancel Lesson" onBack={handleBack} />
         
         {/* 成功提示 */}
         <div className="flex-1 flex flex-col items-center justify-center p-4">
@@ -73,17 +70,7 @@ const StudentCancelLesson = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-gray-700">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Cancel Lesson</h1>
-        </div>
-        <div className="w-6"></div>
-      </div>
+      <PageHeader title="Cancel Lesson" onBack={handleBack} />
       
       {/* 主要内容区域 */}
       <div className="flex-1 overflow-auto p-4">

@@ -1,6 +1,7 @@
 import React from 'react';
 import LessonDetailsCard from './common/LessonDetailsCard';
 import CoachInfoCard from './common/CoachInfoCard';
+import PageHeader from './common/PageHeader';
 
 const RecurringBookingDetails = () => {
   // 模拟用户已选择的课程详情
@@ -22,6 +23,12 @@ const RecurringBookingDetails = () => {
     needsEquipment: true,
     price: 350,
     regularPrice: 400
+  };
+
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
   };
 
   // 构建教练对象
@@ -55,15 +62,7 @@ const RecurringBookingDetails = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <i className="material-icons-round text-gray-700">arrow_back_ios_new</i>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-xl font-semibold">Review & Pay</h1>
-        </div>
-        <div className="w-5"></div>
-      </div>
+      <PageHeader title="Review & Pay" onBack={handleBack} />
       
       {/* 进度指示器 */}
       <div className="flex justify-between items-center px-4 py-3 bg-white border-b border-gray-100">

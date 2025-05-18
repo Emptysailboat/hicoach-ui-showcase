@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const RecurringBookingScheduleConfirmation = () => {
   // ===== STATE VARIABLES =====
@@ -241,41 +242,37 @@ const RecurringBookingScheduleConfirmation = () => {
     console.log('Continuing to next step with lessons:', lessons);
   };
 
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3 flex items-center border-b border-gray-200">
-        <button className="mr-2">
-          <span className="material-icons-round text-gray-700" style={{ fontSize: '24px' }}>
-            chevron_left
-          </span>
-        </button>
-        <div className="flex-1 text-center">
-          <h1 className="text-lg font-semibold text-gray-800">Confirm Schedule</h1>
-        </div>
-        <div className="w-6"></div>
-      </div>
+      <PageHeader title="Confirm Schedule" onBack={handleBack} />
       
       {/* 进度指示器 */}
-      <div className="flex justify-between items-center px-4 py-2.5 bg-white border-b border-gray-100">
+      <div className="flex justify-between items-center px-4 py-3 bg-white border-b border-gray-100">
         <div className="flex items-center">
-          <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium bg-green-600 text-white">
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium bg-primary-600 text-white">
             1
           </div>
-          <div className="h-1 w-5 bg-green-600"></div>
-          <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium bg-green-600 text-white">
+          <div className="h-0.5 w-6 bg-primary-600"></div>
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium bg-primary-600 text-white">
             2
           </div>
-          <div className="h-1 w-5 bg-green-600"></div>
-          <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium bg-green-600 text-white">
+          <div className="h-0.5 w-6 bg-primary-600"></div>
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium bg-primary-600 text-white">
             3
           </div>
-          <div className="h-1 w-5 bg-gray-200"></div>
-          <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium bg-gray-200 text-gray-500">
+          <div className="h-0.5 w-6 bg-gray-200"></div>
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium bg-gray-200 text-gray-500">
             4
           </div>
-          <div className="h-1 w-5 bg-gray-200"></div>
-          <div className="w-5 h-5 rounded-full flex items-center justify-center text-xs font-medium bg-gray-200 text-gray-500">
+          <div className="h-0.5 w-6 bg-gray-200"></div>
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium bg-gray-200 text-gray-500">
             5
           </div>
         </div>

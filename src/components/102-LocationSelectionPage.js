@@ -1,22 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ChevronRight, MapPin, Plus, Navigation, Search, Target, X, CheckCircle } from 'lucide-react';
-
-// Modular Component: Header
-const Header = ({ title, onBack }) => {
-  return (
-    <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200 sticky top-0 z-20 shadow-sm">
-      <button 
-        onClick={onBack}
-        className="p-1 mr-2 rounded-full active:bg-gray-100"
-        aria-label="Go back"
-      >
-        <ArrowLeft className="w-5 h-5 text-gray-700" />
-      </button>
-      <h2 className="text-lg font-semibold flex-1 text-center text-gray-800">{title}</h2>
-      <div className="w-7"></div> {/* Empty space for visual balance */}
-    </div>
-  );
-};
+import PageHeader from './common/PageHeader';
 
 // Modular Component: Button
 const Button = ({ children, onClick, variant = "primary", className = "", fullWidth = false, disabled = false }) => {
@@ -132,7 +116,7 @@ const LocationsList = ({ locations, selectedLocationId, onBack, onAddNew, onSele
   
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      <Header title="Choose Location" onBack={onBack} />
+      <PageHeader title="Choose Location" onBack={onBack} />
       
       {/* Toast Notification */}
       <Toast 
@@ -193,7 +177,7 @@ const MapSearch = ({ onBack, onConfirmLocation, onAddManually }) => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      <Header title="Choose Location" onBack={onBack} />
+      <PageHeader title="Choose Location" onBack={onBack} />
       
       {/* Search Bar */}
       <div className="bg-white px-4 py-3 border-b border-gray-200">
@@ -308,7 +292,7 @@ const AddressForm = ({ onBack, onConfirm }) => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      <Header title="Add New Address" onBack={onBack} />
+      <PageHeader title="Add New Address" onBack={onBack} />
       
       <div className="flex-1 overflow-auto p-4">
         <form className="space-y-5">

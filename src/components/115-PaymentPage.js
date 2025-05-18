@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const PaymentPage = () => {
   // 支付信息状态
@@ -9,6 +10,12 @@ const PaymentPage = () => {
   const [cvv, setCvv] = useState('');
   const [saveCard, setSaveCard] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
   
   // 模拟订单摘要数据
   const orderSummary = {
@@ -86,15 +93,7 @@ const PaymentPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <i className="material-icons-round text-gray-700">arrow_back_ios_new</i>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-xl font-semibold">Payment</h1>
-        </div>
-        <div className="w-5"></div>
-      </div>
+      <PageHeader title="Payment" onBack={handleBack} />
       
       {/* 主要内容区域 */}
       <div className="flex-1 overflow-auto px-4 py-5">

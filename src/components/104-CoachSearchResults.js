@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MapPin, Search, MessageCircle, ChevronRight, ChevronLeft, Calendar, ListFilter, Map, ArrowDownUp } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CoachSearchResults104 = () => {
   // 视图状态：list 或 map
@@ -91,6 +92,12 @@ const CoachSearchResults104 = () => {
       ...prev,
       [coachId]: !prev[coachId]
     }));
+  };
+  
+  // 处理返回
+  const handleBack = () => {
+    console.log("Back button clicked");
+    // 实际项目中这里会返回上一页
   };
   
   // 搜索和排序功能
@@ -299,17 +306,10 @@ const CoachSearchResults104 = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center justify-between border-b border-gray-200 shadow-sm">
-        <button 
-          className="p-1.5 rounded-full active:bg-gray-100 transition-colors"
-          aria-label="Go back"
-          style={{minHeight: "44px", minWidth: "44px"}}
-        >
-          <ChevronLeft className="w-5 h-5 text-gray-700" />
-        </button>
-        <h1 className="text-lg font-semibold text-gray-800 leading-7">Tennis Coaches</h1>
-        <div className="w-10"></div>
-      </div>
+      <PageHeader 
+        title="Tennis Coaches" 
+        onBack={handleBack}
+      />
       
       {/* 搜索栏 */}
       <div className="bg-white px-4 py-3 border-b border-gray-200">

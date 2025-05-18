@@ -1,5 +1,6 @@
 import React from 'react';
 import BottomNavigation from './common/BottomNavigation';
+import PageHeader from './common/PageHeader';
 
 const LearnerProfilePage = () => {
   // 处理底部导航栏标签改变
@@ -11,9 +12,7 @@ const LearnerProfilePage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto relative">
       {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center justify-center border-b border-gray-200">
-        <h1 className="text-lg font-semibold text-gray-800">Profile</h1>
-      </div>
+      <PageHeader title="Profile" />
       
       {/* 主要内容区 - 可滚动 */}
       <div className="flex-1 overflow-y-auto pb-16">
@@ -153,7 +152,7 @@ const LearnerProfilePage = () => {
         
         {/* 登出按钮 */}
         <div className="px-4 mb-5">
-          <button className="w-full flex items-center justify-center p-3.5 rounded-md border border-error-200 text-error-600 font-medium active:bg-error-100">
+          <button className="w-full flex items-center justify-center p-3.5 rounded-xl border border-red-200 text-red-600 font-medium">
             <i className="material-icons-round mr-2" style={{ fontSize: '20px' }}>logout</i>
             <span>Logout</span>
           </button>

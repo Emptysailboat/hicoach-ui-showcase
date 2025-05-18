@@ -12,6 +12,7 @@ import {
   ArrowDown,
   Settings
 } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CoachRatingsPage = () => {
   // 模拟数据 - 收入信息
@@ -82,14 +83,10 @@ const CoachRatingsPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
       {/* 顶部栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ChevronRight className="w-5 h-5 text-gray-700 rotate-180" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Performance</h1>
-        </div>
-      </div>
+      <PageHeader 
+        title="Performance" 
+        onBack={() => console.log('Navigate back')}
+      />
       
       {/* 主要内容区 - 确保可滚动 */}
       <div className="flex-1 overflow-y-auto pb-20 pt-4">

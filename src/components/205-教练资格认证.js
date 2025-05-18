@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, FileText, Award, AlertTriangle, CheckCircle, Upload, X, Check, AlertCircle, ChevronDown } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CertificationUploadPage = () => {
   // 所有运动选项
@@ -101,17 +101,16 @@ const CertificationUploadPage = () => {
     }, 2000);
   };
   
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
       {/* 顶部栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Professional Certification</h1>
-        </div>
-      </div>
+      <PageHeader title="Professional Certification" onBack={handleBack} />
       
       {/* 主要内容区 */}
       <div className="flex-1 overflow-y-auto px-4 pb-8 pt-5">
@@ -119,7 +118,7 @@ const CertificationUploadPage = () => {
         <div className="bg-white rounded-xl shadow-sm p-5 mb-5 border border-gray-200">
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-              <Award className="w-5 h-5 text-green-600" />
+              <span className="material-icons text-green-600">emoji_events</span>
             </div>
             <h2 className="text-lg font-semibold text-gray-800">Coaching Certification</h2>
           </div>
@@ -146,10 +145,10 @@ const CertificationUploadPage = () => {
             </ul>
           </div>
           
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r-lg mb-5">
+          <div className="bg-purple-50 border-l-4 border-purple-400 p-3 rounded-r-lg mb-5">
             <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mr-2" />
-              <p className="text-sm text-yellow-700">
+              <span className="material-icons text-purple-600 mr-2">warning</span>
+              <p className="text-sm text-purple-700">
                 Currently only Tennis coaching is available. More sports will be added soon.
               </p>
             </div>
@@ -166,7 +165,7 @@ const CertificationUploadPage = () => {
               </label>
               <div className="relative">
                 <button 
-                  className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors shadow-sm"
+                  className="w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-left text-sm text-gray-700 shadow-sm"
                   onClick={() => setShowSportDropdown(!showSportDropdown)}
                 >
                   <div className="flex items-center">
@@ -177,7 +176,7 @@ const CertificationUploadPage = () => {
                       </span>
                     )}
                   </div>
-                  <ChevronDown className="h-5 w-5 text-gray-400" />
+                  <span className="material-icons text-gray-400">expand_more</span>
                 </button>
                 
                 {/* 运动下拉菜单 */}
@@ -186,13 +185,12 @@ const CertificationUploadPage = () => {
                     {sportOptions.map((sport) => (
                       <div 
                         key={sport.id}
-                        className={`px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors flex items-center justify-between
-                          ${selectedSport.id === sport.id ? 'bg-green-50 text-green-700' : 'text-gray-700'}`}
+                        className={`px-4 py-2.5 text-sm cursor-pointer ${selectedSport.id === sport.id ? 'bg-green-50 text-green-700' : 'text-gray-700'}`}
                         onClick={() => handleSportSelect(sport)}
                       >
                         <span>{sport.name}</span>
                         {!sport.available && (
-                          <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                          <span className="ml-2 inline-block px-2 py-0.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
                             Coming Soon
                           </span>
                         )}
@@ -212,7 +210,7 @@ const CertificationUploadPage = () => {
                 <button 
                   className={`w-full flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-2.5 text-left text-sm shadow-sm
                     ${selectedSport.available 
-                      ? 'text-gray-700 hover:bg-gray-50 active:bg-gray-100 transition-colors' 
+                      ? 'text-gray-700' 
                       : 'text-gray-400 bg-gray-50 cursor-not-allowed'}`}
                   onClick={() => selectedSport.available && setShowCertDropdown(!showCertDropdown)}
                   disabled={!selectedSport.available}
@@ -220,7 +218,7 @@ const CertificationUploadPage = () => {
                   <span>
                     {selectedCertification ? selectedCertification.name : 'Select certification type'}
                   </span>
-                  <ChevronDown className="h-5 w-5 text-gray-400" />
+                  <span className="material-icons text-gray-400">expand_more</span>
                 </button>
                 
                 {/* 证书类型下拉菜单 */}
@@ -229,8 +227,7 @@ const CertificationUploadPage = () => {
                     {tennisCertifications.map((cert) => (
                       <div 
                         key={cert.id}
-                        className={`px-4 py-2.5 text-sm cursor-pointer hover:bg-gray-50 active:bg-gray-100 transition-colors
-                          ${selectedCertification && selectedCertification.id === cert.id ? 'bg-green-50 text-green-700' : 'text-gray-700'}`}
+                        className={`px-4 py-2.5 text-sm cursor-pointer ${selectedCertification && selectedCertification.id === cert.id ? 'bg-green-50 text-green-700' : 'text-gray-700'}`}
                         onClick={() => handleCertificationSelect(cert)}
                       >
                         {cert.name}
@@ -250,7 +247,7 @@ const CertificationUploadPage = () => {
               {/* 错误提示 */}
               {fileError && (
                 <div className="bg-red-50 rounded-lg border border-red-200 p-3 mb-3 flex items-start">
-                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mr-2 mt-0.5" />
+                  <span className="material-icons text-red-600 mr-2">error</span>
                   <p className="text-sm text-red-700">{fileError}</p>
                 </div>
               )}
@@ -258,7 +255,7 @@ const CertificationUploadPage = () => {
               {/* 上传错误提示 */}
               {error && (
                 <div className="bg-red-50 rounded-lg border border-red-200 p-3 mb-3 flex items-start">
-                  <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mr-2 mt-0.5" />
+                  <span className="material-icons text-red-600 mr-2">error</span>
                   <div>
                     <p className="text-sm font-medium text-red-700">Upload failed</p>
                     <p className="text-xs text-red-600">{error}</p>
@@ -267,7 +264,7 @@ const CertificationUploadPage = () => {
               )}
               
               {!file ? (
-                <div className={`border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors
+                <div className={`border-2 border-dashed border-gray-300 rounded-lg p-6 text-center
                   ${!selectedCertification ? 'pointer-events-none' : 'cursor-pointer'}`}>
                   <input 
                     type="file" 
@@ -278,7 +275,7 @@ const CertificationUploadPage = () => {
                     disabled={!selectedCertification}
                   />
                   <label htmlFor="certFile" className={!selectedCertification ? 'cursor-default' : 'cursor-pointer'}>
-                    <FileText className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+                    <span className="material-icons text-gray-400 text-4xl mb-3">description</span>
                     <p className="text-sm font-medium text-gray-700 mb-1">
                       {selectedCertification 
                         ? 'Tap to upload your certification' 
@@ -291,7 +288,7 @@ const CertificationUploadPage = () => {
                 <div className="bg-white rounded-lg border border-gray-200 p-3 flex items-center justify-between">
                   <div className="flex items-center">
                     <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                      <FileText className="h-5 w-5 text-purple-600" />
+                      <span className="material-icons text-purple-600">description</span>
                     </div>
                     <div className="truncate">
                       <p className="text-sm font-medium text-gray-800 truncate">{file.name}</p>
@@ -299,10 +296,10 @@ const CertificationUploadPage = () => {
                     </div>
                   </div>
                   <button 
-                    className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                    className="p-1.5 rounded-full bg-gray-100"
                     onClick={removeFile}
                   >
-                    <X className="h-4 w-4 text-gray-600" />
+                    <span className="material-icons text-gray-600" style={{ fontSize: '16px' }}>close</span>
                   </button>
                 </div>
               )}
@@ -310,10 +307,10 @@ const CertificationUploadPage = () => {
             
             {/* 上传按钮 */}
             <button 
-              className={`w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium transition-colors 
+              className={`w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium
                 ${!selectedCertification || !file || uploading || fileError
                   ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
-                  : 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800'}`}
+                  : 'bg-green-600 text-white'}`}
               onClick={handleUpload}
               disabled={!selectedCertification || !file || uploading || fileError}
             >
@@ -324,7 +321,7 @@ const CertificationUploadPage = () => {
                 </span>
               ) : (
                 <span className="flex items-center">
-                  <Upload className="mr-2 h-5 w-5" /> Upload Certificate
+                  <span className="material-icons mr-2">file_upload</span> Upload Certificate
                 </span>
               )}
             </button>
@@ -335,7 +332,7 @@ const CertificationUploadPage = () => {
             <div className="bg-green-50 rounded-lg border border-green-200 p-4 mb-5">
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                  <Check className="h-5 w-5 text-green-600" />
+                  <span className="material-icons text-green-600">check</span>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-green-800">Upload Successful!</p>
@@ -348,18 +345,17 @@ const CertificationUploadPage = () => {
             
             {/* 成功后的继续按钮 */}
             <button 
-              className="w-full py-3 px-4 rounded-lg bg-green-600 text-white hover:bg-green-700 
-              active:bg-green-800 font-medium transition-colors flex items-center justify-center"
+              className="w-full py-3 px-4 rounded-lg bg-green-600 text-white font-medium flex items-center justify-center"
               onClick={() => console.log("Navigate back to onboarding")}
             >
-              <Check className="mr-1.5 h-5 w-5" /> Continue
+              <span className="material-icons mr-1.5">check</span> Continue
             </button>
           </div>
         )}
         
         {/* 底部说明 */}
         <p className="text-xs text-gray-500 text-center mt-5">
-          Having trouble? <a href="#" className="text-green-600 hover:underline">Contact support</a> for assistance.
+          Having trouble? <a href="#" className="text-green-600">Contact support</a> for assistance.
         </p>
       </div>
     </div>

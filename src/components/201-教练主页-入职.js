@@ -1,33 +1,17 @@
 import React, { useState } from 'react';
-import { 
-  MapPin, 
-  MessageCircle, 
-  Calendar, 
-  Home, 
-  User, 
-  ChevronRight, 
-  Edit3, 
-  Award, 
-  Clock, 
-  CreditCard, 
-  FileText, 
-  AlertCircle,
-  Check,
-  PoundSterling,
-  BarChart2
-} from 'lucide-react';
+// 移除lucide-react引入，使用Google图标库
 
 const CoachOnboardingPage = () => {
   // 定义任务完成状态 - 初始都是未完成
   const [tasks, setTasks] = useState([
-    { id: 1, title: 'Verify Your Identity', icon: <User className="h-5 w-5" />, completed: false, required: true },
-    { id: 2, title: 'DBS Certificate Upload', icon: <FileText className="h-5 w-5" />, completed: false, required: true },
-    { id: 3, title: 'Professional Certification', icon: <Award className="h-5 w-5" />, completed: false, required: true },
-    { id: 4, title: 'Bank Details', icon: <CreditCard className="h-5 w-5" />, completed: false, required: true },
-    { id: 5, title: 'Availability', icon: <Clock className="h-5 w-5" />, completed: false, required: true },
-    { id: 6, title: 'Location', icon: <MapPin className="h-5 w-5" />, completed: false, required: true },
-    { id: 7, title: 'Price Setting', icon: <PoundSterling className="h-5 w-5" />, completed: false, required: true },
-    { id: 8, title: 'Introduction', icon: <FileText className="h-5 w-5" />, completed: false, required: false }
+    { id: 1, title: 'Verify Your Identity', icon: <span className="material-icons">person</span>, completed: false, required: true },
+    { id: 2, title: 'DBS Certificate Upload', icon: <span className="material-icons">description</span>, completed: false, required: true },
+    { id: 3, title: 'Professional Certification', icon: <span className="material-icons">workspace_premium</span>, completed: false, required: true },
+    { id: 4, title: 'Bank Details', icon: <span className="material-icons">credit_card</span>, completed: false, required: true },
+    { id: 5, title: 'Availability', icon: <span className="material-icons">schedule</span>, completed: false, required: true },
+    { id: 6, title: 'Location', icon: <span className="material-icons">location_on</span>, completed: false, required: true },
+    { id: 7, title: 'Price Setting', icon: <span className="material-icons">currency_pound</span>, completed: false, required: true },
+    { id: 8, title: 'Introduction', icon: <span className="material-icons">article</span>, completed: false, required: false }
   ]);
   
   // 计算完成任务百分比
@@ -51,8 +35,8 @@ const CoachOnboardingPage = () => {
           <h1 className="text-lg font-semibold text-gray-800">Coach Center</h1>
         </div>
         <div className="flex items-center space-x-3">
-          <button className="p-1 rounded-full hover:bg-gray-100 relative transition-colors">
-            <MessageCircle className="w-5 h-5 text-gray-700" />
+          <button className="p-1 rounded-full relative">
+            <span className="material-icons text-gray-700">chat</span>
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
           </button>
         </div>
@@ -68,7 +52,7 @@ const CoachOnboardingPage = () => {
           {/* 进度指示器 */}
           <div className="mt-4 bg-white bg-opacity-20 rounded-full h-2.5 overflow-hidden">
             <div 
-              className="bg-white h-2.5 rounded-full transition-all duration-500 ease-in-out" 
+              className="bg-white h-2.5 rounded-full" 
               style={{ width: `${completionPercentage}%` }}
             ></div>
           </div>
@@ -82,7 +66,7 @@ const CoachOnboardingPage = () => {
         <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mx-4 mt-4 mb-2 rounded-r-lg shadow-sm">
           <div className="flex">
             <div className="flex-shrink-0">
-              <AlertCircle className="h-5 w-5 text-yellow-600" />
+              <span className="material-icons text-yellow-600">error</span>
             </div>
             <div className="ml-3">
               <p className="text-sm text-yellow-700">
@@ -99,12 +83,12 @@ const CoachOnboardingPage = () => {
             {tasks.map((task) => (
               <div 
                 key={task.id} 
-                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer active:bg-gray-50"
+                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between cursor-pointer active:bg-gray-50"
                 onClick={() => handleTaskClick(task.id)}
               >
                 <div className="flex items-center">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 transition-colors ${task.completed ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'}`}>
-                    {task.completed ? <Check className="h-5 w-5" /> : task.icon}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${task.completed ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'}`}>
+                    {task.completed ? <span className="material-icons">check</span> : task.icon}
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-gray-800">{task.title}</h4>
@@ -115,11 +99,11 @@ const CoachOnboardingPage = () => {
                 </div>
                 <div className="flex items-center">
                   {!task.completed && (
-                    <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center mr-1 hover:bg-green-100 transition-colors">
-                      <Edit3 className="h-4 w-4 text-green-600" />
+                    <div className="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center mr-1">
+                      <span className="material-icons text-green-600" style={{fontSize: '16px'}}>edit</span>
                     </div>
                   )}
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
+                  <span className="material-icons text-gray-400">chevron_right</span>
                 </div>
               </div>
             ))}
@@ -130,7 +114,7 @@ const CoachOnboardingPage = () => {
         <div className="px-4 mt-6 mb-8">
           <div className="bg-purple-50 p-4 rounded-xl border border-purple-200 shadow-sm">
             <h3 className="text-sm font-semibold text-purple-800 flex items-center">
-              <Award className="w-4 h-4 mr-1.5" />
+              <span className="material-icons text-purple-800 mr-1.5" style={{fontSize: '16px'}}>workspace_premium</span>
               Pro Tips
             </h3>
             <ul className="mt-2 text-xs text-purple-700 space-y-2">
@@ -155,35 +139,35 @@ const CoachOnboardingPage = () => {
       <div className="bg-white border-t border-gray-200 py-2 grid grid-cols-5 shadow-md fixed bottom-0 max-w-md w-full z-10">
         <button className="flex flex-col items-center justify-center">
           <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-            <Home className="w-5 h-5 text-green-600" />
+            <span className="material-icons text-green-600">home</span>
           </div>
           <span className="text-xs font-medium text-green-600 mt-1">Home</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Calendar className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500">calendar_month</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Lessons</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Clock className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500">schedule</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Availability</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <BarChart2 className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500">bar_chart</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Performance</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <User className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500">person</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Profile</span>
         </button>

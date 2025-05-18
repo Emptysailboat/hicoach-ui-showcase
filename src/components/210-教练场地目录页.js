@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Plus, MapPin, Navigation, Home, Star, Coffee, MoreVertical, Search, X, AlertTriangle } from 'lucide-react';
+import { Plus, MapPin, Navigation, Home, Star, MoreVertical, Search, X, AlertTriangle, Filter } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CoachLocationDirectory = () => {
   // 状态管理
@@ -87,7 +88,7 @@ const CoachLocationDirectory = () => {
           px-2 py-0.5 rounded-full text-xs font-medium 
           ${type === 'public' 
             ? 'bg-blue-100 text-blue-800' 
-            : 'bg-purple-100 text-purple-800'}
+            : 'bg-primary-100 text-primary-800'}
         `}
       >
         {type === 'public' ? 'Public' : 'Private'}
@@ -101,15 +102,49 @@ const CoachLocationDirectory = () => {
     setShowSearch(false);
   };
   
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
+  // 创建顶部导航栏右侧元素
+  const rightElement = (
+    <div className="flex items-center">
+      {!showSearch && (
+        <button 
+          className="p-1.5 rounded-full"
+          onClick={() => setShowSearch(true)}
+        >
+          <Search className="h-5 w-5 text-gray-600" />
+        </button>
+      )}
+      
+      <button 
+        className={`p-1.5 rounded-full ${showFilter ? 'bg-primary-100' : ''}`}
+        onClick={() => setShowFilter(!showFilter)}
+      >
+        <div className="relative">
+          <Filter 
+            className={showFilter ? "h-5 w-5 text-primary-600" : "h-5 w-5 text-gray-600"}
+          />
+          {showFilter && (
+            <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary-600 rounded-full"></div>
+          )}
+        </div>
+      </button>
+    </div>
+  );
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        
-        {showSearch ? (
+      {showSearch ? (
+        <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
+          <button className="p-1" onClick={clearSearch}>
+            <X className="h-5 w-5 text-gray-700" />
+          </button>
+          
           <div className="flex-1 flex items-center px-2">
             <input
               type="text"
@@ -120,53 +155,19 @@ const CoachLocationDirectory = () => {
               autoFocus
             />
             {searchQuery && (
-              <button className="p-1" onClick={clearSearch}>
+              <button className="p-1" onClick={() => setSearchQuery('')}>
                 <X className="h-4 w-4 text-gray-500" />
               </button>
             )}
           </div>
-        ) : (
-          <div className="flex-1 flex justify-center">
-            <h1 className="text-lg font-semibold text-gray-800">My Locations</h1>
-          </div>
-        )}
-        
-        <div className="flex items-center">
-          {!showSearch && (
-            <button 
-              className="p-1.5 rounded-full hover:bg-gray-100"
-              onClick={() => setShowSearch(true)}
-            >
-              <Search className="h-5 w-5 text-gray-600" />
-            </button>
-          )}
-          
-          <button 
-            className={`p-1.5 rounded-full ${showFilter ? 'bg-purple-100' : 'hover:bg-gray-100'}`}
-            onClick={() => setShowFilter(!showFilter)}
-          >
-            <div className="relative">
-              <svg 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                xmlns="http://www.w3.org/2000/svg"
-                className={showFilter ? "text-purple-600" : "text-gray-600"}
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-              >
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-              </svg>
-              {showFilter && (
-                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-purple-600 rounded-full"></div>
-              )}
-            </div>
-          </button>
         </div>
-      </div>
+      ) : (
+        <PageHeader 
+          title="My Locations" 
+          onBack={handleBack} 
+          rightElement={rightElement}
+        />
+      )}
       
       {/* 过滤条件 */}
       {showFilter && (
@@ -176,8 +177,8 @@ const CoachLocationDirectory = () => {
             <button 
               className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                 filterType === 'all' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-primary-100 text-primary-800' 
+                  : 'bg-gray-100 text-gray-700'
               }`}
               onClick={() => setFilterType('all')}
             >
@@ -186,8 +187,8 @@ const CoachLocationDirectory = () => {
             <button 
               className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                 filterType === 'public' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-primary-100 text-primary-800' 
+                  : 'bg-gray-100 text-gray-700'
               }`}
               onClick={() => setFilterType('public')}
             >
@@ -196,8 +197,8 @@ const CoachLocationDirectory = () => {
             <button 
               className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                 filterType === 'private' 
-                  ? 'bg-purple-100 text-purple-800' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-primary-100 text-primary-800' 
+                  : 'bg-gray-100 text-gray-700'
               }`}
               onClick={() => setFilterType('private')}
             >
@@ -274,7 +275,7 @@ const CoachLocationDirectory = () => {
                     )}
                   </div>
                   
-                  <button className="p-1.5 rounded-full hover:bg-gray-100">
+                  <button className="p-1.5 rounded-full">
                     <MoreVertical className="h-5 w-5 text-gray-500" />
                   </button>
                 </div>
@@ -310,7 +311,7 @@ const CoachLocationDirectory = () => {
               Try adjusting your search or filters to find what you're looking for.
             </p>
             <button 
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-medium"
+              className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium"
               onClick={() => {
                 setSearchQuery('');
                 setFilterType('all');
@@ -325,7 +326,7 @@ const CoachLocationDirectory = () => {
       
       {/* 底部添加按钮 */}
       <div className="bg-white border-t border-gray-200 p-4">
-        <button className="w-full py-2.5 bg-green-600 text-white rounded-lg font-medium flex items-center justify-center">
+        <button className="w-full py-2.5 bg-secondary-600 text-white rounded-lg font-medium flex items-center justify-center">
           <Plus className="h-5 w-5 mr-1.5" />
           Add New Location
         </button>

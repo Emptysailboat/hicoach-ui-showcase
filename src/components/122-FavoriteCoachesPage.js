@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BottomNavigation from './common/BottomNavigation';
 import CoachInfoCard from './common/CoachInfoCard';
+import PageHeader from './common/PageHeader';
 
 const FavoriteCoachesPage = () => {
   // 状态管理
@@ -140,10 +141,7 @@ const FavoriteCoachesPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto relative">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center justify-between border-b border-gray-200">
-        <h1 className="text-lg font-semibold text-gray-800">Favorite Coaches</h1>
-        <div className="w-5"></div>
-      </div>
+      <PageHeader title="Favorite Coaches" />
       
       {/* 搜索栏 */}
       <div className="bg-white px-4 py-3 border-b border-gray-200">

@@ -1,17 +1,4 @@
 import React from 'react';
-import { 
-  MapPin, 
-  MessageCircle, 
-  Calendar, 
-  Users, 
-  Home, 
-  User, 
-  Clock, 
-  BarChart2,
-  AlertCircle,
-  ChevronRight,
-  PoundSterling
-} from 'lucide-react';
 
 const CoachHomePage = () => {
   // 今日课程数据
@@ -58,7 +45,6 @@ const CoachHomePage = () => {
   const tasks = [
     {
       id: 1,
-      icon: <MessageCircle className="h-5 w-5 text-white" />,
       title: '2 new lessons enquiry',
       count: 2
     }
@@ -72,8 +58,8 @@ const CoachHomePage = () => {
           <h1 className="text-lg font-semibold text-gray-800">Coach Center</h1>
         </div>
         <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 relative transition-colors">
-            <MessageCircle className="w-5 h-5 text-gray-700" />
+          <button className="p-1 rounded-full relative">
+            <span className="material-icons text-gray-700" style={{ fontSize: '20px' }}>chat</span>
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">10</span>
           </button>
         </div>
@@ -96,19 +82,19 @@ const CoachHomePage = () => {
             {tasks.map((task) => (
               <div 
                 key={task.id} 
-                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between hover:shadow-md transition-shadow cursor-pointer active:bg-gray-50"
+                className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between cursor-pointer active:bg-gray-50"
                 onClick={() => console.log(`Opening task ${task.id}`)}
               >
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center mr-3 shadow-sm">
-                    {task.icon}
+                    <span className="material-icons text-white" style={{ fontSize: '20px' }}>chat</span>
                   </div>
                   <div>
                     <h4 className="text-sm font-medium text-gray-800">{task.title}</h4>
                     <p className="text-xs text-gray-500">Tap to view</p>
                   </div>
                 </div>
-                <ChevronRight className="h-5 w-5 text-gray-400" />
+                <span className="material-icons text-gray-400" style={{ fontSize: '20px' }}>chevron_right</span>
               </div>
             ))}
           </div>
@@ -118,7 +104,7 @@ const CoachHomePage = () => {
         <div className="px-4 mt-5">
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-base font-semibold text-green-600">Today's Lessons</h3>
-            <button className="text-sm text-green-600 font-medium hover:text-green-700 transition-colors">
+            <button className="text-sm text-green-600 font-medium">
               View all
             </button>
           </div>
@@ -127,7 +113,7 @@ const CoachHomePage = () => {
             {todayLessons.map((lesson) => (
               <div 
                 key={lesson.id} 
-                className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 hover:shadow-md transition-shadow cursor-pointer
+                className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 cursor-pointer
                   ${lesson.status === 'confirmed' ? 'border-green-500' : 
                     lesson.status === 'pending' ? 'border-yellow-500' : 
                     lesson.status === 'cancelled' ? 'border-red-500' : 'border-gray-300'}`}
@@ -151,14 +137,14 @@ const CoachHomePage = () => {
                   </div>
                   
                   <div className="flex items-center mt-2">
-                    <Calendar className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                    <span className="material-icons text-gray-500" style={{ fontSize: '14px' }}>calendar_today</span>
                     <span className="ml-1.5 text-xs text-gray-700">{lesson.date}</span>
                     <span className="mx-1 text-xs text-gray-500">•</span>
                     <span className="text-xs text-gray-700">{lesson.time.split(' - ')[0]}</span>
                   </div>
                   
                   <div className="flex items-center mt-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
+                    <span className="material-icons text-gray-500" style={{ fontSize: '14px' }}>location_on</span>
                     <span className="ml-1.5 text-xs text-gray-700">{lesson.location}</span>
                   </div>
                   
@@ -183,35 +169,35 @@ const CoachHomePage = () => {
       <div className="bg-white border-t border-gray-200 py-2 grid grid-cols-5 shadow-md fixed bottom-0 max-w-md w-full z-10">
         <button className="flex flex-col items-center justify-center">
           <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-            <Home className="w-5 h-5 text-green-600" />
+            <span className="material-icons text-green-600" style={{ fontSize: '20px' }}>home</span>
           </div>
           <span className="text-xs font-medium text-green-600 mt-1">Home</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Calendar className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500" style={{ fontSize: '20px' }}>calendar_today</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Lessons</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Clock className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500" style={{ fontSize: '20px' }}>schedule</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Availability</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <BarChart2 className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500" style={{ fontSize: '20px' }}>bar_chart</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Performance</span>
         </button>
         
         <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <User className="w-5 h-5 text-gray-500" />
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
+            <span className="material-icons text-gray-500" style={{ fontSize: '20px' }}>person</span>
           </div>
           <span className="text-xs font-medium text-gray-500 mt-1">Profile</span>
         </button>

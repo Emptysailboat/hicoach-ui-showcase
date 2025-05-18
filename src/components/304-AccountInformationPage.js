@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PageHeader from './common/PageHeader';
 
 const AccountInformationPage = () => {
   // 模拟用户数据
@@ -18,6 +19,12 @@ const AccountInformationPage = () => {
   const [avatar, setAvatar] = useState(null);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const fileInputRef = useRef(null);
+  
+  // 处理返回按钮点击事件
+  const handleBack = () => {
+    console.log('Back button clicked');
+    // 在实际应用中，这里应该是导航回上一页
+  };
   
   // 处理编辑状态的切换
   const toggleEditing = () => {
@@ -119,25 +126,29 @@ const AccountInformationPage = () => {
     </div>
   );
 
+  // 编辑/保存按钮组件
+  const EditButton = () => (
+    <button 
+      className="p-1 rounded-full active:bg-gray-200"
+      onClick={toggleEditing}
+      aria-label={isEditing ? "Save changes" : "Edit profile"}
+    >
+      {isEditing ? 
+        <span className="material-icons-outlined text-primary-600" style={{fontSize: "20px"}}>check</span> : 
+        <span className="material-icons-outlined text-primary-600" style={{fontSize: "20px"}}>edit</span>
+      }
+    </button>
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 max-w-md mx-auto overflow-auto">
-      {/* 顶部标题栏 */}
-      <div className="sticky top-0 bg-white px-5 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-16">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full active:bg-gray-200">
-            <span className="material-icons-round text-gray-700">arrow_back</span>
-          </button>
-          <h1 className="ml-4 text-lg font-semibold text-gray-800">Account Details</h1>
-        </div>
-        <button 
-          className="p-1 rounded-full active:bg-gray-200"
-          onClick={toggleEditing}
-        >
-          {isEditing ? 
-          <span className="material-icons-round text-primary-600">check</span> : 
-          <span className="material-icons-round text-primary-600">edit</span>
-        }
-        </button>
+      {/* 使用PageHeader组件替换原有顶部标题栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Account Details"
+          onBack={handleBack}
+          rightElement={<EditButton />}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}

@@ -67,6 +67,21 @@ import CoachPromotePage from '../components/226-教练推广';
 import CoachPauseAccountPage from '../components/227-教练暂停接单';
 // 导入通用组件
 import CoachInfoCard from '../components/common/CoachInfoCard';
+import BottomNavigation from '../components/common/BottomNavigation';
+import PageHeader from '../components/common/PageHeader';
+import LessonDetailsCard from '../components/common/LessonDetailsCard';
+import PriceDetailsCard from '../components/common/PriceDetailsCard';
+import LocationCard from '../components/common/LocationCard';
+
+// 添加Material Icons字体引入
+const MaterialIconsHead = () => {
+  return (
+    <React.Fragment>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    </React.Fragment>
+  );
+};
 
 // CoachInfoCard展示组件
 const CoachInfoCardShowcase = () => {
@@ -127,6 +142,211 @@ const CoachInfoCardShowcase = () => {
           isFavorite={isFavorite}
           onToggleFavorite={handleToggleFavorite}
         />
+      </div>
+    </div>
+  );
+};
+
+// BottomNavigation展示组件
+const BottomNavigationShowcase = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">底部导航栏</h2>
+        <div className="relative h-80 border border-gray-200 rounded-lg">
+          <div className="p-4 text-center text-gray-500">
+            页面内容区域
+          </div>
+          <BottomNavigation 
+            activeTab={activeTab}
+            onTabChange={setActiveTab}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// PageHeader展示组件
+const PageHeaderShowcase = () => {
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">带返回按钮的页面标题</h2>
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <PageHeader 
+            title="Page Title"
+            onBack={() => {}}
+          />
+          <div className="p-4 text-center text-gray-500">
+            页面内容区域
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">带右侧元素的页面标题</h2>
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <PageHeader 
+            title="Page Title"
+            onBack={() => {}}
+            rightElement={
+              <button className="p-1 rounded-full">
+                <i className="material-icons-outlined text-gray-700" style={{ fontSize: '20px' }}>more_vert</i>
+              </button>
+            }
+          />
+          <div className="p-4 text-center text-gray-500">
+            页面内容区域
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">仅标题的页面标题</h2>
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <PageHeader title="Page Title" />
+          <div className="p-4 text-center text-gray-500">
+            页面内容区域
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// LessonDetailsCard展示组件
+const LessonDetailsCardShowcase = () => {
+  const singleLessonData = {
+    type: 'Private Lesson',
+    date: 'Thu, 15 Jun',
+    time: '10:00 - 11:00',
+    duration: 60,
+    people: 1,
+    skills: ['Forehand', 'Backhand', 'Serve'],
+    needsEquipment: true
+  };
+  
+  const recurringLessonData = {
+    type: 'Package Lesson',
+    startDate: 'Mon, 3 Jul',
+    startTime: '18:00 - 19:00',
+    schedule: 'Every Monday',
+    sessions: 8,
+    duration: 60,
+    people: 1,
+    skills: ['Advanced Techniques', 'Match Strategy'],
+    needsEquipment: false
+  };
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">单次课程详情</h2>
+        <LessonDetailsCard 
+          lesson={singleLessonData}
+          title="Single Lesson Details"
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">周期课程详情</h2>
+        <LessonDetailsCard 
+          lesson={recurringLessonData}
+          title="Package Lesson Details"
+          skillTagClassName="bg-primary-100 text-primary-600"
+        />
+      </div>
+    </div>
+  );
+};
+
+// PriceDetailsCard展示组件
+const PriceDetailsCardShowcase = () => {
+  const standardPriceData = {
+    subtotal: 60,
+    total: 60
+  };
+  
+  const complexPriceData = {
+    subtotal: 480,
+    discount: 48,
+    fees: [
+      { name: 'Booking Fee', amount: 5 },
+      { name: 'Equipment Rental', amount: 10 }
+    ],
+    total: 447
+  };
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">基本价格详情</h2>
+        <PriceDetailsCard 
+          {...standardPriceData}
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">完整价格详情</h2>
+        <PriceDetailsCard 
+          {...complexPriceData}
+          title="Package Price Details"
+        />
+      </div>
+    </div>
+  );
+};
+
+// LocationCard展示组件
+const LocationCardShowcase = () => {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  
+  const locationData = [
+    {
+      id: '1',
+      name: 'Wimbledon Tennis Club',
+      address: '23 Tennis Road, Wimbledon, London',
+      distance: '0.5 miles',
+      facilities: ['Indoor Courts', 'Parking', 'Pro Shop']
+    },
+    {
+      id: '2',
+      name: "Queen's Club",
+      address: "15 Queen's Road, West Kensington, London",
+      distance: '1.2 miles',
+      facilities: ['Clay Courts', 'Changing Rooms']
+    }
+  ];
+  
+  const handleSelect = (id) => {
+    setSelectedLocation(id === selectedLocation ? null : id);
+  };
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">场地详情卡片</h2>
+        <LocationCard 
+          location={locationData[0]}
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">可选择的场地卡片</h2>
+        <div className="space-y-4">
+          {locationData.map(location => (
+            <LocationCard 
+              key={location.id}
+              location={location}
+              isSelectable={true}
+              isSelected={selectedLocation === location.id}
+              onSelect={handleSelect}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -270,6 +490,16 @@ const ComponentShowcase = () => {
       // 通用组件
       case 'common-coachInfoCard':
         return <CoachInfoCardShowcase />;
+      case 'common-bottomNavigation':
+        return <BottomNavigationShowcase />;
+      case 'common-pageHeader':
+        return <PageHeaderShowcase />;
+      case 'common-lessonDetailsCard':
+        return <LessonDetailsCardShowcase />;
+      case 'common-priceDetailsCard':
+        return <PriceDetailsCardShowcase />;
+      case 'common-locationCard':
+        return <LocationCardShowcase />;
       default:
         return <div className="flex items-center justify-center h-full">请选择一个组件进行展示</div>;
     }
@@ -344,6 +574,11 @@ const ComponentShowcase = () => {
     { id: '314-guideDetail', name: '314-博客详情页', category: 'General' },
     // 通用组件
     { id: 'common-coachInfoCard', name: '教练信息卡组件', category: 'Common Components' },
+    { id: 'common-bottomNavigation', name: '底部导航栏组件', category: 'Common Components' },
+    { id: 'common-pageHeader', name: '页面标题组件', category: 'Common Components' },
+    { id: 'common-lessonDetailsCard', name: '课程详情卡组件', category: 'Common Components' },
+    { id: 'common-priceDetailsCard', name: '价格详情卡组件', category: 'Common Components' },
+    { id: 'common-locationCard', name: '场地信息卡组件', category: 'Common Components' },
   ];
   
   // 按分类分组组件
@@ -358,6 +593,7 @@ const ComponentShowcase = () => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-100">
+      <MaterialIconsHead />
       <header className="bg-white shadow-md p-4 flex-shrink-0">
         <h1 className="text-2xl font-bold text-center text-primary-600">HiCoach UI Showcase</h1>
       </header>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Share2, Copy, Gift, CheckCircle, ExternalLink } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 // 添加自定义CSS动画
 const customStyles = `
@@ -76,13 +77,10 @@ const CoachPromotePage = () => {
         </div>
       )}
       {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14 sticky top-0 z-10">
-        <button className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center active:bg-gray-200">
-          <ArrowLeft className="w-5 h-5 text-gray-700" />
-        </button>
-        <h1 className="text-lg font-semibold text-gray-800">Promote Yourself</h1>
-        <div className="w-10"></div> {/* 用于平衡布局 */}
-      </div>
+      <PageHeader 
+        title="Promote Yourself" 
+        onBack={() => console.log('Navigate back')}
+      />
       
       {/* 主要内容区 - 可滚动 */}
       <div className="flex-1 overflow-y-auto pb-16 pt-4 scroll-smooth">

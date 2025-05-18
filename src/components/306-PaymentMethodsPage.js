@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const PaymentMethodsPage = () => {
   // 状态管理
@@ -226,20 +227,27 @@ const PaymentMethodsPage = () => {
     );
   };
   
+  // 处理返回按钮点击事件
+  const handleBack = () => {
+    console.log('Back button clicked');
+    // 在实际应用中，这里应该是导航回上一页
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center border-b border-gray-200 shadow-sm h-14">
-        <button className="mr-2 p-1 rounded-full bg-gray-100">
-          <span className="material-icons-round text-gray-700" style={{fontSize: '20px'}}>arrow_back</span>
-        </button>
-        <h1 className="text-lg font-semibold text-gray-800">Payment Methods</h1>
+      {/* 使用PageHeader组件替换原有顶部标题栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Payment Methods"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 成功消息提示 */}
       {successMessage && (
         <div className="mx-4 mt-2 bg-green-50 border border-green-100 rounded-lg px-4 py-2 flex items-center">
-          <span className="material-icons-round text-[#00B36F] mr-2" style={{fontSize: '20px'}}>check_circle</span>
+          <span className="material-icons-round text-green-600 mr-2" style={{fontSize: '20px'}}>check_circle</span>
           <span className="text-green-800">{successMessage}</span>
         </div>
       )}
@@ -258,8 +266,8 @@ const PaymentMethodsPage = () => {
             onClick={() => setCreditCardExpanded(!creditCardExpanded)}
           >
             <div className="flex items-center">
-              <span className="material-icons-round text-[#00B36F] mr-3" style={{fontSize: '20px'}}>credit_card</span>
-              <span className="font-medium text-gray-800">Credit & Debit Cards</span>
+              <span className="material-icons-round text-green-600 mr-3" style={{fontSize: '20px'}}>credit_card</span>
+              <span className="font-medium text-green-600">Credit & Debit Cards</span>
             </div>
             <span className="material-icons-round text-gray-400" style={{fontSize: '20px'}}>
               {creditCardExpanded ? 'expand_less' : 'expand_more'}
@@ -291,7 +299,7 @@ const PaymentMethodsPage = () => {
                         </div>
                       ) : (
                         <button 
-                          className="text-sm text-gray-600 border border-gray-300 rounded-full px-3 py-1 bg-gray-50 mr-3"
+                          className="text-sm text-green-600 border border-green-300 rounded-full px-3 py-1 bg-green-50 mr-3"
                           onClick={() => handleSetDefaultPayment('card', card.id)}
                         >
                           Set as default
@@ -495,8 +503,8 @@ const PaymentMethodsPage = () => {
             onClick={() => setDigitalWalletExpanded(!digitalWalletExpanded)}
           >
             <div className="flex items-center">
-              <span className="material-icons-round text-[#00B36F] mr-3" style={{fontSize: '20px'}}>account_balance_wallet</span>
-              <span className="font-medium text-gray-800">Digital Wallets</span>
+              <span className="material-icons-round text-green-600 mr-3" style={{fontSize: '20px'}}>account_balance_wallet</span>
+              <span className="font-medium text-green-600">Digital Wallets</span>
             </div>
             <span className="material-icons-round text-gray-400" style={{fontSize: '20px'}}>
               {digitalWalletExpanded ? 'expand_less' : 'expand_more'}
@@ -518,7 +526,7 @@ const PaymentMethodsPage = () => {
                   </div>
                 ) : (
                   <button 
-                    className="text-sm text-gray-600 border border-gray-300 rounded-full px-3 py-1 bg-gray-50"
+                    className="text-sm text-green-600 border border-green-300 rounded-full px-3 py-1 bg-green-50"
                     onClick={() => handleSetDefaultPayment('apple_pay')}
                   >
                     Set as default
@@ -539,7 +547,7 @@ const PaymentMethodsPage = () => {
                   </div>
                 ) : (
                   <button 
-                    className="text-sm text-gray-600 border border-gray-300 rounded-full px-3 py-1 bg-gray-50"
+                    className="text-sm text-green-600 border border-green-300 rounded-full px-3 py-1 bg-green-50"
                     onClick={() => handleSetDefaultPayment('google_pay')}
                   >
                     Set as default

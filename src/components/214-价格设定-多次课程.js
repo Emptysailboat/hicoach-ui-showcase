@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Plus, Package, Trash2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Plus, Package, Trash2, CheckCircle, AlertTriangle } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const PackagePricingPage = () => {
   // 状态管理
@@ -31,6 +32,12 @@ const PackagePricingPage = () => {
   const [showNameError, setShowNameError] = useState(false);
   const [showLessonsError, setShowLessonsError] = useState(false);
   const [showDiscountError, setShowDiscountError] = useState(false);
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
   
   // 打开添加新套餐表单
   const handleAddNew = () => {
@@ -357,15 +364,7 @@ const PackagePricingPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Package Pricing</h1>
-        </div>
-        <div className="w-6"></div>
-      </div>
+      <PageHeader title="Package Pricing" onBack={handleBack} />
       
       {/* 成功提示消息 */}
       {showSuccess && (

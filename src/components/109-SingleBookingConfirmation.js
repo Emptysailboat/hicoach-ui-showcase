@@ -3,6 +3,7 @@ import CoachInfoCard from './common/CoachInfoCard';
 import LocationCard from './common/LocationCard';
 import PriceDetailsCard from './common/PriceDetailsCard';
 import LessonDetailsCard from './common/LessonDetailsCard';
+import PageHeader from './common/PageHeader';
 
 const SingleBookingConfirmation = () => {
   // 模拟用户已选择的课程详情
@@ -52,20 +53,19 @@ const SingleBookingConfirmation = () => {
   ];
   const total = subtotal - discount + fees.reduce((sum, fee) => sum + fee.amount, 0);
 
+  // 处理返回按钮点击
+  const handleBack = () => {
+    console.log("Back button clicked");
+    // 实际项目中这里会返回上一页
+  };
+
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1.5 rounded-full active:bg-gray-100">
-          <span className="material-icons-round text-gray-700" style={{ fontSize: '24px' }}>
-            arrow_back_ios_new
-          </span>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Review & Pay</h1>
-        </div>
-        <div className="w-5"></div>
-      </div>
+      <PageHeader 
+        title="Review & Pay" 
+        onBack={handleBack}
+      />
       
       {/* 进度指示器 */}
       <div className="flex justify-between items-center px-4 py-3 bg-white border-b border-gray-100">

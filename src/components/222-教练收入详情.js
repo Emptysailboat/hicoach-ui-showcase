@@ -14,6 +14,7 @@ import {
   X,
   Mail
 } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 // 常量定义
 const INVOICE_STATUS = {
@@ -416,29 +417,25 @@ const CoachIncomeSummaryPage = () => {
     setSelectedTab(tab);
   }, []);
   
+  // 下载按钮作为右侧元素
+  const rightElement = (
+    <button 
+      className="p-1 rounded-full hover:bg-gray-100 transition-colors"
+      onClick={() => setShowDownloadModal(true)}
+      aria-label="Download transactions"
+    >
+      <Download className="w-5 h-5 text-gray-700" />
+    </button>
+  );
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
       {/* 顶部栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button 
-            className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors"
-            aria-label="Go back"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Income Summary</h1>
-        </div>
-        <div>
-          <button 
-            className="p-1 rounded-full hover:bg-gray-100 transition-colors"
-            onClick={() => setShowDownloadModal(true)}
-            aria-label="Download transactions"
-          >
-            <Download className="w-5 h-5 text-gray-700" />
-          </button>
-        </div>
-      </div>
+      <PageHeader 
+        title="Income Summary" 
+        onBack={() => console.log('Navigate back')}
+        rightElement={rightElement}
+      />
       
       {/* 主要内容区 */}
       <div className="flex-1 overflow-y-auto pb-4">

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, Mail, HelpCircle, Trash2, ExternalLink, ChevronRight, BookOpen } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const SupportPage = () => {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   // 定义支持选项
   const supportOptions = [
     {
@@ -10,7 +13,7 @@ const SupportPage = () => {
       title: 'Email Hicoach Team',
       description: 'Get direct support from our team',
       action: 'mailto:support@hicoach.com',
-      external: false // 邮件链接不是外部网站
+      external: false
     },
     {
       id: 'support-center',
@@ -27,14 +30,14 @@ const SupportPage = () => {
       description: 'Learn how to use all features of Hicoach',
       action: 'https://hicoach.com/guide',
       external: true,
-      new: true // 标记为新功能
+      new: true
     },
     {
       id: 'delete-account',
       icon: <Trash2 className="w-5 h-5" />,
       title: 'Delete Account',
       description: 'Permanently delete your account and data',
-      action: '/account/delete', // 改为应用内路径，而非外部链接
+      action: '/account/delete',
       external: false,
       danger: true
     }
@@ -42,34 +45,42 @@ const SupportPage = () => {
 
   // 处理选项点击
   const handleOptionClick = (option) => {
+    if (option.id === 'delete-account') {
+      setShowDeleteConfirm(true);
+      return;
+    }
+
     console.log(`Navigating to: ${option.action}`);
-    // 区分外部链接和应用内导航
     if (option.external) {
       window.open(option.action, '_blank');
     } else if (option.action.startsWith('mailto:')) {
       window.location.href = option.action;
     } else {
       console.log(`Internal navigation to: ${option.action}`);
-      // 在实际应用中，这里会使用React Router等导航
     }
+  };
+
+  // 处理删除确认
+  const handleDeleteConfirm = () => {
+    console.log('Account deletion confirmed');
+    setShowDeleteConfirm(false);
+    // 在实际应用中，这里会执行删除账户的操作
   };
 
   // 用于返回上一级页面的函数
   const handleBack = () => {
     console.log('Navigate back to profile page');
-    // 在实际应用中，这里会导航回个人资料页面
   };
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14 sticky top-0 z-10">
-        <div className="flex items-center">
-          <button className="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center active:bg-gray-200 transition-colors" onClick={handleBack}>
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Support</h1>
-        </div>
+      {/* 使用PageHeader组件替换原有顶部标题栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Support"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}
@@ -88,8 +99,9 @@ const SupportPage = () => {
                   onClick={() => handleOptionClick(option)}
                   className={`
                     w-full p-4 flex items-center justify-between text-left
-                    ${option.danger ? 'hover:bg-red-50 active:bg-red-100' : 'hover:bg-gray-50 active:bg-gray-100'}
-                    transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${option.danger ? 'focus:ring-red-500' : 'focus:ring-green-500'}
+                    ${option.danger ? 'bg-red-50' : 'bg-white'}
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 
+                    ${option.danger ? 'focus:ring-red-500' : 'focus:ring-green-500'}
                     focus:ring-opacity-50
                   `}
                   aria-label={option.title}
@@ -152,6 +164,32 @@ const SupportPage = () => {
           </div>
         </div>
       </div>
+
+      {/* 删除确认对话框 */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-sm mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Confirm Account Deletion</h3>
+            <p className="text-sm text-gray-600 mb-4">
+              This action will permanently delete your account and all associated data. This cannot be undone.
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg"
+              >
+                Delete Account
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

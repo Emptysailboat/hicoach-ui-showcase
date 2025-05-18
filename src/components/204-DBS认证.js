@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, FileText, Shield, AlertTriangle, CheckCircle, Upload, X, Check, AlertCircle } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const DBSUploadPage = () => {
   // 状态用于跟踪文件上传
@@ -63,17 +63,16 @@ const DBSUploadPage = () => {
     }, 2000);
   };
   
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
       {/* 顶部栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ArrowLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">DBS Certificate Upload</h1>
-        </div>
-      </div>
+      <PageHeader title="DBS Certificate Upload" onBack={handleBack} />
       
       {/* 主要内容区 */}
       <div className="flex-1 overflow-y-auto px-4 pb-8 pt-5">
@@ -81,7 +80,7 @@ const DBSUploadPage = () => {
         <div className="bg-white rounded-xl shadow-sm p-5 mb-5 border border-gray-200">
           <div className="flex items-center mb-4">
             <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-              <Shield className="w-5 h-5 text-green-600" />
+              <span className="material-icons text-green-600">shield</span>
             </div>
             <h2 className="text-lg font-semibold text-gray-800">DBS Certificate Upload</h2>
           </div>
@@ -108,10 +107,10 @@ const DBSUploadPage = () => {
             </ul>
           </div>
           
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded-r-lg mb-5">
+          <div className="bg-purple-50 border-l-4 border-purple-400 p-3 rounded-r-lg mb-5">
             <div className="flex">
-              <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mr-2" />
-              <p className="text-sm text-yellow-700">
+              <span className="material-icons text-purple-600 mr-2">security</span>
+              <p className="text-sm text-purple-700">
                 Your certificate will be securely stored and only accessed by authorized HiCoach staff for verification purposes.
               </p>
             </div>
@@ -119,15 +118,15 @@ const DBSUploadPage = () => {
           
           <div className="space-y-2 text-sm text-gray-600">
             <div className="flex items-start">
-              <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
+              <span className="material-icons text-green-600 mr-2">check_circle</span>
               <span>Typically verified within 1-2 business days</span>
             </div>
             <div className="flex items-start">
-              <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
+              <span className="material-icons text-green-600 mr-2">check_circle</span>
               <span>You'll be notified once verification is complete</span>
             </div>
             <div className="flex items-start">
-              <CheckCircle className="h-5 w-5 text-green-600 mr-2 flex-shrink-0" />
+              <span className="material-icons text-green-600 mr-2">check_circle</span>
               <span>We'll remind you when renewal is needed</span>
             </div>
           </div>
@@ -139,7 +138,7 @@ const DBSUploadPage = () => {
             {/* 文件类型错误提示 */}
             {fileError && (
               <div className="bg-red-50 rounded-lg border border-red-200 p-3 mb-3 flex items-start">
-                <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mr-2 mt-0.5" />
+                <span className="material-icons text-red-600 mr-2">error</span>
                 <p className="text-sm text-red-700">{fileError}</p>
               </div>
             )}
@@ -147,7 +146,7 @@ const DBSUploadPage = () => {
             {/* 上传错误提示 */}
             {error && (
               <div className="bg-red-50 rounded-lg border border-red-200 p-3 mb-3 flex items-start">
-                <AlertCircle className="h-5 w-5 text-red-600 flex-shrink-0 mr-2 mt-0.5" />
+                <span className="material-icons text-red-600 mr-2">error</span>
                 <div>
                   <p className="text-sm font-medium text-red-700">Upload failed</p>
                   <p className="text-xs text-red-600">{error}</p>
@@ -156,7 +155,7 @@ const DBSUploadPage = () => {
             )}
             
             {!file ? (
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:bg-gray-50 transition-colors">
+              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50">
                 <input 
                   type="file" 
                   id="dbsFile" 
@@ -165,7 +164,7 @@ const DBSUploadPage = () => {
                   onChange={handleFileChange}
                 />
                 <label htmlFor="dbsFile" className="cursor-pointer">
-                  <FileText className="h-10 w-10 text-gray-400 mx-auto mb-3" />
+                  <span className="material-icons text-gray-400 mx-auto mb-3" style={{ fontSize: '40px' }}>description</span>
                   <p className="text-sm font-medium text-gray-700 mb-1">Tap to upload your DBS certificate</p>
                   <p className="text-xs text-gray-500">PDF, JPG or PNG (max. 10MB)</p>
                 </label>
@@ -174,7 +173,7 @@ const DBSUploadPage = () => {
               <div className="bg-white rounded-lg border border-gray-200 p-3 flex items-center justify-between">
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                    <FileText className="h-5 w-5 text-purple-600" />
+                    <span className="material-icons text-purple-600">description</span>
                   </div>
                   <div className="truncate">
                     <p className="text-sm font-medium text-gray-800 truncate">{file.name}</p>
@@ -182,10 +181,10 @@ const DBSUploadPage = () => {
                   </div>
                 </div>
                 <button 
-                  className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                  className="p-1.5 rounded-full bg-gray-100"
                   onClick={removeFile}
                 >
-                  <X className="h-4 w-4 text-gray-600" />
+                  <span className="material-icons text-gray-600" style={{ fontSize: '16px' }}>close</span>
                 </button>
               </div>
             )}
@@ -194,7 +193,7 @@ const DBSUploadPage = () => {
           <div className="bg-green-50 rounded-lg border border-green-200 p-4 mb-5">
             <div className="flex items-center">
               <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                <Check className="h-5 w-5 text-green-600" />
+                <span className="material-icons text-green-600">check</span>
               </div>
               <div>
                 <p className="text-sm font-medium text-green-800">Upload Successful!</p>
@@ -207,10 +206,10 @@ const DBSUploadPage = () => {
         {/* 操作按钮 */}
         {!uploadComplete ? (
           <button 
-            className={`w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium transition-colors 
+            className={`w-full py-3 px-4 rounded-lg flex items-center justify-center font-medium 
               ${!file || uploading || fileError
                 ? 'bg-gray-200 text-gray-500 cursor-not-allowed' 
-                : 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800'}`}
+                : 'bg-green-600 text-white'}`}
             onClick={handleUpload}
             disabled={!file || uploading || fileError}
           >
@@ -221,23 +220,22 @@ const DBSUploadPage = () => {
               </span>
             ) : (
               <span className="flex items-center">
-                <Upload className="mr-2 h-5 w-5" /> Upload Certificate
+                <span className="material-icons mr-2">file_upload</span> Upload Certificate
               </span>
             )}
           </button>
         ) : (
           <button 
-            className="w-full py-3 px-4 rounded-lg bg-green-600 text-white hover:bg-green-700 
-            active:bg-green-800 font-medium transition-colors flex items-center justify-center"
+            className="w-full py-3 px-4 rounded-lg bg-green-600 text-white font-medium flex items-center justify-center"
             onClick={() => console.log("Navigate back to onboarding")}
           >
-            <Check className="mr-1.5 h-5 w-5" /> Continue
+            <span className="material-icons mr-1.5">check</span> Continue
           </button>
         )}
         
         {/* 底部说明 */}
         <p className="text-xs text-gray-500 text-center mt-5">
-          Having trouble? <a href="#" className="text-green-600 hover:underline">Contact support</a> for assistance.
+          Having trouble? <a href="#" className="text-green-600">Contact support</a> for assistance.
         </p>
       </div>
     </div>

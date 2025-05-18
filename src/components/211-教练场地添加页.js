@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Camera, MapPin, Upload, CheckCircle, X } from 'lucide-react';
+import { Camera, MapPin, Upload, CheckCircle, X } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CoachLocationAddPage = () => {
   // 表单状态
@@ -66,6 +67,12 @@ const CoachLocationAddPage = () => {
     setPhotos(photos.filter(photo => photo.id !== id));
   };
   
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
   // 渲染成功状态
   if (showSuccess) {
     return (
@@ -86,15 +93,7 @@ const CoachLocationAddPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Add New Location</h1>
-        </div>
-        <div className="w-6"></div> {/* 平衡左侧图标 */}
-      </div>
+      <PageHeader title="Add New Location" onBack={handleBack} />
       
       {/* 表单内容 */}
       <div className="flex-1 overflow-auto p-4">

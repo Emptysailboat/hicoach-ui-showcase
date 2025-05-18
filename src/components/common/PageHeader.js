@@ -9,20 +9,20 @@ import React from 'react';
  */
 const PageHeader = ({ title, onBack, rightElement }) => {
   return (
-    <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-      {onBack && (
-        <button 
-          className="p-1.5 rounded-full active:bg-gray-100"
-          onClick={onBack}
-          aria-label="Go back"
-        >
-          <i className="material-icons-round text-gray-700" style={{ fontSize: '20px' }}>arrow_back_ios_new</i>
-        </button>
-      )}
-      <div className="flex-1 flex justify-center">
-        <h1 className="text-lg font-semibold text-gray-800">{title}</h1>
+    <div className="bg-white px-4 py-3 flex items-center border-b border-gray-200">
+      <div className={`${onBack ? 'w-10' : 'w-5'} flex-shrink-0`}>
+        {onBack && (
+          <button 
+            onClick={onBack}
+            className="p-1 rounded-full"
+            aria-label="Go back"
+          >
+            <i className="material-icons-outlined text-gray-700" style={{fontSize: "20px"}}>arrow_back</i>
+          </button>
+        )}
       </div>
-      <div className="w-8">
+      <h2 className="text-lg font-semibold flex-1 text-center">{title}</h2>
+      <div className="w-10 flex-shrink-0 flex justify-end">
         {rightElement || null}
       </div>
     </div>

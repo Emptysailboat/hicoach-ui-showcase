@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const RecurringBookingTimeSelection = () => {
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -117,20 +118,16 @@ const RecurringBookingTimeSelection = () => {
     }
   };
   
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1.5 rounded-full active:bg-gray-100">
-          <span className="material-icons-round text-gray-700" style={{ fontSize: '24px' }}>
-            arrow_back_ios_new
-          </span>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Select Starting Date</h1>
-        </div>
-        <div className="w-10"></div>
-      </div>
+      <PageHeader title="Select Starting Date" onBack={handleBack} />
       
       {/* 进度指示器 */}
       <div className="flex justify-between items-center px-4 py-3 bg-white border-b border-gray-100">

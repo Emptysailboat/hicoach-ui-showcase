@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 
 const SignUpPage = () => {
   // State management
@@ -137,14 +138,21 @@ const SignUpPage = () => {
     }, 1500);
   };
 
+  // 处理返回按钮点击事件
+  const handleBack = () => {
+    console.log('Back button clicked');
+    // 在实际应用中，这里应该是导航回上一页
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 max-w-md mx-auto overflow-auto">
-      {/* Top navigation bar */}
-      <div className="sticky top-0 bg-white px-5 h-16 flex items-center border-b border-gray-100 shadow-sm z-10">
-        <button className="p-2 rounded-full active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-opacity-50">
-          <span className="material-icons-round text-gray-700">arrow_back</span>
-        </button>
-        <h1 className="ml-4 text-xl font-semibold text-gray-800">Sign Up</h1>
+      {/* 使用PageHeader组件替换原有顶部导航栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Sign Up"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
 
       {/* Form content */}

@@ -13,6 +13,7 @@ import {
   ExternalLink,
   MoreVertical
 } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const CoachCompletedLessonDetail = () => {
   // 状态管理
@@ -242,23 +243,24 @@ const CoachCompletedLessonDetail = () => {
     );
   };
   
+  // 右侧菜单按钮
+  const rightMenuButton = (
+    <button 
+      className="p-1.5 rounded-full hover:bg-gray-100"
+      onClick={toggleMenu}
+    >
+      <MoreVertical className="h-5 w-5 text-gray-700" />
+    </button>
+  );
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Lesson Details</h1>
-        </div>
-        <button 
-          className="p-1.5 rounded-full hover:bg-gray-100"
-          onClick={toggleMenu}
-        >
-          <MoreVertical className="h-5 w-5 text-gray-700" />
-        </button>
-      </div>
+      <PageHeader 
+        title="Lesson Details" 
+        onBack={() => console.log('Navigate back')}
+        rightElement={rightMenuButton}
+      />
       
       {/* 成功消息提示 */}
       {renderSuccessMessage()}

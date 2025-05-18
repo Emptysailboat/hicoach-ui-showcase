@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
 // 移除不需要的导入，因为图标库已在index.html中引入
 
 const ChangePasswordPage = () => {
@@ -79,29 +80,25 @@ const ChangePasswordPage = () => {
     );
   };
   
+  // 处理返回按钮点击事件
+  const handleBack = () => {
+    if (showForgotPassword) {
+      setShowForgotPassword(false);
+    } else {
+      console.log('Back button clicked');
+      // 在实际应用中，这里应该是导航回上一页
+    }
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        {showForgotPassword ? (
-          <button 
-            className="p-1.5 rounded-full bg-gray-100"
-            onClick={() => setShowForgotPassword(false)}
-          >
-            <span className="material-icons-round text-gray-700" style={{fontSize: '20px'}}>arrow_back</span>
-          </button>
-        ) : (
-          <button 
-            className="p-1.5 rounded-full bg-gray-100"
-            onClick={() => window.history.back()}
-          >
-            <span className="material-icons-round text-gray-700" style={{fontSize: '20px'}}>chevron_left</span>
-          </button>
-        )}
-        <h1 className="text-lg font-semibold text-gray-800">
-          {showForgotPassword ? "Reset Password" : "Change Password"}
-        </h1>
-        <div className="w-8"></div> {/* Spacer for centering */}
+      {/* 使用PageHeader组件替换原有顶部标题栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title={showForgotPassword ? "Reset Password" : "Change Password"}
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}

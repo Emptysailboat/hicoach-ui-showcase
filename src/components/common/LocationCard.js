@@ -48,7 +48,7 @@ const LocationCard = ({
     <div 
       className={`bg-white rounded-lg shadow-sm overflow-hidden p-4 ${className} 
         ${isSelectable ? 'cursor-pointer' : ''} 
-        ${isSelected && isSelectable ? 'border border-primary-600 bg-primary-50' : 'border border-grey-200'}`}
+        ${isSelected && isSelectable ? 'border border-primary-600 bg-primary-50' : 'border border-gray-200'}`}
       onClick={isSelectable ? handleCardClick : undefined}
       role={isSelectable ? "button" : undefined}
       tabIndex={isSelectable ? 0 : undefined}
@@ -64,11 +64,11 @@ const LocationCard = ({
       
       <div className={isSelected && isSelectable ? 'pr-8' : ''}>
         {/* 场地名称 */}
-        <h4 className="font-medium text-base text-grey-800">{name}</h4>
+        <h4 className="font-medium text-base text-gray-800">{name}</h4>
         
         {/* 地址和距离 */}
         {address && (
-          <div className="flex items-center text-sm text-grey-600 mt-1 mb-2">
+          <div className="flex items-center text-sm text-gray-600 mt-1 mb-2">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               width="18" 
@@ -79,13 +79,13 @@ const LocationCard = ({
               strokeWidth="2" 
               strokeLinecap="round" 
               strokeLinejoin="round" 
-              className="w-4 h-4 mr-1 text-grey-500"
+              className="w-4 h-4 mr-1 text-gray-500"
             >
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
             <span>{address}</span>
-            {distance && <span className="ml-2 text-xs text-grey-500">({distance})</span>}
+            {distance && <span className="ml-2 text-xs text-gray-500">({distance})</span>}
           </div>
         )}
         

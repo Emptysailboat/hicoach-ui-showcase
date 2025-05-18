@@ -1,11 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, 
-  Info, 
-  ChevronRight, 
-  X,
-  CheckCircle
-} from 'lucide-react';
+import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
+import ToggleSwitch from './common/ToggleSwitch';
 
 const PrivacySettingsPage = () => {
   // 隐私设置状态
@@ -62,23 +57,22 @@ const PrivacySettingsPage = () => {
   const handleCloseNotification = () => {
     setShowSuccessNotification(false);
   };
-  
-  // 用于模拟返回上一级页面的函数
+
+  // 处理返回按钮点击事件
   const handleBack = () => {
-    console.log('Navigate back to profile page');
-    // 在实际应用中，这里会导航回上一页
+    console.log('Back button clicked');
+    // 在实际应用中，这里应该是导航回上一页
   };
 
   return (
     <div className="flex flex-col h-screen bg-white max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Privacy Settings</h1>
-        </div>
+      {/* 使用PageHeader组件 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Privacy Settings"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}
@@ -96,7 +90,7 @@ const PrivacySettingsPage = () => {
                 onClick={() => setShowPrivacyInfo(true)}
                 className="mt-2 text-green-600 text-sm font-medium flex items-center"
               >
-                <Info className="w-4 h-4 mr-1" />
+                <i className="material-icons-round mr-1" style={{ fontSize: 20 }}>info</i>
                 More information
               </button>
             </div>
@@ -112,7 +106,7 @@ const PrivacySettingsPage = () => {
                   </div>
                   <div className="flex items-center">
                     <span className="text-xs text-green-600 font-medium mr-2">Always Active</span>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                    <i className="material-icons-round text-gray-400" style={{ fontSize: 20 }}>chevron_right</i>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -127,20 +121,8 @@ const PrivacySettingsPage = () => {
                     Performance Cookies
                   </div>
                   <div className="flex items-center">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={privacySettings.performance}
-                        onChange={() => handleToggle('performance')}
-                      />
-                      <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.performance ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                        <div className={`absolute inset-0 rounded-full ${privacySettings.performance ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.performance ? 'translate-x-5' : ''}`}></div>
-                      </div>
-                    </label>
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-2" />
+                    <ToggleSwitch isOn={privacySettings.performance} onToggle={() => handleToggle('performance')} />
+                    <i className="material-icons-round text-gray-400 ml-2" style={{ fontSize: 20 }}>chevron_right</i>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -155,20 +137,8 @@ const PrivacySettingsPage = () => {
                     Location Data
                   </div>
                   <div className="flex items-center">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={privacySettings.location}
-                        onChange={() => handleToggle('location')}
-                      />
-                      <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.location ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                        <div className={`absolute inset-0 rounded-full ${privacySettings.location ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.location ? 'translate-x-5' : ''}`}></div>
-                      </div>
-                    </label>
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-2" />
+                    <ToggleSwitch isOn={privacySettings.location} onToggle={() => handleToggle('location')} />
+                    <i className="material-icons-round text-gray-400 ml-2" style={{ fontSize: 20 }}>chevron_right</i>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -183,20 +153,8 @@ const PrivacySettingsPage = () => {
                     Targeting Cookies
                   </div>
                   <div className="flex items-center">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={privacySettings.targeting}
-                        onChange={() => handleToggle('targeting')}
-                      />
-                      <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.targeting ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                        <div className={`absolute inset-0 rounded-full ${privacySettings.targeting ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.targeting ? 'translate-x-5' : ''}`}></div>
-                      </div>
-                    </label>
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-2" />
+                    <ToggleSwitch isOn={privacySettings.targeting} onToggle={() => handleToggle('targeting')} />
+                    <i className="material-icons-round text-gray-400 ml-2" style={{ fontSize: 20 }}>chevron_right</i>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -211,20 +169,8 @@ const PrivacySettingsPage = () => {
                     Analytics Data
                   </div>
                   <div className="flex items-center">
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        className="sr-only"
-                        checked={privacySettings.analytics}
-                        onChange={() => handleToggle('analytics')}
-                      />
-                      <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.analytics ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                        <div className={`absolute inset-0 rounded-full ${privacySettings.analytics ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                        <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${privacySettings.analytics ? 'translate-x-5' : ''}`}></div>
-                      </div>
-                    </label>
-                    <ChevronRight className="w-5 h-5 text-gray-400 ml-2" />
+                    <ToggleSwitch isOn={privacySettings.analytics} onToggle={() => handleToggle('analytics')} />
+                    <i className="material-icons-round text-gray-400 ml-2" style={{ fontSize: 20 }}>chevron_right</i>
                   </div>
                 </div>
                 <p className="text-xs text-gray-500">
@@ -250,13 +196,13 @@ const PrivacySettingsPage = () => {
           <div className="flex gap-3 mb-8">
             <button
               onClick={handleAllowAll}
-              className="flex-1 py-3 px-4 rounded-lg font-medium border border-green-200 text-green-600 bg-green-50 hover:bg-green-100 active:bg-green-200 transition-colors"
+              className="flex-1 py-3 px-4 rounded-lg font-medium border border-green-200 text-green-600 bg-green-50"
             >
               Allow All
             </button>
             <button
               onClick={handleSaveSettings}
-              className="flex-1 py-3 px-4 rounded-lg font-medium text-white bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors"
+              className="flex-1 py-3 px-4 rounded-lg font-medium text-white bg-green-600"
             >
               Save Settings
             </button>
@@ -267,9 +213,9 @@ const PrivacySettingsPage = () => {
       {/* 成功通知 */}
       {showSuccessNotification && (
         <div className="fixed top-4 left-0 right-0 mx-auto w-full max-w-sm z-50 flex justify-center">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 flex items-center animate-fade-in">
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 flex items-center">
             <div className="flex-shrink-0 bg-green-100 rounded-full p-2 mr-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <i className="material-icons-round text-green-600" style={{ fontSize: 20 }}>check_circle</i>
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-800">
@@ -281,9 +227,9 @@ const PrivacySettingsPage = () => {
             </div>
             <button 
               onClick={handleCloseNotification}
-              className="ml-4 p-1 rounded-full hover:bg-gray-100"
+              className="ml-4 p-1 rounded-full"
             >
-              <X className="w-4 h-4 text-gray-500" />
+              <i className="material-icons-round text-gray-500" style={{ fontSize: 18 }}>close</i>
             </button>
           </div>
         </div>
@@ -297,9 +243,9 @@ const PrivacySettingsPage = () => {
               <h2 className="text-lg font-semibold text-gray-800">Privacy Information</h2>
               <button 
                 onClick={() => setShowPrivacyInfo(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100"
+                className="p-1.5 rounded-full"
               >
-                <X className="w-5 h-5 text-gray-700" />
+                <i className="material-icons-round text-gray-700" style={{ fontSize: 20 }}>close</i>
               </button>
             </div>
             
@@ -355,7 +301,7 @@ const PrivacySettingsPage = () => {
               
               <button
                 onClick={() => setShowPrivacyInfo(false)}
-                className="w-full py-3 mt-4 px-4 text-white font-medium rounded-lg shadow-sm bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors"
+                className="w-full py-3 mt-4 px-4 text-white font-medium rounded-lg shadow-sm bg-green-600"
               >
                 I Understand
               </button>
@@ -366,19 +312,5 @@ const PrivacySettingsPage = () => {
     </div>
   );
 };
-
-// 添加淡入动画的CSS
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-`;
-document.head.appendChild(style);
 
 export default PrivacySettingsPage; 

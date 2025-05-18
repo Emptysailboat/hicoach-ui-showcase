@@ -1,22 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Search, Calendar, Paperclip, Send, CreditCard, User, Check, CheckCheck, X, Image, Plus } from 'lucide-react';
-
-// Modular Component: Header with Back Button
-const Header = ({ title, onBack }) => {
-  return (
-    <div className="bg-white px-4 py-3 flex items-center justify-between border-b border-gray-200">
-      <button 
-        onClick={onBack}
-        className="p-1 rounded-full bg-white active:bg-gray-100"
-        aria-label="Go back"
-      >
-        <ArrowLeft className="w-5 h-5 text-gray-700" />
-      </button>
-      <h2 className="text-lg font-semibold flex-1 text-center">{title}</h2>
-      <div className="w-5"></div> {/* Empty space for balance */}
-    </div>
-  );
-};
+import PageHeader from './common/PageHeader';
 
 // Modular Component: Tab Switcher
 const TabSwitcher = ({ activeTab, onTabChange, unreadCounts }) => {
@@ -625,7 +609,7 @@ const MessageNotificationSystem103 = () => {
         // Message List and Notification Interface
         <>
           {/* Header with Back Button */}
-          <Header 
+          <PageHeader 
             title="Messages and Notifications"
             onBack={handleGoHome}
           />

@@ -1,19 +1,18 @@
 import React from 'react';
-import { ChevronLeft, Wallet, CalendarDays, ChevronRight } from 'lucide-react';
+import { Wallet, CalendarDays, ChevronRight } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const PricingLandingPage = () => {
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Pricing</h1>
-        </div>
-        <div className="w-6"></div> {/* 平衡左侧图标 */}
-      </div>
+      <PageHeader title="Pricing" onBack={handleBack} />
       
       {/* 主要内容区域 */}
       <div className="flex-1 overflow-auto p-4">

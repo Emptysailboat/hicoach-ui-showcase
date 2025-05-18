@@ -13,6 +13,7 @@ import {
   RefreshCw,
   AlertCircle
 } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 // 骨架屏组件
 const CardSkeleton = () => (
@@ -279,23 +280,24 @@ const CoachPerformanceOptimized = () => {
     }, 1000);
   };
 
+  // 右侧刷新按钮
+  const refreshButton = (
+    <button 
+      onClick={handleRefresh}
+      className={`p-2 rounded-full active:bg-gray-100 transition-colors ${refreshing ? 'animate-spin' : ''}`}
+    >
+      <RefreshCw className="w-4 h-4 text-gray-600" />
+    </button>
+  );
+
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
       {/* 顶部栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full mr-2 active:bg-gray-100 transition-colors">
-            <ChevronRight className="w-5 h-5 text-gray-700 rotate-180" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Performance</h1>
-        </div>
-        <button 
-          onClick={handleRefresh}
-          className={`p-2 rounded-full active:bg-gray-100 transition-colors ${refreshing ? 'animate-spin' : ''}`}
-        >
-          <RefreshCw className="w-4 h-4 text-gray-600" />
-        </button>
-      </div>
+      <PageHeader 
+        title="Performance" 
+        onBack={() => console.log('Navigate back')}
+        rightElement={refreshButton}
+      />
       
       {/* 主要内容区 */}
       <div className="flex-1 overflow-y-auto pb-20">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CoachInfoCard from './common/CoachInfoCard';
+import PageHeader from './common/PageHeader';
 
 const CompletedLessonCard = () => {
   // 模拟教练数据
@@ -18,6 +19,12 @@ const CompletedLessonCard = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [noteText, setNoteText] = useState("I learned proper forehand techniques and improved my serving form. Need to work on footwork.");
 
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
+  };
+
   // 处理笔记编辑
   const handleSaveNote = () => {
     setIsEditing(false);
@@ -27,18 +34,7 @@ const CompletedLessonCard = () => {
   return (
     <div className="flex flex-col bg-gray-50 max-w-md mx-auto h-full">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button 
-          className="p-1 rounded-full active:bg-gray-100" 
-          aria-label="Go back"
-        >
-          <span className="material-icons-round text-gray-700">arrow_back</span>
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Lesson Details</h1>
-        </div>
-        <div className="w-6"></div> {/* 平衡左侧图标 */}
-      </div>
+      <PageHeader title="Lesson Details" onBack={handleBack} />
       
       {/* 主要内容区域 */}
       <div className="flex-1 overflow-auto px-4">

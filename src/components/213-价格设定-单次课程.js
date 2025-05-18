@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronLeft, Plus, Clock, Trash2, CheckCircle, X, AlertTriangle } from 'lucide-react';
+import { Plus, Clock, Trash2, CheckCircle, X, AlertTriangle } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const SingleLessonPricingPage = () => {
   // 状态管理
@@ -140,6 +141,12 @@ const SingleLessonPricingPage = () => {
   const handleDeleteClick = (id) => {
     setDeletingId(id);
     setShowConfirmDelete(true);
+  };
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    // 在实际应用中，这里会导航回上一页
+    console.log('Navigate back');
   };
   
   // 渲染价格表
@@ -331,15 +338,7 @@ const SingleLessonPricingPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
       {/* 顶部导航栏 */}
-      <div className="bg-white px-4 py-3.5 flex items-center border-b border-gray-200">
-        <button className="p-1">
-          <ChevronLeft className="h-5 w-5 text-gray-700" />
-        </button>
-        <div className="flex-1 flex justify-center">
-          <h1 className="text-lg font-semibold text-gray-800">Single Lesson Pricing</h1>
-        </div>
-        <div className="w-6"></div>
-      </div>
+      <PageHeader title="Single Lesson Pricing" onBack={handleBack} />
       
       {/* 成功提示消息 */}
       {showSuccess && (

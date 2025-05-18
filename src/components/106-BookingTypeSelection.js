@@ -26,7 +26,7 @@ const BookingTypeSelection = () => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden">
-      {/* 使用PageHeader组件 */}
+      {/* 这里已经使用了PageHeader组件，保持不变 */}
       <PageHeader 
         title="Choose Booking Type" 
         onBack={handleBack}

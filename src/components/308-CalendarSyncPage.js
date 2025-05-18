@@ -1,15 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Calendar,
-  ChevronLeft,
-  Check,
-  AlertTriangle,
-  RefreshCw,
-  ChevronRight,
-  Info,
-  X,
-  CheckCircle
-} from 'lucide-react';
+import React, { useState } from 'react';
+import PageHeader from './common/PageHeader';
+import ToggleSwitch from './common/ToggleSwitch';
 
 const CalendarSyncPage = () => {
   // 状态管理
@@ -75,16 +66,21 @@ const CalendarSyncPage = () => {
     }
   };
   
+  // 处理返回按钮点击事件
+  const handleBack = () => {
+    console.log('Back button clicked');
+    // 在实际应用中，这里应该是导航回上一页
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ChevronLeft className="w-5 h-5 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">Sync Calendar</h1>
-        </div>
+      {/* 使用PageHeader组件 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="Sync Calendar"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}
@@ -93,7 +89,7 @@ const CalendarSyncPage = () => {
         <div className="bg-white p-4 mb-4 border-b border-gray-200">
           <div className="flex items-center">
             <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
-              <Calendar className="w-5 h-5" />
+              <i className="material-icons-round" style={{ fontSize: 24 }}>calendar_today</i>
             </div>
             <div>
               <h2 className="text-lg font-semibold text-gray-800">Calendar Sync</h2>
@@ -101,9 +97,9 @@ const CalendarSyncPage = () => {
             </div>
           </div>
           
-          <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-100 flex items-start">
-            <Info className="w-5 h-5 text-blue-600 mr-2 flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-blue-700">
+          <div className="mt-3 p-3 bg-purple-50 rounded-lg border border-purple-100 flex items-start">
+            <i className="material-icons-round text-purple-600 mr-2 flex-shrink-0 mt-0.5" style={{ fontSize: 20 }}>info</i>
+            <p className="text-sm text-purple-700">
               Keep your schedule updated across all your devices by syncing with your preferred calendar.
             </p>
           </div>
@@ -119,9 +115,9 @@ const CalendarSyncPage = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 mb-3">
             <button 
               onClick={handleSync}
-              className="w-full flex items-center justify-center p-4 text-green-600 font-medium hover:bg-gray-50 active:bg-gray-100 transition-colors"
+              className="w-full flex items-center justify-center p-4 text-green-600 font-medium"
             >
-              <RefreshCw className="w-5 h-5 mr-2" />
+              <i className="material-icons-round mr-2" style={{ fontSize: 20 }}>refresh</i>
               <span>Sync Now</span>
             </button>
           </div>
@@ -135,26 +131,17 @@ const CalendarSyncPage = () => {
             <div className="w-full flex items-center justify-between p-4">
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
-                  <Calendar className="w-5 h-5" />
+                  <i className="material-icons-round" style={{ fontSize: 20 }}>calendar_today</i>
                 </div>
                 <div className="ml-3">
                   <span className="text-gray-800 font-medium">System Calendar</span>
                   <p className="text-xs text-gray-500">Default calendar on your device</p>
                 </div>
               </div>
-              <label className="inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={systemCalendarEnabled}
-                  onChange={toggleSystemCalendar}
-                />
-                <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                  <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${systemCalendarEnabled ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                  <div className={`absolute inset-0 rounded-full ${systemCalendarEnabled ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                  <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${systemCalendarEnabled ? 'translate-x-5' : ''}`}></div>
-                </div>
-              </label>
+              <ToggleSwitch
+                isOn={systemCalendarEnabled}
+                onToggle={toggleSystemCalendar}
+              />
             </div>
           </div>
         </div>
@@ -168,7 +155,7 @@ const CalendarSyncPage = () => {
             <div className="w-full flex items-center justify-between p-4 border-b border-gray-100">
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-blue-500">
-                  <Calendar className="w-5 h-5" />
+                  <i className="material-icons-round" style={{ fontSize: 20 }}>calendar_today</i>
                 </div>
                 <div className="ml-3">
                   <span className="text-gray-800 font-medium">Third-party Calendar</span>
@@ -180,25 +167,16 @@ const CalendarSyncPage = () => {
                   )}
                 </div>
               </div>
-              <label className="inline-flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="sr-only"
-                  checked={selectedCalendar !== "none"}
-                  onChange={() => {
-                    if (selectedCalendar !== "none") {
-                      selectCalendar("none");
-                    } else {
-                      selectCalendar("google"); // 默认选择Google
-                    }
-                  }}
-                />
-                <div className="relative w-11 h-6 transition-all duration-200 ease-in-out rounded-full bg-gray-200">
-                  <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${selectedCalendar !== "none" ? 'translate-x-5 bg-white' : 'translate-x-0'}`}></div>
-                  <div className={`absolute inset-0 rounded-full ${selectedCalendar !== "none" ? 'bg-green-600' : 'bg-gray-200'}`}></div>
-                  <div className={`absolute left-1 top-1 w-4 h-4 transition-all duration-200 ease-in-out rounded-full bg-white shadow-md transform ${selectedCalendar !== "none" ? 'translate-x-5' : ''}`}></div>
-                </div>
-              </label>
+              <ToggleSwitch
+                isOn={selectedCalendar !== "none"}
+                onToggle={() => {
+                  if (selectedCalendar !== "none") {
+                    selectCalendar("none");
+                  } else {
+                    selectCalendar("google"); // 默认选择Google
+                  }
+                }}
+              />
             </div>
             
             {/* Calendar Service */}
@@ -210,10 +188,10 @@ const CalendarSyncPage = () => {
                   </div>
                   <div 
                     onClick={() => setDropdownOpen(true)} 
-                    className="flex items-center px-3 py-1.5 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+                    className="flex items-center px-3 py-1.5 border border-gray-200 rounded-lg cursor-pointer"
                   >
                     <span className="text-sm text-gray-700 mr-2">{getCalendarInfo().name}</span>
-                    <ChevronRight className="w-4 h-4 text-gray-400" />
+                    <i className="material-icons-round text-gray-400" style={{ fontSize: 18 }}>chevron_right</i>
                   </div>
                 </div>
               </div>
@@ -225,7 +203,7 @@ const CalendarSyncPage = () => {
         <div className="px-4 mb-5">
           <div className="bg-purple-50 rounded-xl p-4 mb-6 border border-purple-100">
             <div className="flex">
-              <AlertTriangle className="w-5 h-5 text-purple-600 mr-3 flex-shrink-0 mt-0.5" />
+              <i className="material-icons-round text-purple-600 mr-3 flex-shrink-0 mt-0.5" style={{ fontSize: 20 }}>warning</i>
               <div>
                 <h4 className="text-sm font-medium text-purple-700 mb-1">Sync Information</h4>
                 <p className="text-xs text-purple-600">
@@ -238,7 +216,7 @@ const CalendarSyncPage = () => {
           {/* 保存按钮 */}
           <button 
             onClick={handleSync}
-            className="w-full py-3 px-4 rounded-lg font-medium text-white bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors"
+            className="w-full py-3 px-4 rounded-lg font-medium text-white bg-green-600"
           >
             Save Settings
           </button>
@@ -253,55 +231,55 @@ const CalendarSyncPage = () => {
               <h2 className="text-lg font-semibold text-gray-800">Select Calendar</h2>
               <button 
                 onClick={() => setDropdownOpen(false)}
-                className="p-1.5 rounded-full hover:bg-gray-100"
+                className="p-1.5 rounded-full"
               >
-                <X className="w-5 h-5 text-gray-700" />
+                <i className="material-icons-round text-gray-700" style={{ fontSize: 20 }}>close</i>
               </button>
             </div>
             
             <div className="p-2">
               <div 
                 onClick={() => selectCalendar("google")}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+                className="flex items-center justify-between p-3 rounded-lg cursor-pointer"
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 mr-3">
-                    <Calendar className="w-4 h-4" />
+                    <i className="material-icons-round" style={{ fontSize: 18 }}>calendar_today</i>
                   </div>
                   <span className="text-gray-800">Google Calendar</span>
                 </div>
                 {selectedCalendar === "google" && (
-                  <Check className="w-5 h-5 text-green-600" />
+                  <i className="material-icons-round text-green-600" style={{ fontSize: 20 }}>check</i>
                 )}
               </div>
               
               <div 
                 onClick={() => selectCalendar("outlook")}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+                className="flex items-center justify-between p-3 rounded-lg cursor-pointer"
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 mr-3">
-                    <Calendar className="w-4 h-4" />
+                    <i className="material-icons-round" style={{ fontSize: 18 }}>calendar_today</i>
                   </div>
                   <span className="text-gray-800">Outlook Calendar</span>
                 </div>
                 {selectedCalendar === "outlook" && (
-                  <Check className="w-5 h-5 text-green-600" />
+                  <i className="material-icons-round text-green-600" style={{ fontSize: 20 }}>check</i>
                 )}
               </div>
               
               <div 
                 onClick={() => selectCalendar("apple")}
-                className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer"
+                className="flex items-center justify-between p-3 rounded-lg cursor-pointer"
               >
                 <div className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 mr-3">
-                    <Calendar className="w-4 h-4" />
+                    <i className="material-icons-round" style={{ fontSize: 18 }}>calendar_today</i>
                   </div>
                   <span className="text-gray-800">Apple Calendar</span>
                 </div>
                 {selectedCalendar === "apple" && (
-                  <Check className="w-5 h-5 text-green-600" />
+                  <i className="material-icons-round text-green-600" style={{ fontSize: 20 }}>check</i>
                 )}
               </div>
             </div>
@@ -309,7 +287,7 @@ const CalendarSyncPage = () => {
             <div className="p-4 border-t border-gray-100">
               <button
                 onClick={() => setDropdownOpen(false)}
-                className="w-full py-2.5 px-4 rounded-lg font-medium text-white bg-green-600 hover:bg-green-700 active:bg-green-800 transition-colors"
+                className="w-full py-2.5 px-4 rounded-lg font-medium text-white bg-green-600"
               >
                 Confirm
               </button>
@@ -321,9 +299,9 @@ const CalendarSyncPage = () => {
       {/* 成功通知 */}
       {showSuccessNotification && (
         <div className="fixed top-4 left-0 right-0 mx-auto w-full max-w-sm z-50 flex justify-center">
-          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 flex items-center animate-fade-in">
+          <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 flex items-center">
             <div className="flex-shrink-0 bg-green-100 rounded-full p-2 mr-3">
-              <CheckCircle className="w-5 h-5 text-green-600" />
+              <i className="material-icons-round text-green-600" style={{ fontSize: 20 }}>check_circle</i>
             </div>
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-800">
@@ -335,25 +313,13 @@ const CalendarSyncPage = () => {
             </div>
             <button 
               onClick={handleCloseNotification}
-              className="ml-4 p-1 rounded-full hover:bg-gray-100"
+              className="ml-4 p-1 rounded-full"
             >
-              <X className="w-4 h-4 text-gray-500" />
+              <i className="material-icons-round text-gray-500" style={{ fontSize: 18 }}>close</i>
             </button>
           </div>
         </div>
       )}
-      
-      {/* 添加淡入动画的CSS */}
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-          animation: fadeIn 0.3s ease-out forwards;
-        }
-      `}</style>
     </div>
   );
 };

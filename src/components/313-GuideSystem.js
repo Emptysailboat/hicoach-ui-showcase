@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Search, ChevronRight, BookOpen, X } from 'lucide-react';
+import PageHeader from './common/PageHeader';
+
+// Google Material Icons引入
+const HeadContent = () => {
+  return (
+    <React.Fragment>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    </React.Fragment>
+  );
+};
 
 // Modular Component: Guide Card for list view
 const GuideCard = ({ guide, onClick, size = "medium" }) => {
   return (
     <div 
-      className={`bg-white rounded-lg shadow hover:shadow-md transition-shadow overflow-hidden cursor-pointer ${size === "small" ? "w-1/2" : "w-full"}`}
+      className={`bg-white rounded-lg shadow overflow-hidden cursor-pointer ${size === "small" ? "w-1/2" : "w-full"}`}
       onClick={() => onClick(guide)}
     >
       <div className={`${size === "small" ? "h-24" : "h-32"} bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center`}>
-        <BookOpen className={`${size === "small" ? "w-10 h-10" : "w-12 h-12"} text-white`} />
+        <i className="material-icons text-white" style={{fontSize: size === "small" ? "40px" : "48px"}}>menu_book</i>
       </div>
       <div className="p-3">
         <h3 className="font-medium text-sm text-gray-800 line-clamp-1">{guide.title}</h3>
@@ -21,30 +31,13 @@ const GuideCard = ({ guide, onClick, size = "medium" }) => {
   );
 };
 
-// Modular Component: Header
-const Header = ({ title, onBack }) => {
-  return (
-    <div className="bg-white px-4 py-3 flex items-center border-b border-gray-200">
-      <button 
-        onClick={onBack}
-        className="p-1 mr-2 rounded-full hover:bg-gray-100 transition-colors"
-        aria-label="Go back"
-      >
-        <ArrowLeft className="w-5 h-5 text-gray-700" />
-      </button>
-      <h2 className="text-lg font-semibold flex-1 text-center">{title}</h2>
-      <div className="w-5"></div> {/* Empty space for balance */}
-    </div>
-  );
-};
-
 // Modular Component: Search Bar
 const SearchBar = ({ placeholder, value, onChange }) => {
   return (
     <div className="px-4 py-2 border-b border-gray-200">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-4 w-4 text-gray-400" />
+          <i className="material-icons-outlined text-gray-400" style={{fontSize: "16px"}}>search</i>
         </div>
         <input
           type="text"
@@ -55,10 +48,10 @@ const SearchBar = ({ placeholder, value, onChange }) => {
         />
         {value && (
           <button 
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400"
             onClick={() => onChange('')}
           >
-            <X className="h-4 w-4" />
+            <i className="material-icons-outlined" style={{fontSize: "16px"}}>close</i>
           </button>
         )}
       </div>
@@ -84,7 +77,7 @@ const CategoryPills = ({ categories, selectedCategory, onSelectCategory }) => {
   return (
     <div className="px-4 py-2 overflow-x-auto flex space-x-2 border-b border-gray-200">
       <button 
-        className={`flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium transition-colors ${selectedCategory === 'all' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+        className={`flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium ${selectedCategory === 'all' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}
         onClick={() => onSelectCategory('all')}
       >
         All Guides
@@ -92,7 +85,7 @@ const CategoryPills = ({ categories, selectedCategory, onSelectCategory }) => {
       {categories.map(category => (
         <button 
           key={category}
-          className={`flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium transition-colors ${selectedCategory === category ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+          className={`flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium ${selectedCategory === category ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}
           onClick={() => onSelectCategory(category)}
         >
           {category}
@@ -126,11 +119,14 @@ const GuideListPage = ({ guides, onSelectGuide, onBack }) => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
-      <Header 
-        title="App Guides"
-        onBack={onBack}
-      />
+      {/* 使用PageHeader组件 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="App Guides"
+          onBack={onBack}
+          rightElement={null}
+        />
+      </div>
       
       {/* Search Bar */}
       <SearchBar 
@@ -162,7 +158,7 @@ const GuideListPage = ({ guides, onSelectGuide, onBack }) => {
           <EmptyState 
             title="No guides found"
             description={searchTerm ? "Try adjusting your search term or category filter" : "No guides available at the moment"}
-            icon={<BookOpen className="w-10 h-10 text-gray-400" />}
+            icon={<i className="material-icons text-gray-400" style={{fontSize: "40px"}}>menu_book</i>}
           />
         )}
       </div>
@@ -179,17 +175,20 @@ const GuideDetailPage = ({ guide, onBack }) => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
-      <Header 
-        title={guide.title}
-        onBack={onBack}
-      />
+      {/* 使用PageHeader组件 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title={guide.title}
+          onBack={onBack}
+          rightElement={null}
+        />
+      </div>
       
       {/* Guide Content */}
       <div className="flex-1 overflow-auto">
         {/* Cover Image/Banner */}
         <div className="h-40 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
-          <BookOpen className="w-16 h-16 text-white" />
+          <i className="material-icons text-white" style={{fontSize: "64px"}}>menu_book</i>
         </div>
         
         {/* Content Container */}
@@ -217,9 +216,9 @@ const GuideDetailPage = ({ guide, onBack }) => {
                     {section.content}
                   </p>
                   {section.tips && (
-                    <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-md">
-                      <h3 className="text-sm font-medium text-blue-800">Tips</h3>
-                      <p className="text-xs text-blue-700 mt-1">{section.tips}</p>
+                    <div className="bg-purple-50 border-l-4 border-purple-400 p-3 rounded-r-md">
+                      <h3 className="text-sm font-medium text-purple-800">Tips</h3>
+                      <p className="text-xs text-purple-700 mt-1">{section.tips}</p>
                     </div>
                   )}
                   {section.warning && (
@@ -242,7 +241,7 @@ const GuideDetailPage = ({ guide, onBack }) => {
                         className="flex-shrink-0 w-48 bg-gray-50 rounded-lg shadow-sm overflow-hidden border border-gray-200"
                       >
                         <div className="h-20 bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center">
-                          <BookOpen className="w-8 h-8 text-white" />
+                          <i className="material-icons text-white" style={{fontSize: "32px"}}>menu_book</i>
                         </div>
                         <div className="p-2">
                           <h3 className="font-medium text-xs text-gray-800 line-clamp-1">{relatedGuide.title}</h3>
@@ -484,6 +483,7 @@ const GuideSystem = () => {
   
   return (
     <div className="max-w-md mx-auto">
+      <HeadContent />
       {selectedGuide ? (
         <GuideDetailPage 
           guide={selectedGuide} 

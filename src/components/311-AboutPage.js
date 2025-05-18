@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronLeft, FileText, Shield, Lock, ExternalLink, ChevronRight } from 'lucide-react';
+import PageHeader from './common/PageHeader';
 
 const AboutPage = () => {
   // 定义关于选项
@@ -33,30 +34,27 @@ const AboutPage = () => {
   // 处理选项点击
   const handleOptionClick = (action) => {
     console.log(`Navigating to: ${action}`);
-    // 在实际应用中，这里会使用导航库或window.location来导航
     window.open(action, '_blank');
   };
 
   // 用于模拟返回上一级页面的函数
   const handleBack = () => {
     console.log('Navigate back to profile page');
-    // 在实际应用中，这里会导航回个人资料页面
   };
 
   return (
-    <div className="flex flex-col h-screen bg-white max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
-      {/* 顶部标题栏 */}
-      <div className="bg-white px-4 py-2.5 flex items-center justify-between border-b border-gray-200 shadow-sm h-14">
-        <div className="flex items-center">
-          <button className="p-1 rounded-full hover:bg-gray-100 mr-2 transition-colors">
-            <ChevronLeft className="w-5 h-5 text-gray-700" onClick={handleBack} />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-800">About</h1>
-        </div>
+    <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
+      {/* 使用PageHeader组件替换原有顶部标题栏 */}
+      <div className="sticky top-0 z-10 shadow-sm">
+        <PageHeader
+          title="About"
+          onBack={handleBack}
+          rightElement={null}
+        />
       </div>
       
       {/* 主要内容区 - 可滚动 */}
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-y-auto bg-gray-50">
         <div className="p-4">
           {/* 关于选项卡片 */}
           <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-4 border border-gray-200">
@@ -67,10 +65,10 @@ const AboutPage = () => {
               >
                 <button 
                   onClick={() => handleOptionClick(option.action)}
-                  className="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                  className="w-full p-4 flex items-center justify-between text-left bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 focus:ring-opacity-50 hover:bg-white active:bg-white"
                 >
                   <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center mr-3">
+                    <div className="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center mr-3 flex-shrink-0">
                       {option.icon}
                     </div>
                     
@@ -78,13 +76,13 @@ const AboutPage = () => {
                       <div className="text-sm font-medium text-gray-800">
                         {option.title}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 mt-0.5">
                         {option.description}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center">
+                  <div className="flex items-center flex-shrink-0 ml-2">
                     {option.external && (
                       <ExternalLink className="w-4 h-4 text-gray-400 mr-1" />
                     )}
