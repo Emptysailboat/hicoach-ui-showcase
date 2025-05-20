@@ -1,4 +1,5 @@
 import React from 'react';
+import LessonCard from './common/LessonCard';
 
 const CoachHomePage = () => {
   // 今日课程数据
@@ -111,52 +112,18 @@ const CoachHomePage = () => {
           
           <div className="space-y-4">
             {todayLessons.map((lesson) => (
-              <div 
-                key={lesson.id} 
-                className={`bg-white rounded-xl shadow-sm overflow-hidden border-l-4 cursor-pointer
-                  ${lesson.status === 'confirmed' ? 'border-green-500' : 
-                    lesson.status === 'pending' ? 'border-yellow-500' : 
-                    lesson.status === 'cancelled' ? 'border-red-500' : 'border-gray-300'}`}
+              <LessonCard
+                key={lesson.id}
+                type={lesson.type}
+                status={lesson.status}
+                paymentStatus={lesson.paymentStatus}
+                date={lesson.date}
+                time={lesson.time}
+                location={lesson.location}
+                price={lesson.price}
+                student={lesson.student}
                 onClick={() => console.log(`Opening lesson details for ${lesson.id}`)}
-              >
-                <div className="p-3">
-                  <div className="mb-1">
-                    <h3 className="font-medium text-sm text-gray-800">{lesson.type}</h3>
-                  </div>
-                  
-                  <div className="flex justify-between items-start mb-1.5">
-                    <span className={`inline-block px-2 py-0.5 ${lesson.status === 'confirmed' ? 'bg-green-100 text-green-800' : 
-                        lesson.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
-                        lesson.status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'} text-xs font-medium rounded-full`}>
-                      {lesson.status === 'cancelled' ? 'Cancelled' : lesson.status === 'confirmed' ? 'Confirmed' : 'Pending'}
-                    </span>
-                    <span className={`inline-block px-2 py-0.5 ${lesson.status === 'cancelled' ? 'bg-red-100 text-red-800' : 
-                      lesson.paymentStatus === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'} text-xs font-medium rounded-full`}>
-                      {lesson.paymentStatus}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center mt-2">
-                    <span className="material-icons text-gray-500" style={{ fontSize: '14px' }}>calendar_today</span>
-                    <span className="ml-1.5 text-xs text-gray-700">{lesson.date}</span>
-                    <span className="mx-1 text-xs text-gray-500">•</span>
-                    <span className="text-xs text-gray-700">{lesson.time.split(' - ')[0]}</span>
-                  </div>
-                  
-                  <div className="flex items-center mt-1.5">
-                    <span className="material-icons text-gray-500" style={{ fontSize: '14px' }}>location_on</span>
-                    <span className="ml-1.5 text-xs text-gray-700">{lesson.location}</span>
-                  </div>
-                  
-                  <div className="flex justify-between items-center mt-1.5 pt-1.5 border-t border-gray-100">
-                    <span className="text-green-600 text-xs font-medium">{lesson.price}</span>
-                    <div className="flex items-center">
-                      <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-xs font-bold mr-1">{lesson.student.charAt(0)}</div>
-                      <span className="text-gray-700 text-xs font-medium">Student: {lesson.student}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              />
             ))}
           </div>
         </div>

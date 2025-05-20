@@ -1,266 +1,232 @@
-import React from 'react';
-import { 
-  BarChart2, 
-  Home, 
-  Calendar, 
-  Clock, 
-  User, 
-  ChevronRight, 
-  DollarSign,
-  Star,
-  ArrowUp,
-  ArrowDown,
-  Settings
-} from 'lucide-react';
+import React, { useState } from 'react';
 import PageHeader from './common/PageHeader';
 
+// 评分分布数据
+const ratingStats = [
+  { star: 5, count: 38 },
+  { star: 4, count: 6 },
+  { star: 3, count: 2 },
+  { star: 2, count: 1 },
+  { star: 1, count: 0 },
+];
+
+// 评论数据
+const reviews = [
+  {
+    id: 1,
+    name: 'Alice L.',
+    rating: 5,
+    date: 'April 3, 2025',
+    lessons: 5,
+    comment:
+      'Tom is an excellent coach! He helped me improve my backhand technique which has always been my weakness. Very patient and knowledgeable.',
+    helpful: 3,
+  },
+  {
+    id: 2,
+    name: 'Robert K.',
+    rating: 5,
+    date: 'March 28, 2025',
+    lessons: 8,
+    comment:
+      'Great coach, very attentive to details. He quickly identified issues with my serve and provided practical drills to fix them. Highly recommend!',
+    helpful: 5,
+  },
+  {
+    id: 3,
+    name: 'Sarah J.',
+    rating: 4,
+    date: 'March 20, 2025',
+    lessons: 3,
+    comment:
+      'Tom is very professional and punctual. He has a structured approach to teaching which I appreciate. The only reason for 4 stars is that sometimes the lessons feel a bit rushed.',
+    helpful: 1,
+  },
+  {
+    id: 4,
+    name: 'David M.',
+    rating: 3,
+    date: 'March 15, 2025',
+    lessons: 2,
+    comment:
+      'Decent coaching but I expected more personalised feedback. Good technical knowledge but could improve on communication.',
+    helpful: 0,
+  },
+];
+
+const averageRating = 4.8;
+const totalReviews = 47;
+
+const PRIMARY = '#00B36F';
+const SECONDARY = '#8B5CF6';
+const GREY = '#E0E0E0';
+const CARD_BG = '#F5FFFC';
+const TEXT_MAIN = '#212121';
+const TEXT_SUB = '#757575';
+
 const CoachRatingsPage = () => {
-  // 模拟数据 - 收入信息
-  const incomeData = {
-    currentMonth: 'April 2025',
-    totalIncome: '£1,280',
-    comparedToLastMonth: '+15%',
-    isIncreased: true,
-    pendingPayment: '£320',
-    lessonsCompleted: 18,
-    currency: '£'
-  };
-  
-  // 模拟数据 - 评分信息
-  const ratingData = {
-    averageRating: 4.8,
-    totalReviews: 47,
-    latestReviews: [
-      {
-        id: 1,
-        studentName: 'Alice L.',
-        rating: 5,
-        comment: 'Great coach! Really improved my backhand.',
-        date: '2 days ago'
-      },
-      {
-        id: 2,
-        studentName: 'Robert K.',
-        rating: 4,
-        comment: 'Very professional and patient with beginners.',
-        date: '1 week ago'
-      }
-    ]
-  };
-  
-  // 生成星星评分显示
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-    
-    // 填充星星
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
-        stars.push(
-          <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-        );
-      } else if (i === fullStars && hasHalfStar) {
-        // 半星实现 (简化版)
-        stars.push(
-          <div key={i} className="relative">
-            <Star className="w-4 h-4 text-gray-300 fill-gray-300" />
-            <div className="absolute top-0 left-0 w-1/2 overflow-hidden">
-              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-            </div>
-          </div>
-        );
-      } else {
-        stars.push(
-          <Star key={i} className="w-4 h-4 text-gray-300 fill-gray-300" />
-        );
-      }
-    }
-    
-    return stars;
-  };
-  
-  return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto overflow-hidden border border-gray-200 rounded-xl shadow-lg">
-      {/* 顶部栏 */}
-      <PageHeader 
-        title="Performance" 
-        onBack={() => console.log('Navigate back')}
-      />
-      
-      {/* 主要内容区 - 确保可滚动 */}
-      <div className="flex-1 overflow-y-auto pb-20 pt-4">
-        
-        {/* 收入摘要卡片 */}
-        <div className="px-4 mt-4">
-          <div 
-            className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-          >
-            <div className="flex justify-between items-center mb-3">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
-                  <DollarSign className="w-5 h-5 text-green-600" />
-                </div>
-                <h3 className="text-base font-semibold text-gray-800">Income Summary</h3>
-              </div>
-              <ChevronRight className="h-5 w-5 text-gray-400" />
-            </div>
-            
-            <div className="flex items-baseline mb-2">
-              <span className="text-2xl font-bold text-gray-800">{incomeData.totalIncome}</span>
-              <span className="ml-2 text-sm text-gray-500">this month</span>
-              <div className={`ml-3 flex items-center ${incomeData.isIncreased ? 'text-green-600' : 'text-red-600'}`}>
-                {incomeData.isIncreased ? 
-                  <ArrowUp className="w-3 h-3 mr-0.5" /> : 
-                  <ArrowDown className="w-3 h-3 mr-0.5" />
-                }
-                <span className="text-xs font-medium">{incomeData.comparedToLastMonth}</span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-2 mt-3">
-              <div className="bg-gray-50 p-2 rounded-lg">
-                <p className="text-xs text-gray-500">Lessons Completed</p>
-                <p className="text-sm font-medium text-gray-800">{incomeData.lessonsCompleted}</p>
-              </div>
-              <div className="bg-gray-50 p-2 rounded-lg">
-                <p className="text-xs text-gray-500">Pending Payment</p>
-                <p className="text-sm font-medium text-gray-800">{incomeData.pendingPayment}</p>
-              </div>
-            </div>
-            
-            <div className="mt-3 pt-2 border-t border-gray-100">
-              <p className="text-xs text-gray-500 text-right">Tap for detailed analysis</p>
-            </div>
-          </div>
-        </div>
-        
-        {/* 评分评价卡片 */}
-        <div className="px-4 mt-4">
-          <div 
-            className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-          >
-            <div className="flex justify-between items-center mb-3">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
-                  <Star className="w-5 h-5 text-purple-600 fill-purple-600" />
-                </div>
-                <h3 className="text-base font-semibold text-gray-800">Ratings & Reviews</h3>
-              </div>
-              <ChevronRight className="h-5 w-5 text-gray-400" />
-            </div>
-            
-            <div className="flex items-center mb-2">
-              <span className="text-2xl font-bold text-gray-800">{ratingData.averageRating.toFixed(1)}</span>
-              <span className="mx-2 text-lg text-gray-500">/</span>
-              <span className="text-lg text-gray-500">5</span>
-              <div className="ml-3 flex items-center">
-                {/* 紫色星星替换 */}
-                <div className="flex items-center">
-                  {Array(Math.floor(ratingData.averageRating)).fill().map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-purple-500 fill-purple-500" />
-                  ))}
-                  {ratingData.averageRating % 1 >= 0.5 && (
-                    <div className="relative">
-                      <Star className="w-4 h-4 text-gray-300 fill-gray-300" />
-                      <div className="absolute top-0 left-0 w-1/2 overflow-hidden">
-                        <Star className="w-4 h-4 text-purple-500 fill-purple-500" />
-                      </div>
-                    </div>
-                  )}
-                  {Array(5 - Math.ceil(ratingData.averageRating)).fill().map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-gray-300 fill-gray-300" />
-                  ))}
-                </div>
-              </div>
-            </div>
-            
-            <p className="text-sm text-gray-500 mb-3">Based on {ratingData.totalReviews} reviews</p>
-            
-            {/* 最新评价预览 */}
-            <div className="border-t border-gray-100 pt-3 space-y-3">
-              <div className="bg-gray-50 p-2 rounded-lg">
-                <div className="flex justify-between">
-                  <span className="text-xs font-medium text-gray-800">{ratingData.latestReviews[0].studentName}</span>
-                  <div className="flex">
-                    {Array(ratingData.latestReviews[0].rating).fill().map((_, i) => (
-                      <Star key={i} className="w-3 h-3 text-purple-500 fill-purple-500" />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-xs text-gray-700 mt-1 line-clamp-1">{ratingData.latestReviews[0].comment}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{ratingData.latestReviews[0].date}</p>
-              </div>
-            </div>
-            
-            <div className="mt-2 pt-2">
-              <p className="text-xs text-gray-500 text-right">Tap to see all reviews</p>
-            </div>
-          </div>
-        </div>
-        
+  const [search, setSearch] = useState('');
 
+  // 过滤评论（仅做关键词过滤，筛选功能可后续实现）
+  const filteredReviews = reviews.filter((r) =>
+    r.comment.toLowerCase().includes(search.toLowerCase()) ||
+    r.name.toLowerCase().includes(search.toLowerCase())
+  );
 
-        {/* 统计图表卡片 */}
-        <div className="px-4 mt-4 mb-8">
-          <div 
-            className="bg-white p-4 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-          >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center mr-3">
-                  <Calendar className="w-5 h-5 text-gray-500" />
-                </div>
-                <div>
-                  <h3 className="text-base font-semibold text-gray-800">Lesson Statistics</h3>
-                  <div className="flex items-center">
-                    <p className="text-xs text-gray-500 mr-2">Cancellation rates, booking patterns</p>
-                    <span className="bg-gray-200 text-gray-600 text-xs px-2 py-0.5 rounded-full font-medium">Coming Soon</span>
-                  </div>
-                </div>
-              </div>
-              <ChevronRight className="h-5 w-5 text-gray-400" />
-            </div>
-          </div>
+  // 生成星星
+  const renderStars = (rating, size = 20) => (
+    <span style={{ display: 'flex', alignItems: 'center' }}>
+      {[...Array(5)].map((_, i) => (
+        <span
+          key={i}
+          className="material-icons-round"
+          style={{
+            fontSize: size,
+            color: i < rating ? SECONDARY : GREY,
+            verticalAlign: 'middle',
+            marginRight: i < 4 ? 2 : 0,
+          }}
+        >
+          star
+        </span>
+      ))}
+    </span>
+  );
+
+  // 评分分布条
+  const renderRatingBars = () => {
+    const max = Math.max(...ratingStats.map((r) => r.count));
+    return ratingStats.map((r) => (
+      <div key={r.star} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
+        <span style={{ fontSize: 12, color: TEXT_SUB, width: 16 }}>{r.star}</span>
+        <span className="material-icons-round" style={{ fontSize: 16, color: SECONDARY, margin: '0 4px' }}>star</span>
+        <div style={{ flex: 1, height: 8, background: GREY, borderRadius: 4, margin: '0 8px', position: 'relative' }}>
+          <div
+            style={{
+              height: 8,
+              background: SECONDARY,
+              borderRadius: 4,
+              width: `${(r.count / max) * 100}%`,
+              transition: 'width 0.3s',
+            }}
+          ></div>
         </div>
+        <span style={{ fontSize: 12, color: TEXT_SUB, width: 24, textAlign: 'right' }}>{r.count}</span>
       </div>
-      
-      {/* 底部导航栏 */}
-      <div className="bg-white border-t border-gray-200 py-2 grid grid-cols-5 shadow-md fixed bottom-0 max-w-md w-full z-10">
-        <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Home className="w-5 h-5 text-gray-500" />
+    ));
+  };
+
+  return (
+    <div style={{ background: '#FAFAFA', minHeight: '100vh', maxWidth: 420, margin: '0 auto', border: '1px solid #EEEEEE', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+      {/* 顶部栏 */}
+      <PageHeader title="Ratings & Reviews" onBack={() => {}} />
+
+      {/* 主要内容区 */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '16px 0 0 0' }}>
+        {/* 评分总览 */}
+        <div style={{ padding: '0 16px' }}>
+          <div style={{ background: CARD_BG, borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.03)', border: '1px solid #E0E0E0', padding: 20 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 64 }}>
+                <span style={{ fontSize: 40, fontWeight: 700, color: TEXT_MAIN, lineHeight: 1 }}>{averageRating.toFixed(1)}</span>
+                <div style={{ marginTop: 4 }}>{renderStars(Math.round(averageRating), 20)}</div>
+              </div>
+              <div style={{ flex: 1 }}>{renderRatingBars()}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 80 }}>
+                <span style={{ fontSize: 13, color: TEXT_SUB }}>Based on</span>
+                <span style={{ fontSize: 18, fontWeight: 600, color: TEXT_MAIN }}>{totalReviews} reviews</span>
+              </div>
+            </div>
           </div>
-          <span className="text-xs font-medium text-gray-500 mt-1">Home</span>
-        </button>
-        
-        <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Calendar className="w-5 h-5 text-gray-500" />
+        </div>
+
+        {/* 搜索与筛选 */}
+        <div style={{ padding: '16px 16px 0 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <span className="material-icons-round" style={{ position: 'absolute', left: 12, top: 12, fontSize: 20, color: GREY }}>search</span>
+              <input
+                type="text"
+                style={{
+                  width: '100%',
+                  padding: '10px 12px 10px 40px',
+                  borderRadius: 12,
+                  border: `1px solid ${GREY}`,
+                  background: '#F5F5F5',
+                  fontSize: 15,
+                  color: TEXT_MAIN,
+                  outline: 'none',
+                  height: 44,
+                  boxSizing: 'border-box',
+                }}
+                placeholder="Search reviews..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                aria-label="Search reviews"
+              />
+            </div>
+            <button
+              style={{
+                width: 44,
+                height: 44,
+                borderRadius: 12,
+                border: `1px solid ${GREY}`,
+                background: '#FFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                outline: 'none',
+                boxShadow: 'none',
+                padding: 0,
+              }}
+              aria-label="Filter reviews"
+            >
+              <span className="material-icons-round" style={{ fontSize: 22, color: TEXT_SUB }}>filter_alt</span>
+            </button>
           </div>
-          <span className="text-xs font-medium text-gray-500 mt-1">Lessons</span>
-        </button>
-        
-        <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <Clock className="w-5 h-5 text-gray-500" />
-          </div>
-          <span className="text-xs font-medium text-gray-500 mt-1">Availability</span>
-        </button>
-        
-        <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-            <BarChart2 className="w-5 h-5 text-green-600" />
-          </div>
-          <span className="text-xs font-medium text-green-600 mt-1">Performance</span>
-        </button>
-        
-        <button className="flex flex-col items-center justify-center">
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-50 transition-colors">
-            <User className="w-5 h-5 text-gray-500" />
-          </div>
-          <span className="text-xs font-medium text-gray-500 mt-1">Profile</span>
-        </button>
+        </div>
+
+        {/* 评论列表 */}
+        <div style={{ padding: '16px 16px 0 16px' }}>
+          {filteredReviews.map((r) => (
+            <div
+              key={r.id}
+              style={{
+                background: CARD_BG,
+                borderRadius: 16,
+                boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
+                border: '1px solid #E0E0E0',
+                marginBottom: 16,
+                padding: 16,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span className="material-icons-round" style={{ fontSize: 22, color: SECONDARY }}>person</span>
+                  </div>
+                  <div>
+                    <span style={{ display: 'block', fontSize: 15, fontWeight: 600, color: TEXT_MAIN }}>{r.name}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
+                      {renderStars(r.rating, 16)}
+                      <span style={{ fontSize: 12, color: TEXT_SUB }}>{r.date}</span>
+                      <span style={{ marginLeft: 8, background: '#F5F3FF', color: SECONDARY, fontSize: 12, borderRadius: 8, padding: '2px 8px' }}>{r.lessons} lessons</span>
+                    </div>
+                  </div>
+                </div>
+                <button style={{ display: 'flex', alignItems: 'center', gap: 4, color: TEXT_SUB, background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', outline: 'none', padding: 0 }}>
+                  <span className="material-icons-round" style={{ fontSize: 18, color: SECONDARY }}>thumb_up</span>
+                  <span style={{ fontWeight: 500 }}>Helpful ({r.helpful})</span>
+                </button>
+              </div>
+              <div style={{ fontSize: 15, color: TEXT_MAIN, marginTop: 2, lineHeight: 1.6 }}>{r.comment}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

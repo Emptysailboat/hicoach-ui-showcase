@@ -16,27 +16,90 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import PageHeader from './common/PageHeader';
+import StudentInfoCard from './StudentInfoCard';
 
 const CoachConfirmedLessonDetail = () => {
   // 状态管理
   const [showCancelDialog, setShowCancelDialog] = useState(false);
+  const [showRescheduleDialog, setShowRescheduleDialog] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+  const [cancelReasonError, setCancelReasonError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   
-  // 关闭取消对话框
-  const closeCancelDialog = () => {
-    setShowCancelDialog(false);
-  };
-  
-  // 关闭菜单
-  const closeMenu = () => {
-    setShowMenu(false);
+  // 学生数据
+  const studentData = {
+    id: '1',
+    name: 'Alex Johnson',
+    rating: 4.8,
+    reviews: 12,
+    price: 0,
+    distance: 0.7,
+    lessonsCompleted: 24,
+    location: 'London',
+    qualifications: [],
   };
   
   // 处理取消课程
-  const handleCancelClick = () => {
-    setShowMenu(false);
+  const handleCancel = () => {
     setShowCancelDialog(true);
+  };
+  
+  // 处理重新安排
+  const handleReschedule = () => {
+    setShowRescheduleDialog(true);
+  };
+  
+  // 提交取消
+  const submitCancel = () => {
+    if (!cancelReason.trim()) {
+      setCancelReasonError(true);
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // 模拟API调用
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setShowCancelDialog(false);
+      console.log('Lesson cancelled: ' + cancelReason);
+    }, 1000);
+  };
+  
+  // 关闭取消对话框
+  const closeCancelDialog = () => {
+    if (!isSubmitting) {
+      setShowCancelDialog(false);
+      setCancelReason('');
+      setCancelReasonError(false);
+    }
+  };
+  
+  // 关闭重新安排对话框
+  const closeRescheduleDialog = () => {
+    if (!isSubmitting) {
+      setShowRescheduleDialog(false);
+    }
+  };
+  
+  // 处理取消原因输入
+  const handleReasonChange = (e) => {
+    setCancelReason(e.target.value);
+    if (e.target.value.trim()) {
+      setCancelReasonError(false);
+    }
+  };
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    console.log('Navigate back');
+  };
+
+  // 处理学生资料点击
+  const handleStudentClick = (student) => {
+    console.log('View student profile', student);
   };
   
   // 显示成功消息
@@ -86,44 +149,63 @@ const CoachConfirmedLessonDetail = () => {
   // 渲染取消对话框
   const renderCancelDialog = () => {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg max-w-md w-full p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-gray-800">Cancel Lesson</h3>
-            <button 
-              className="p-1 rounded-full hover:bg-gray-100"
-              onClick={closeCancelDialog}
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          </div>
-          
-          <p className="text-sm text-gray-600 mb-4">
-            Are you sure you want to cancel this lesson? Canceling could affect your reliability rating.
-          </p>
-          
-          <div className="bg-yellow-50 p-3 rounded-lg mb-4 border border-yellow-200">
-            <p className="text-sm text-yellow-800">
-              This is a confirmed lesson. The student will be notified of your cancellation.
+      <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
+        <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="material-icons text-red-600 text-xl">close</span>
+                </div>
+                <h3 id="cancel-dialog-title" className="text-lg font-semibold text-gray-800">Cancel Lesson</h3>
+              </div>
+              <button 
+                className="p-2 rounded-full bg-gray-100"
+                onClick={closeCancelDialog}
+                disabled={isSubmitting}
+                aria-label="Close dialog"
+              >
+                <span className="material-icons text-gray-500">close</span>
+              </button>
+            </div>
+            <p className="text-sm text-gray-600">
+              Please provide a reason for cancelling this lesson. This will be shared with the student.
             </p>
           </div>
           
-          <div className="flex justify-end space-x-3">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="cancel-reason">
+              Reason for cancelling <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="cancel-reason"
+              value={cancelReason}
+              onChange={handleReasonChange}
+              className={`w-full p-3 border ${cancelReasonError ? 'border-red-500' : 'border-gray-300'} rounded-lg text-sm`}
+              placeholder="I'm sorry, but I need to cancel this lesson because..."
+              rows={4}
+              disabled={isSubmitting}
+              aria-invalid={cancelReasonError}
+              aria-required="true"
+            ></textarea>
+            {cancelReasonError && (
+              <p className="mt-2 text-xs text-red-600" role="alert">Please provide a reason for cancelling</p>
+            )}
+          </div>
+          
+          <div className="flex flex-col space-y-3">
             <button
-              className="py-2 px-4 border border-gray-300 text-gray-700 rounded-lg text-sm font-medium"
-              onClick={closeCancelDialog}
+              className="w-full py-3 bg-red-600 text-white rounded-lg font-medium flex items-center justify-center"
+              onClick={submitCancel}
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
             >
-              Keep Lesson
-            </button>
-            <button
-              className="py-2 px-4 bg-red-600 text-white rounded-lg text-sm font-medium"
-              onClick={() => {
-                // 在实际应用中，这里会导航到取消原因选择页面
-                console.log('Navigate to cancel reason screen');
-                setShowCancelDialog(false);
-              }}
-            >
-              Continue to Cancel
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                  Processing...
+                </>
+              ) : "Cancel Lesson"}
             </button>
           </div>
         </div>
@@ -139,7 +221,7 @@ const CoachConfirmedLessonDetail = () => {
       <div className="fixed top-5 inset-x-0 flex justify-center z-50 px-4">
         <div className="bg-white rounded-lg shadow-lg p-3 flex items-center max-w-md">
           <div className="bg-green-100 rounded-full p-1 mr-3">
-            <CheckCircle className="h-5 w-5 text-green-600" />
+            <span className="material-icons text-green-600 text-xl">check_circle</span>
           </div>
           <span className="text-sm text-gray-800">{showSuccessMessage}</span>
         </div>
@@ -152,44 +234,43 @@ const CoachConfirmedLessonDetail = () => {
     if (!showMenu) return null;
     
     return (
-      <div className="fixed inset-0 z-50" onClick={closeMenu}>
+      <div className="fixed inset-0 z-50" onClick={() => setShowMenu(false)}>
         <div className="absolute top-12 right-4 bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="w-56 py-1">
-            {/* 菜单项 */}
             <button 
-              className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              className="w-full px-4 py-3 text-left text-sm text-gray-700 flex items-center"
               onClick={handleSendMessage}
             >
-              <MessageCircle className="h-4 w-4 mr-3 text-gray-500" />
+              <span className="material-icons text-gray-500 mr-3 text-base">chat</span>
               Message Student
             </button>
             <button 
-              className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              className="w-full px-4 py-3 text-left text-sm text-gray-700 flex items-center"
               onClick={handleViewAllLessons}
             >
-              <Calendar className="h-4 w-4 mr-3 text-gray-500" />
+              <span className="material-icons text-gray-500 mr-3 text-base">calendar_today</span>
               View All Lessons Today
             </button>
             <button 
-              className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              className="w-full px-4 py-3 text-left text-sm text-gray-700 flex items-center"
               onClick={handleAddNotes}
             >
-              <FileText className="h-4 w-4 mr-3 text-gray-500" />
+              <span className="material-icons text-gray-500 mr-3 text-base">note</span>
               Add Lesson Notes
             </button>
             <button 
-              className="w-full px-4 py-2.5 text-left text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+              className="w-full px-4 py-3 text-left text-sm text-gray-700 flex items-center"
               onClick={handleExportCalendar}
             >
-              <ExternalLink className="h-4 w-4 mr-3 text-gray-500" />
+              <span className="material-icons text-gray-500 mr-3 text-base">event</span>
               Export to Calendar
             </button>
             <div className="border-t border-gray-200 my-1"></div>
             <button 
-              className="w-full px-4 py-2.5 text-left text-sm text-red-600 hover:bg-gray-100 flex items-center"
-              onClick={handleCancelClick}
+              className="w-full px-4 py-3 text-left text-sm text-red-600 flex items-center"
+              onClick={handleCancel}
             >
-              <X className="h-4 w-4 mr-3 text-red-600" />
+              <span className="material-icons text-red-600 mr-3 text-base">close</span>
               Cancel Lesson
             </button>
           </div>
@@ -198,242 +279,161 @@ const CoachConfirmedLessonDetail = () => {
     );
   };
   
-  // 右侧菜单按钮
-  const rightMenuButton = (
-    <button 
-      className="p-1.5 rounded-full hover:bg-gray-100"
-      onClick={() => setShowMenu(!showMenu)}
-    >
-      <MoreVertical className="h-5 w-5 text-gray-700" />
-    </button>
-  );
-  
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
-      {/* 顶部导航栏 */}
-      <PageHeader 
-        title="Lesson Details" 
-        onBack={() => console.log('Navigate back')}
-        rightElement={rightMenuButton}
-      />
+    <div className="flex flex-col bg-gray-50 max-w-md mx-auto h-full">
+      <PageHeader title="Lesson Details" onBack={handleBack} />
       
-      {/* 成功消息提示 */}
       {renderSuccessMessage()}
       
-      {/* 主要内容区域 */}
-      <div className="flex-1 overflow-auto">
-        {/* 状态条 */}
-        <div className="bg-green-50 px-4 py-3 border-b border-green-100">
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center mr-3">
-              <CheckCircle className="h-4 w-4 text-green-700" />
+      <div className="flex-1 overflow-auto px-4">
+        <div className="py-4 bg-green-50 border-b border-green-200 -mx-4 px-4 mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
+              Confirmed
+            </span>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center">
+              <span className="material-icons text-green-700 mr-2 flex-shrink-0">person</span>
+              <span className="text-sm text-green-800">
+                Coach accepted the lesson request
+              </span>
             </div>
-            <div>
-              <h2 className="text-sm font-medium text-green-800">Confirmed</h2>
-              <p className="text-xs text-green-700 mt-0.5">
-                This lesson is confirmed and on your schedule
-              </p>
+            
+            <div className="flex items-center">
+              <span className="material-icons text-green-700 mr-2 flex-shrink-0">schedule</span>
+              <span className="text-sm text-green-800">
+                Accepted on March 10, 2025
+              </span>
+            </div>
+            
+            <div className="flex items-start">
+              <span className="material-icons text-green-700 mr-2 flex-shrink-0">info</span>
+              <div className="text-sm text-green-800">
+                <p className="mb-1">This lesson is in 5 days</p>
+                <p>If you need to reschedule, please do so at least 24 hours before the lesson. Late rescheduling may affect your coach rating and future bookings.</p>
+              </div>
             </div>
           </div>
         </div>
         
-        {/* 课程详情 */}
-        <div className="p-4">
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Tennis Lesson with Alex</h2>
-            
-            <div className="space-y-3">
+        <section className="mb-6" aria-labelledby="student-heading">
+          <h2 id="student-heading" className="text-lg font-semibold mb-4 text-gray-800">Student</h2>
+          <StudentInfoCard 
+            student={studentData}
+            showLocation={true}
+            showQualifications={false}
+            onMessage={handleSendMessage}
+          />
+        </section>
+        
+        <section className="mb-6" aria-labelledby="lesson-info-heading">
+          <h2 id="lesson-info-heading" className="text-lg font-semibold mb-4 text-gray-800">Lesson Information</h2>
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <Calendar className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">event</span>
                 <div>
-                  <p className="text-sm text-gray-800 font-medium">Saturday, March 15, 2025</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Confirmed on March 10, 2025
-                  </p>
+                  <h3 className="text-base font-medium text-gray-800">Date</h3>
+                  <p className="text-gray-700">Saturday, March 15, 2025</p>
                 </div>
               </div>
-              
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <Clock className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">schedule</span>
                 <div>
-                  <p className="text-sm text-gray-800 font-medium">2:00 PM - 3:00 PM (60 minutes)</p>
-                  <div className="flex items-center mt-1">
-                    <div className="bg-green-100 rounded-full h-1.5 w-1.5 mr-1.5"></div>
-                    <p className="text-xs text-green-700">
-                      Starts in 2 days, 4 hours
-                    </p>
+                  <h3 className="text-base font-medium text-gray-800">Time</h3>
+                  <p className="text-gray-700">14:00 - 15:00 BST</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">place</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Location</h3>
+                  <p className="text-gray-700 font-medium">28 Wilton Grove</p>
+                  <p className="text-gray-700">London SW19 3QX</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">people</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Participants</h3>
+                  <p className="text-gray-700">1 person</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">payments</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Price</h3>
+                  <p className="text-gray-700">£60 / hour</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">sports_tennis</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Equipment</h3>
+                  <p className="text-gray-700">Student will bring their own tennis racket</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">info</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Lesson Content</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Forehand
+                    </span>
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Backhand
+                    </span>
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Serving
+                    </span>
                   </div>
                 </div>
               </div>
-              
-              <div className="flex items-start">
-                <MapPin className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-800 font-medium">Wimbledon Tennis Club</p>
-                  <p className="text-xs text-gray-600 mt-0.5">
-                    30 Somerset Road, London, SW19 5JU
-                  </p>
-                  <button className="text-xs text-purple-600 font-medium flex items-center mt-1">
-                    <ExternalLink className="h-3 w-3 mr-1" /> View Map
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
-          
-          {/* 学员信息 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Student Information</h2>
-            
-            <div className="flex items-start">
-              <div className="h-12 w-12 bg-gray-200 rounded-full flex-shrink-0 mr-3">
-                {/* 学员头像 */}
-                <User className="h-12 w-12 text-gray-400" />
-              </div>
-              
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-800">Alex Thompson</p>
-                <p className="text-xs text-gray-500 mt-0.5">Beginner • First time with you</p>
-                
-                <div className="flex space-x-2 mt-2">
-                  <button className="py-1.5 px-3 bg-green-600 text-white rounded-lg text-sm font-medium flex items-center">
-                    <PhoneOutgoing className="h-3.5 w-3.5 mr-1.5" />
-                    Call
-                  </button>
-                  <button className="py-1.5 px-3 bg-purple-600 text-white rounded-lg text-sm font-medium flex items-center">
-                    <MessageCircle className="h-3.5 w-3.5 mr-1.5" />
-                    Message
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* 备注信息 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-2">Notes from Student</h2>
-            <p className="text-sm text-gray-700">
-              I'm a complete beginner and have never played tennis before. I'd like to learn the basics and eventually be able to play with friends. I have my own racket but not sure if it's the right one.
-            </p>
-          </div>
-          
-          {/* 准备事项 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Preparation Checklist</h2>
-            
-            <div className="space-y-2.5">
-              <div className="flex items-start">
-                <div className="flex h-5 items-center mt-0.5">
-                  <input
-                    id="balls"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
-                  />
-                </div>
-                <label htmlFor="balls" className="ml-2 text-sm text-gray-700">
-                  Bring tennis balls (new beginner)
-                </label>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="flex h-5 items-center mt-0.5">
-                  <input
-                    id="racket"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
-                  />
-                </div>
-                <label htmlFor="racket" className="ml-2 text-sm text-gray-700">
-                  Bring spare racket (student has their own but unsure of quality)
-                </label>
-              </div>
-              
-              <div className="flex items-start">
-                <div className="flex h-5 items-center mt-0.5">
-                  <input
-                    id="plan"
-                    type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-600"
-                    defaultChecked
-                  />
-                </div>
-                <label htmlFor="plan" className="ml-2 text-sm text-gray-700">
-                  Prepare beginner lesson plan
-                </label>
-              </div>
-            </div>
-          </div>
-          
-          {/* 课程费用 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Lesson Details</h2>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Lesson type:</span>
-                <span className="text-sm text-gray-800 font-medium">Single lesson (60 min)</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Lesson price:</span>
-                <span className="text-sm text-gray-800 font-medium">£40.00</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Service fee:</span>
-                <span className="text-sm text-red-600">-£6.00</span>
-              </div>
-              
-              <div className="border-t border-gray-200 my-2 pt-2">
-                <div className="flex justify-between">
-                  <span className="text-sm text-gray-700 font-medium">You'll receive:</span>
-                  <span className="text-sm text-green-600 font-medium">£34.00</span>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Payment will be released 24 hours after lesson completion
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          {/* 取消政策 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <div className="flex items-start">
-              <Award className="h-5 w-5 text-purple-600 mt-0.5 mr-3 flex-shrink-0" />
-              <div>
-                <h3 className="text-sm font-medium text-gray-800">Cancellation Policy</h3>
-                <p className="text-xs text-gray-600 mt-1">
-                  Free cancellation up to 24 hours before the lesson. Cancellations within 24 hours 
-                  may affect your rating and could incur a cancellation fee.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      {/* 操作按钮 */}
-      <div className="bg-white border-t border-gray-200 p-4">
-        <div className="flex space-x-3">
-          <button
-            className="flex-1 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium"
-            onClick={handleCancelClick}
+        </section>
+        
+        <div className="flex space-x-3 mb-6">
+          <button 
+            className="flex-1 px-4 py-3 border border-red-500 text-red-600 rounded-lg text-center flex items-center justify-center"
+            onClick={handleCancel}
+            aria-label="Cancel this lesson"
           >
-            Cancel Lesson
+            Cancel
           </button>
-          <button
-            className="flex-1 py-2.5 bg-purple-600 text-white rounded-lg font-medium"
-            onClick={handleSendMessage}
+          
+          <button 
+            className="flex-1 px-4 py-3 border border-yellow-500 text-yellow-600 rounded-lg text-center flex items-center justify-center"
+            onClick={handleReschedule}
+            aria-label="Reschedule this lesson"
           >
-            Message
+            Reschedule
           </button>
         </div>
       </div>
       
-      {/* 取消对话框 */}
       {showCancelDialog && renderCancelDialog()}
-      
-      {/* 操作菜单 */}
       {renderMenu()}
     </div>
   );

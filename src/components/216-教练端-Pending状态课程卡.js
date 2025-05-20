@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PageHeader from './common/PageHeader';
-import CoachInfoCard from './common/CoachInfoCard';
+import StudentInfoCard from './common/StudentInfoCard';
 
 const CoachPendingLessonDetail = () => {
   // 状态管理
@@ -21,7 +21,13 @@ const CoachPendingLessonDetail = () => {
     distance: 0.7,
     lessonsCompleted: 24,
     location: 'London',
-    qualifications: ['Beginner', 'Intermediate'],
+    qualifications: [],
+  };
+  
+  // 处理发送消息
+  const handleSendMessage = (student) => {
+    // 在实际应用中，这里会导航到消息界面
+    console.log('Navigate to message screen with student:', student);
   };
   
   // 处理确认课程
@@ -117,12 +123,12 @@ const CoachPendingLessonDetail = () => {
   const renderConfirmDialog = () => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="confirm-dialog-title">
-        <div className="bg-white rounded-lg max-w-md w-full p-4">
-          <div className="mb-4 flex flex-col items-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-3">
-              <span className="material-icons-round text-green-600 text-2xl">check_circle</span>
+        <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="mb-6 flex flex-col items-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+              <span className="material-icons text-green-600 text-2xl">check_circle</span>
             </div>
-            <h3 id="confirm-dialog-title" className="text-lg font-semibold text-gray-800 mb-1 text-center">Confirm Lesson</h3>
+            <h3 id="confirm-dialog-title" className="text-lg font-semibold text-gray-800 mb-2 text-center">Confirm Lesson</h3>
             <p className="text-sm text-gray-600 text-center">
               Are you sure you want to confirm this lesson with Alex for Saturday, March 15, 2025?
             </p>
@@ -130,7 +136,7 @@ const CoachPendingLessonDetail = () => {
           
           <div className="flex flex-col space-y-3">
             <button
-              className="w-full py-2.5 bg-green-600 text-white rounded-lg font-medium flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full py-3 bg-green-600 text-white rounded-lg font-medium flex items-center justify-center"
               onClick={submitConfirmation}
               disabled={isSubmitting}
               aria-busy={isSubmitting}
@@ -144,7 +150,7 @@ const CoachPendingLessonDetail = () => {
             </button>
             
             <button
-              className="w-full py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="w-full py-3 border border-gray-300 text-gray-700 rounded-lg font-medium"
               onClick={closeConfirmDialog}
               disabled={isSubmitting}
             >
@@ -160,22 +166,22 @@ const CoachPendingLessonDetail = () => {
   const renderCancelDialog = () => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true" aria-labelledby="cancel-dialog-title">
-        <div className="bg-white rounded-lg max-w-md w-full p-4">
-          <div className="mb-4">
-            <div className="flex items-center justify-between mb-2">
+        <div className="bg-white rounded-lg max-w-md w-full p-6">
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center">
-                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-2">
-                  <span className="material-icons-round text-red-600 text-xl">close</span>
+                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3">
+                  <span className="material-icons text-red-600 text-xl">close</span>
                 </div>
                 <h3 id="cancel-dialog-title" className="text-lg font-semibold text-gray-800">Cancel Lesson</h3>
               </div>
               <button 
-                className="p-1 rounded-full bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                className="p-2 rounded-full bg-gray-100"
                 onClick={closeCancelDialog}
                 disabled={isSubmitting}
                 aria-label="Close dialog"
               >
-                <span className="material-icons-round text-gray-500">close</span>
+                <span className="material-icons text-gray-500">close</span>
               </button>
             </div>
             <p className="text-sm text-gray-600">
@@ -183,15 +189,15 @@ const CoachPendingLessonDetail = () => {
             </p>
           </div>
           
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="cancel-reason">
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="cancel-reason">
               Reason for cancelling <span className="text-red-500">*</span>
             </label>
             <textarea
               id="cancel-reason"
               value={cancelReason}
               onChange={handleReasonChange}
-              className={`w-full p-3 border ${cancelReasonError ? 'border-red-500' : 'border-gray-300'} rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500`}
+              className={`w-full p-3 border ${cancelReasonError ? 'border-red-500' : 'border-gray-300'} rounded-lg text-sm`}
               placeholder="I'm sorry, but I need to cancel this lesson because..."
               rows={4}
               disabled={isSubmitting}
@@ -199,13 +205,13 @@ const CoachPendingLessonDetail = () => {
               aria-required="true"
             ></textarea>
             {cancelReasonError && (
-              <p className="mt-1 text-xs text-red-600" role="alert">Please provide a reason for cancelling</p>
+              <p className="mt-2 text-xs text-red-600" role="alert">Please provide a reason for cancelling</p>
             )}
           </div>
           
           <div className="flex flex-col space-y-3">
             <button
-              className="w-full py-2.5 bg-red-600 text-white rounded-lg font-medium flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="w-full py-3 bg-red-600 text-white rounded-lg font-medium flex items-center justify-center"
               onClick={submitCancel}
               disabled={isSubmitting}
               aria-busy={isSubmitting}
@@ -231,52 +237,56 @@ const CoachPendingLessonDetail = () => {
       {/* 主要内容区域 */}
       <div className="flex-1 overflow-auto px-4">
         {/* 状态标签和提示 */}
-        <div className="py-3 bg-yellow-50 border-b border-yellow-200 -mx-4 px-4 mb-4">
-          <div className="flex items-center justify-between">
-            <span className="tag tag-pending inline-flex items-center px-2.5 py-1 bg-yellow-100 text-yellow-800 text-xs font-medium rounded-full">
+        <div className="py-4 bg-yellow-50 border-b border-yellow-200 -mx-4 px-4 mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
               Pending
             </span>
-            <span className="tag tag-payment-pending inline-flex items-center px-2.5 py-1 bg-red-100 text-red-700 text-xs font-medium rounded-full">
-              Payment Pending
-            </span>
           </div>
-          <div className="mt-2 text-sm text-yellow-800 flex items-start" role="alert">
-            <span className="material-icons-round text-yellow-700 mr-1.5 flex-shrink-0">warning</span>
-            <span>
-              You've received a new lesson request from the student.
-              Please confirm or reschedule if the time doesn't work for you.
-              Once confirmed, payment will be requested from the student.
-            </span>
+          
+          <div className="space-y-3">
+            <div className="flex items-center">
+              <span className="material-icons text-yellow-700 mr-2 flex-shrink-0">person</span>
+              <span className="text-sm text-yellow-800">
+                Student requested a lesson
+              </span>
+            </div>
+            
+            <div className="flex items-center">
+              <span className="material-icons text-yellow-700 mr-2 flex-shrink-0">schedule</span>
+              <span className="text-sm text-yellow-800">
+                Requested on March 10, 2025
+              </span>
+            </div>
+            
+            <div className="flex items-start">
+              <span className="material-icons text-yellow-700 mr-2 flex-shrink-0">warning</span>
+              <span className="text-sm text-yellow-800">
+                Please respond within 24 hours to confirm or reschedule this lesson request.
+              </span>
+            </div>
           </div>
         </div>
         
         {/* 学生信息 */}
-        <section className="mb-4" aria-labelledby="student-heading">
-          <h2 id="student-heading" className="text-lg font-semibold mb-3 text-gray-800">Student</h2>
-          <CoachInfoCard 
-            coach={studentData}
+        <section className="mb-6" aria-labelledby="student-heading">
+          <h2 id="student-heading" className="text-lg font-semibold mb-4 text-gray-800">Student</h2>
+          <StudentInfoCard 
+            student={studentData}
             showLocation={true}
-            showQualifications={true}
+            showQualifications={false}
+            onMessage={handleSendMessage}
           />
-          <div className="mt-3 flex space-x-2">
-            <button 
-              className="flex-1 px-3 py-1.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-700 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-300"
-              aria-label="Message Alex Johnson"
-            >
-              <span className="material-icons-round text-gray-500 mr-1 text-base">chat</span>
-              Message
-            </button>
-          </div>
         </section>
         
         {/* 课程信息 */}
         <section className="mb-6" aria-labelledby="lesson-info-heading">
-          <h2 id="lesson-info-heading" className="text-lg font-semibold mb-3 text-gray-800">Lesson Information</h2>
-          <div className="status-card bg-white rounded-lg shadow-sm">
+          <h2 id="lesson-info-heading" className="text-lg font-semibold mb-4 text-gray-800">Lesson Information</h2>
+          <div className="bg-white rounded-lg shadow-sm">
             {/* 日期 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">event</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">event</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Date</h3>
                   <p className="text-gray-700">Saturday, March 15, 2025</p>
@@ -287,7 +297,7 @@ const CoachPendingLessonDetail = () => {
             {/* 时间 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">schedule</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">schedule</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Time</h3>
                   <p className="text-gray-700">14:00 - 15:00 BST</p>
@@ -298,7 +308,7 @@ const CoachPendingLessonDetail = () => {
             {/* 地点 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">place</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">place</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Location</h3>
                   <p className="text-gray-700 font-medium">28 Wilton Grove</p>
@@ -310,7 +320,7 @@ const CoachPendingLessonDetail = () => {
             {/* 上课人数 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">people</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">people</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Participants</h3>
                   <p className="text-gray-700">1 person</p>
@@ -321,15 +331,10 @@ const CoachPendingLessonDetail = () => {
             {/* 费用 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">payments</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">payments</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Price</h3>
                   <p className="text-gray-700">£60 / hour</p>
-                  <div className="mt-1.5 flex items-center">
-                    <span className="inline-block px-2.5 py-0.5 bg-yellow-100 text-yellow-700 text-xs font-medium rounded">
-                      Student will pay after confirmation
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -337,7 +342,7 @@ const CoachPendingLessonDetail = () => {
             {/* 设备 */}
             <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">sports_tennis</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">sports_tennis</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Equipment</h3>
                   <p className="text-gray-700">Student will bring their own tennis racket</p>
@@ -348,17 +353,17 @@ const CoachPendingLessonDetail = () => {
             {/* 课程内容 */}
             <div className="p-4">
               <div className="flex items-start">
-                <span className="material-icons-round text-primary-600 mr-3 flex-shrink-0">info</span>
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">info</span>
                 <div>
                   <h3 className="text-base font-medium text-gray-800">Lesson Content</h3>
                   <div className="flex flex-wrap gap-2 mt-2">
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
                       Forehand
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
                       Backhand
                     </span>
-                    <span className="inline-flex items-center px-2.5 py-0.5 bg-purple-50 text-purple-600 text-xs font-medium rounded">
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
                       Serving
                     </span>
                   </div>
@@ -371,7 +376,7 @@ const CoachPendingLessonDetail = () => {
         {/* 底部按钮 */}
         <div className="flex space-x-3 mb-6">
           <button 
-            className="flex-1 px-4 py-2.5 border border-red-500 text-red-600 rounded-lg text-center flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="flex-1 px-4 py-3 border border-red-500 text-red-600 rounded-lg text-center flex items-center justify-center"
             onClick={handleCancel}
             aria-label="Cancel this lesson request"
           >
@@ -379,7 +384,7 @@ const CoachPendingLessonDetail = () => {
           </button>
           
           <button 
-            className="flex-1 px-4 py-2.5 border border-yellow-500 text-yellow-600 rounded-lg text-center flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            className="flex-1 px-4 py-3 border border-yellow-500 text-yellow-600 rounded-lg text-center flex items-center justify-center"
             onClick={handleReschedule}
             aria-label="Reschedule this lesson"
           >
@@ -387,7 +392,7 @@ const CoachPendingLessonDetail = () => {
           </button>
           
           <button 
-            className="flex-1 px-4 py-2.5 bg-green-600 text-white rounded-lg font-medium text-center flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-medium text-center flex items-center justify-center"
             onClick={handleConfirm}
             aria-label="Confirm this lesson"
           >

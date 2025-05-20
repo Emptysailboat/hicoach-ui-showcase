@@ -1,164 +1,184 @@
 import React from 'react';
-import { 
-  ChevronLeft, 
-  Calendar, 
-  MapPin, 
-  Clock, 
-  User, 
-  MessageCircle, 
-  X,
-  ExternalLink
-} from 'lucide-react';
 import PageHeader from './common/PageHeader';
+import StudentInfoCard from './StudentInfoCard';
 
 const CoachDeclinedLessonDetail = () => {
+  // 学生数据
+  const studentData = {
+    id: '1',
+    name: 'Alex Johnson',
+    rating: 4.8,
+    reviews: 12,
+    price: 0,
+    distance: 0.7,
+    lessonsCompleted: 24,
+    location: 'London',
+    qualifications: [],
+  };
+  
+  // 处理返回按钮点击
+  const handleBack = () => {
+    console.log('Navigate back');
+  };
+
+  // 处理学生资料点击
+  const handleStudentClick = (student) => {
+    console.log('View student profile', student);
+  };
+  
   // 发送消息
   const handleSendMessage = () => {
-    // 在实际应用中，这里会导航到消息界面
     console.log('Navigate to message screen');
   };
   
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
-      {/* 顶部导航栏 */}
-      <PageHeader 
-        title="Lesson Details" 
-        onBack={() => console.log('Navigate back')}
-      />
+    <div className="flex flex-col bg-gray-50 max-w-md mx-auto h-full">
+      <PageHeader title="Lesson Details" onBack={handleBack} />
       
-      {/* 主要内容区域 */}
-      <div className="flex-1 overflow-auto">
-        {/* 状态条 */}
-        <div className="bg-red-50 px-4 py-3 border-b border-red-100">
-          <div className="flex items-center">
-            <div className="h-8 w-8 rounded-full bg-red-100 flex items-center justify-center mr-3">
-              <X className="h-4 w-4 text-red-600" />
+      <div className="flex-1 overflow-auto px-4">
+        <div className="py-4 bg-red-50 border-b border-red-200 -mx-4 px-4 mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <span className="inline-flex items-center px-3 py-1 bg-red-100 text-red-800 text-sm font-medium rounded-full">
+              Declined
+            </span>
+          </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-center">
+              <span className="material-icons text-red-700 mr-2 flex-shrink-0">person</span>
+              <span className="text-sm text-red-800">
+                Coach declined due to schedule conflict
+              </span>
             </div>
-            <div>
-              <h2 className="text-sm font-medium text-red-800">Declined</h2>
-              <p className="text-xs text-red-700 mt-0.5">
-                You declined this lesson request on March 10, 2025
+            
+            <div className="flex items-center">
+              <span className="material-icons text-red-700 mr-2 flex-shrink-0">schedule</span>
+              <span className="text-sm text-red-800">
+                Declined on March 10, 2025
+              </span>
+            </div>
+            
+            <div className="flex items-start">
+              <span className="material-icons text-red-700 mr-2 flex-shrink-0">info</span>
+              <p className="text-sm text-red-800">
+                I'm sorry, but I'm not available at this time due to another lesson commitment. I would be happy to schedule a lesson with you at a different time. Please check my available slots and book again at your convenience.
               </p>
             </div>
           </div>
         </div>
         
-        {/* 课程详情 */}
-        <div className="p-4">
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Tennis Lesson with Alex</h2>
-            
-            <div className="space-y-3">
+        <section className="mb-6" aria-labelledby="student-heading">
+          <h2 id="student-heading" className="text-lg font-semibold mb-4 text-gray-800">Student</h2>
+          <StudentInfoCard 
+            student={studentData}
+            showLocation={true}
+            showQualifications={false}
+            onMessage={handleSendMessage}
+          />
+        </section>
+        
+        <section className="mb-6" aria-labelledby="lesson-info-heading">
+          <h2 id="lesson-info-heading" className="text-lg font-semibold mb-4 text-gray-800">Lesson Information</h2>
+          <div className="bg-white rounded-lg shadow-sm">
+            <div className="p-4 border-b border-gray-100">
               <div className="flex items-start">
-                <Calendar className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">event</span>
                 <div>
-                  <p className="text-sm text-gray-800 font-medium">Saturday, March 15, 2025</p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Request received on March 10, 2025
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <Clock className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-800 font-medium">2:00 PM - 3:00 PM (60 minutes)</p>
-                </div>
-              </div>
-              
-              <div className="flex items-start">
-                <MapPin className="h-5 w-5 text-gray-500 mt-0.5 mr-3 flex-shrink-0" />
-                <div>
-                  <p className="text-sm text-gray-800 font-medium">Wimbledon Tennis Club</p>
-                  <p className="text-xs text-gray-600 mt-0.5">
-                    30 Somerset Road, London, SW19 5JU
-                  </p>
-                  <button className="text-xs text-purple-600 font-medium flex items-center mt-1">
-                    <ExternalLink className="h-3 w-3 mr-1" /> View Map
-                  </button>
+                  <h3 className="text-base font-medium text-gray-800">Date</h3>
+                  <p className="text-gray-700">Saturday, March 15, 2025</p>
                 </div>
               </div>
             </div>
-          </div>
-          
-          {/* 拒绝原因 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-2">Your Decline Reason</h2>
-            <p className="text-sm text-gray-700">
-              I'm sorry, but I'm not available at this time due to another lesson commitment. I would be happy to schedule a lesson with you at a different time. Please check my available slots and book again at your convenience.
-            </p>
-          </div>
-          
-          {/* 学员信息 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Student Information</h2>
             
-            <div className="flex items-start">
-              <div className="h-12 w-12 bg-gray-200 rounded-full flex-shrink-0 mr-3">
-                {/* 学员头像 */}
-                <User className="h-12 w-12 text-gray-400" />
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">schedule</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Time</h3>
+                  <p className="text-gray-700">14:00 - 15:00 BST</p>
+                </div>
               </div>
-              
-              <div className="flex-1">
-                <p className="text-sm font-medium text-gray-800">Alex Thompson</p>
-                <p className="text-xs text-gray-500 mt-0.5">Beginner • First booking attempt</p>
-                
-                <div className="flex space-x-2 mt-2">
-                  <button 
-                    className="py-1.5 px-3 bg-purple-600 text-white rounded-lg text-sm font-medium flex items-center"
-                    onClick={handleSendMessage}
-                  >
-                    <MessageCircle className="h-3.5 w-3.5 mr-1.5" />
-                    Message
-                  </button>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">place</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Location</h3>
+                  <p className="text-gray-700 font-medium">28 Wilton Grove</p>
+                  <p className="text-gray-700">London SW19 3QX</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">people</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Participants</h3>
+                  <p className="text-gray-700">1 person</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">payments</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Price</h3>
+                  <p className="text-gray-700">£60 / hour</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4 border-b border-gray-100">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">sports_tennis</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Equipment</h3>
+                  <p className="text-gray-700">Student will bring their own tennis racket</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-4">
+              <div className="flex items-start">
+                <span className="material-icons text-primary-600 mr-3 flex-shrink-0">info</span>
+                <div>
+                  <h3 className="text-base font-medium text-gray-800">Lesson Content</h3>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Forehand
+                    </span>
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Backhand
+                    </span>
+                    <span className="inline-flex items-center px-3 py-1 bg-purple-50 text-purple-600 text-sm font-medium rounded">
+                      Serving
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </section>
+        
+        <div className="flex flex-col gap-3 mb-6">
+          <button 
+            className="w-full py-3 px-4 bg-primary-600 text-white rounded-lg text-sm font-medium flex items-center justify-center"
+            onClick={handleSendMessage}
+          >
+            <span className="material-icons mr-2">chat</span>
+            Message the Learner
+          </button>
           
-          {/* 备注信息 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-2">Notes from Student</h2>
-            <p className="text-sm text-gray-700">
-              I'm a complete beginner and have never played tennis before. I'd like to learn the basics and eventually be able to play with friends. I have my own racket but not sure if it's the right one.
-            </p>
-          </div>
-          
-          {/* 课程费用 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Lesson Details</h2>
-            
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Lesson type:</span>
-                <span className="text-sm text-gray-800 font-medium">Single lesson (60 min)</span>
-              </div>
-              
-              <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Lesson price:</span>
-                <span className="text-sm text-gray-800 font-medium">£40.00</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* 推荐操作 */}
-          <div className="bg-blue-50 p-3 rounded-lg mb-4">
-            <div className="flex items-start">
-              <MessageCircle className="h-5 w-5 text-blue-600 mt-0.5 mr-2 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-medium text-blue-800">Suggest Alternative Time</p>
-                <p className="text-xs text-blue-700 mt-1">
-                  Consider messaging the student to suggest alternative times when you're available. This helps maintain your booking rate.
-                </p>
-                <button 
-                  className="mt-2 py-1.5 px-3 bg-blue-600 text-white rounded-lg text-xs font-medium"
-                  onClick={handleSendMessage}
-                >
-                  Send Message
-                </button>
-              </div>
-            </div>
-          </div>
+          <button 
+            className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg text-sm font-medium flex items-center justify-center"
+            onClick={() => console.log('Contact HiCoach')}
+          >
+            <span className="material-icons mr-2">support_agent</span>
+            Contact HiCoach
+          </button>
         </div>
       </div>
     </div>
