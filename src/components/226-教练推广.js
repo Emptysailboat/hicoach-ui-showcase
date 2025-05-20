@@ -1,26 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Share2, Copy, Gift, CheckCircle, ExternalLink } from 'lucide-react';
 import PageHeader from './common/PageHeader';
-
-// 添加自定义CSS动画
-const customStyles = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
-  }
-  
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-  .animate-pulse-once {
-    animation: pulse 0.5s ease-out;
-  }
-`;
 
 const CoachPromotePage = () => {
   const [linkCopied, setLinkCopied] = useState(false);
@@ -66,16 +45,14 @@ const CoachPromotePage = () => {
   
   return (
     <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden relative">
-      {/* 添加自定义样式 */}
-      <style>{customStyles}</style>
-      
       {/* Toast 通知 */}
       {showToast && (
-        <div className="fixed top-20 left-0 right-0 mx-auto w-4/5 bg-gray-800 text-white py-2.5 px-4 rounded-lg z-50 flex items-center justify-center shadow-lg animate-fade-in" style={{ maxWidth: "320px" }}>
-          <CheckCircle className="w-4 h-4 mr-2" />
+        <div className="fixed top-20 left-0 right-0 mx-auto w-4/5 bg-gray-800 text-white py-2.5 px-4 rounded-lg z-50 flex items-center justify-center shadow-lg" style={{ maxWidth: "320px" }}>
+          <span className="material-icons-outlined text-sm mr-2">check_circle</span>
           <span className="text-sm">{toastMessage}</span>
         </div>
       )}
+      
       {/* 顶部标题栏 */}
       <PageHeader 
         title="Promote Yourself" 
@@ -92,10 +69,10 @@ const CoachPromotePage = () => {
         
         {/* 分享应用链接卡片 */}
         <div className="px-4 mb-6">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4 hover:shadow transition-shadow duration-200">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <div className="flex items-center mb-3">
               <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
-                <Share2 className="w-5 h-5" />
+                <span className="material-icons-outlined">share</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-800">Share Your Link</h3>
             </div>
@@ -112,20 +89,20 @@ const CoachPromotePage = () => {
             {/* 复制链接按钮 */}
             <button 
               onClick={handleCopyLink}
-              className={`w-full py-3 mt-2 rounded-lg flex items-center justify-center font-medium transition-all duration-200 ${
+              className={`w-full py-3 mt-2 rounded-lg flex items-center justify-center font-medium ${
                 linkCopied 
                   ? 'bg-green-100 text-green-600 border border-green-200' 
-                  : 'bg-green-600 text-white hover:bg-green-700 active:bg-green-800'
-              } ${linkCopied ? 'animate-pulse-once' : ''}`}
+                  : 'bg-green-600 text-white'
+              }`}
             >
               {linkCopied ? (
                 <>
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <span className="material-icons-outlined mr-2">check_circle</span>
                   Copied!
                 </>
               ) : (
                 <>
-                  <Copy className="w-5 h-5 mr-2" />
+                  <span className="material-icons-outlined mr-2">content_copy</span>
                   Copy Link
                 </>
               )}
@@ -135,10 +112,10 @@ const CoachPromotePage = () => {
         
         {/* 促销码卡片 */}
         <div className="px-4 mb-6">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4 hover:shadow transition-shadow duration-200">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <div className="flex items-center mb-3">
               <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
-                <Gift className="w-5 h-5" />
+                <span className="material-icons-outlined">card_giftcard</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-800">Promotion Code</h3>
             </div>
@@ -158,20 +135,20 @@ const CoachPromotePage = () => {
             {/* 复制按钮 */}
             <button 
               onClick={handleCopyCode}
-              className={`w-full py-3 rounded-lg flex items-center justify-center font-medium transition-all duration-200 ${
+              className={`w-full py-3 rounded-lg flex items-center justify-center font-medium ${
                 codeCopied 
                   ? 'bg-green-100 text-green-600 border border-green-200' 
-                  : 'bg-purple-600 text-white hover:bg-purple-700 active:bg-purple-800'
-              } ${codeCopied ? 'animate-pulse-once' : ''}`}
+                  : 'bg-purple-600 text-white'
+              }`}
             >
               {codeCopied ? (
                 <>
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <span className="material-icons-outlined mr-2">check_circle</span>
                   Code Copied!
                 </>
               ) : (
                 <>
-                  <Copy className="w-5 h-5 mr-2" />
+                  <span className="material-icons-outlined mr-2">content_copy</span>
                   Copy Promotion Code
                 </>
               )}
@@ -181,7 +158,7 @@ const CoachPromotePage = () => {
         
         {/* 使用说明 */}
         <div className="px-4 mb-6">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4 hover:shadow transition-shadow duration-200">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <h3 className="text-lg font-semibold text-gray-800 mb-3">How It Works</h3>
             
             <div className="flex mb-3">
@@ -218,7 +195,7 @@ const CoachPromotePage = () => {
         
         {/* 追踪数据 */}
         <div className="px-4 mb-6">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4 hover:shadow transition-shadow duration-200">
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <div className="mb-3">
               <h3 className="text-lg font-semibold text-gray-800">Promotion Stats</h3>
             </div>

@@ -74,91 +74,91 @@ const CoachRatingsPage = () => {
   );
 
   // 生成星星
-  const renderStars = (rating, size = 20) => (
-    <span style={{ display: 'flex', alignItems: 'center' }}>
+  const renderStars = (rating, size = 'text-2xl') => (
+    <div className="flex">
       {[...Array(5)].map((_, i) => (
         <span
           key={i}
-          className="material-icons-round"
-          style={{
-            fontSize: size,
-            color: i < rating ? SECONDARY : GREY,
-            verticalAlign: 'middle',
-            marginRight: i < 4 ? 2 : 0,
-          }}
+          className={`material-icons-outlined ${size} ${i < rating ? 'text-purple-500' : 'text-gray-200'}`}
         >
           star
         </span>
       ))}
-    </span>
+    </div>
   );
 
   // 评分分布条
   const renderRatingBars = () => {
     const max = Math.max(...ratingStats.map((r) => r.count));
     return ratingStats.map((r) => (
-      <div key={r.star} style={{ display: 'flex', alignItems: 'center', marginBottom: 6 }}>
-        <span style={{ fontSize: 12, color: TEXT_SUB, width: 16 }}>{r.star}</span>
-        <span className="material-icons-round" style={{ fontSize: 16, color: SECONDARY, margin: '0 4px' }}>star</span>
-        <div style={{ flex: 1, height: 8, background: GREY, borderRadius: 4, margin: '0 8px', position: 'relative' }}>
+      <div key={r.star} className="flex items-center mb-2">
+        <span className="text-base text-gray-600 w-4 mr-2">{r.star}</span>
+        <span className="material-icons-outlined text-xl text-purple-500 mr-2">star</span>
+        <div className="flex-1 h-2 bg-gray-200 rounded-full mr-2">
           <div
-            style={{
-              height: 8,
-              background: SECONDARY,
-              borderRadius: 4,
-              width: `${(r.count / max) * 100}%`,
-              transition: 'width 0.3s',
-            }}
+            className="h-2 bg-purple-500 rounded-full"
+            style={{ width: `${(r.count / max) * 100}%` }}
           ></div>
         </div>
-        <span style={{ fontSize: 12, color: TEXT_SUB, width: 24, textAlign: 'right' }}>{r.count}</span>
+        <span className="text-base text-gray-600 w-6 text-right">{r.count}</span>
       </div>
     ));
   };
 
   return (
-    <div style={{ background: '#FAFAFA', minHeight: '100vh', maxWidth: 420, margin: '0 auto', border: '1px solid #EEEEEE', borderRadius: 16, boxShadow: '0 2px 8px rgba(0,0,0,0.04)', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div className="bg-gray-50 min-h-screen max-w-md mx-auto border border-gray-200 rounded-lg shadow-sm flex flex-col h-screen">
       {/* 顶部栏 */}
       <PageHeader title="Ratings & Reviews" onBack={() => {}} />
 
       {/* 主要内容区 */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '16px 0 0 0' }}>
+      <div className="flex-1 overflow-y-auto pt-4">
         {/* 评分总览 */}
-        <div style={{ padding: '0 16px' }}>
-          <div style={{ background: CARD_BG, borderRadius: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.03)', border: '1px solid #E0E0E0', padding: 20 }}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: 64 }}>
-                <span style={{ fontSize: 40, fontWeight: 700, color: TEXT_MAIN, lineHeight: 1 }}>{averageRating.toFixed(1)}</span>
-                <div style={{ marginTop: 4 }}>{renderStars(Math.round(averageRating), 20)}</div>
+        <div className="px-4 mb-4">
+          <div className="bg-gray-50 rounded-2xl shadow-sm border border-gray-200 p-5">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col items-center mr-4">
+                <span className="text-5xl font-bold text-gray-800 leading-none mb-2">4.8</span>
+                <div className="flex text-purple-500">
+                  <span className="material-icons-outlined">star</span>
+                  <span className="material-icons-outlined">star</span>
+                  <span className="material-icons-outlined">star</span>
+                  <span className="material-icons-outlined">star</span>
+                  <span className="material-icons-outlined">star</span>
+                </div>
               </div>
-              <div style={{ flex: 1 }}>{renderRatingBars()}</div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', minWidth: 80 }}>
-                <span style={{ fontSize: 13, color: TEXT_SUB }}>Based on</span>
-                <span style={{ fontSize: 18, fontWeight: 600, color: TEXT_MAIN }}>{totalReviews} reviews</span>
+              
+              <div className="flex-1">
+                {ratingStats.map((stat) => (
+                  <div key={stat.star} className="flex items-center mb-2 last:mb-0">
+                    <span className="text-base text-gray-600 w-4 mr-2">{stat.star}</span>
+                    <span className="material-icons-outlined text-xl text-purple-500 mr-2">star</span>
+                    <div className="flex-1 h-2 bg-gray-200 rounded-full mr-2">
+                      <div
+                        className="h-2 bg-purple-500 rounded-full"
+                        style={{ width: `${(stat.count / Math.max(...ratingStats.map(s => s.count))) * 100}%` }}
+                      ></div>
+                    </div>
+                    <span className="text-base text-gray-600 w-6 text-right">{stat.count}</span>
+                  </div>
+                ))}
+              </div>
+              
+              <div className="flex flex-col items-end ml-2">
+                <span className="text-sm text-gray-500">Based on</span>
+                <span className="text-lg font-semibold text-gray-800">{totalReviews} reviews</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* 搜索与筛选 */}
-        <div style={{ padding: '16px 16px 0 16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ flex: 1, position: 'relative' }}>
-              <span className="material-icons-round" style={{ position: 'absolute', left: 12, top: 12, fontSize: 20, color: GREY }}>search</span>
+        <div className="px-4 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex-1 relative">
+              <span className="material-icons-outlined absolute left-3 top-3 text-xl text-gray-400">search</span>
               <input
                 type="text"
-                style={{
-                  width: '100%',
-                  padding: '10px 12px 10px 40px',
-                  borderRadius: 12,
-                  border: `1px solid ${GREY}`,
-                  background: '#F5F5F5',
-                  fontSize: 15,
-                  color: TEXT_MAIN,
-                  outline: 'none',
-                  height: 44,
-                  boxSizing: 'border-box',
-                }}
+                className="w-full py-3 pl-10 pr-3 rounded-2xl border border-gray-200 bg-gray-100 text-base text-gray-800 outline-none h-12"
                 placeholder="Search reviews..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
@@ -166,64 +166,56 @@ const CoachRatingsPage = () => {
               />
             </div>
             <button
-              style={{
-                width: 44,
-                height: 44,
-                borderRadius: 12,
-                border: `1px solid ${GREY}`,
-                background: '#FFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                outline: 'none',
-                boxShadow: 'none',
-                padding: 0,
-              }}
+              className="w-12 h-12 rounded-2xl border border-gray-200 bg-white flex items-center justify-center outline-none"
               aria-label="Filter reviews"
             >
-              <span className="material-icons-round" style={{ fontSize: 22, color: TEXT_SUB }}>filter_alt</span>
+              <span className="material-icons-outlined text-xl text-gray-500">filter_alt</span>
             </button>
           </div>
         </div>
 
         {/* 评论列表 */}
-        <div style={{ padding: '16px 16px 0 16px' }}>
+        <div className="px-4 pb-4">
           {filteredReviews.map((r) => (
             <div
               key={r.id}
-              style={{
-                background: CARD_BG,
-                borderRadius: 16,
-                boxShadow: '0 1px 4px rgba(0,0,0,0.03)',
-                border: '1px solid #E0E0E0',
-                marginBottom: 16,
-                padding: 16,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 8,
-              }}
+              className="bg-gray-50 rounded-2xl shadow-sm border border-gray-200 mb-4 p-4"
             >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: '50%', background: '#EDE9FE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span className="material-icons-round" style={{ fontSize: 22, color: SECONDARY }}>person</span>
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex">
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                    <span className="material-icons-outlined text-xl text-purple-500">person</span>
                   </div>
                   <div>
-                    <span style={{ display: 'block', fontSize: 15, fontWeight: 600, color: TEXT_MAIN }}>{r.name}</span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 2 }}>
-                      {renderStars(r.rating, 16)}
-                      <span style={{ fontSize: 12, color: TEXT_SUB }}>{r.date}</span>
-                      <span style={{ marginLeft: 8, background: '#F5F3FF', color: SECONDARY, fontSize: 12, borderRadius: 8, padding: '2px 8px' }}>{r.lessons} lessons</span>
+                    <div className="font-semibold text-base text-gray-800 mb-1">{r.name}</div>
+                    <div className="flex items-center">
+                      {[...Array(5)].map((_, i) => (
+                        <span
+                          key={i}
+                          className={`material-icons-outlined text-lg ${i < r.rating ? 'text-purple-500' : 'text-gray-200'}`}
+                        >
+                          star
+                        </span>
+                      ))}
+                      <span className="text-sm text-gray-500 ml-2">{r.date}</span>
                     </div>
                   </div>
                 </div>
-                <button style={{ display: 'flex', alignItems: 'center', gap: 4, color: TEXT_SUB, background: 'none', border: 'none', fontSize: 13, cursor: 'pointer', outline: 'none', padding: 0 }}>
-                  <span className="material-icons-round" style={{ fontSize: 18, color: SECONDARY }}>thumb_up</span>
-                  <span style={{ fontWeight: 500 }}>Helpful ({r.helpful})</span>
+                <div className="flex items-center">
+                  <span className="inline-block bg-purple-100 text-purple-500 text-sm rounded-full px-3 py-1">
+                    {r.lessons} lessons
+                  </span>
+                </div>
+              </div>
+              
+              <p className="text-base text-gray-800 leading-relaxed mb-3">{r.comment}</p>
+              
+              <div className="flex justify-end">
+                <button className="flex items-center text-sm text-gray-500 bg-transparent border-none outline-none">
+                  <span className="material-icons-outlined text-lg text-purple-500 mr-1">thumb_up</span>
+                  <span>Helpful ({r.helpful})</span>
                 </button>
               </div>
-              <div style={{ fontSize: 15, color: TEXT_MAIN, marginTop: 2, lineHeight: 1.6 }}>{r.comment}</div>
             </div>
           ))}
         </div>
