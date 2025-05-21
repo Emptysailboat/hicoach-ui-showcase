@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { ArrowLeft, Star, MapPin, MessageCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import CoachInfoCard from './common/CoachInfoCard';
 import PageHeader from './common/PageHeader';
+import ReviewsCard from './common/ReviewsCard';
 
 const CoachDetailPage = () => {
   const [isStarred, setIsStarred] = useState(false);
-  const [showMoreReviews, setShowMoreReviews] = useState(false);
   
   // 模拟教练数据
   const coachData = {
@@ -19,6 +19,33 @@ const CoachDetailPage = () => {
     location: 'Wilton tennis club',
     qualifications: ['LTA-5', 'PTR-PRO'],
     about: "I'm a certified tennis coach with over 10 years of experience teaching players of all levels. My coaching philosophy focuses on technical development while keeping sessions fun and engaging. I specialize in helping beginners build a solid foundation and intermediate players refine their skills."
+  };
+  
+  // 模拟评论数据
+  const reviewsData = {
+    rating: 5.0,
+    totalRatings: 41,
+    ratingDistribution: {
+      5: 100,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0
+    },
+    reviews: [
+      {
+        name: "Sarah M.",
+        rating: 5,
+        comment: "Great coach! Very patient and knowledgeable. I've improved my backhand significantly after just a few lessons.",
+        timeAgo: "2 weeks ago"
+      },
+      {
+        name: "John D.",
+        rating: 5,
+        comment: "My son loves his lessons. The coach makes learning fun while still focusing on proper technique.",
+        timeAgo: "1 month ago"
+      }
+    ]
   };
   
   // 处理收藏状态变更
@@ -103,91 +130,13 @@ const CoachDetailPage = () => {
             </div>
           </div>
           
-          {/* 评价 */}
-          <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-primary-600">Ratings & Reviews</h3>
-                <div className="flex items-center">
-                  <Star className="h-4 w-4 text-primary-600 fill-primary-600" />
-                  <span className="ml-1 text-sm font-medium">5.0</span>
-                  <span className="mx-1 text-gray-500">•</span>
-                  <span className="text-sm text-gray-500">41 ratings</span>
-                </div>
-              </div>
-              
-              {/* 评分分布 */}
-              <div className="mb-4">
-                <div className="flex items-center mb-1">
-                  <div className="w-16 text-sm text-gray-600">5 stars</div>
-                  <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary-600 rounded-full" style={{ width: '100%' }}></div>
-                  </div>
-                  <div className="w-8 text-right text-sm text-gray-600">100%</div>
-                </div>
-                
-                {[4, 3, 2, 1].map(stars => (
-                  <div key={stars} className="flex items-center mb-1">
-                    <div className="w-16 text-sm text-gray-600">{stars} stars</div>
-                    <div className="flex-1 h-2 mx-2 bg-gray-200 rounded-full overflow-hidden">
-                      <div className="h-full bg-primary-600 rounded-full" style={{ width: '0%' }}></div>
-                    </div>
-                    <div className="w-8 text-right text-sm text-gray-600">0%</div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* 用户评价 */}
-              <div className="space-y-4 mt-6">
-                <h4 className="font-medium text-gray-800">Recent Reviews</h4>
-                
-                {/* 评价1 */}
-                <div className="pb-4 border-b border-gray-100">
-                  <div className="flex justify-between items-center mb-2">
-                    <h5 className="font-medium text-gray-800">Sarah M.</h5>
-                    <div className="flex items-center">
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    Great coach! Very patient and knowledgeable. I've improved my backhand significantly after just a few lessons.
-                  </p>
-                  <span className="text-xs text-gray-500">2 weeks ago</span>
-                </div>
-                
-                {/* 评价2 */}
-                <div className="pb-4 border-b border-gray-100">
-                  <div className="flex justify-between items-center mb-2">
-                    <h5 className="font-medium text-gray-800">John D.</h5>
-                    <div className="flex items-center">
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                      <Star className="h-3 w-3 text-primary-600 fill-primary-600" />
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    My son loves his lessons. The coach makes learning fun while still focusing on proper technique.
-                  </p>
-                  <span className="text-xs text-gray-500">1 month ago</span>
-                </div>
-                
-                {/* 查看更多按钮 */}
-                <button 
-                  className="flex items-center text-primary-600 text-sm font-medium mt-2 active:text-primary-700"
-                  onClick={() => setShowMoreReviews(!showMoreReviews)}
-                >
-                  {showMoreReviews ? 'Show less' : 'Show all 41 reviews'}
-                  {showMoreReviews ? <ChevronUp className="ml-1 h-4 w-4" /> : <ChevronDown className="ml-1 h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-          </div>
+          {/* 评价 - 使用新的ReviewsCard组件 */}
+          <ReviewsCard 
+            rating={reviewsData.rating}
+            totalRatings={reviewsData.totalRatings}
+            ratingDistribution={reviewsData.ratingDistribution}
+            reviews={reviewsData.reviews}
+          />
         </div>
       </div>
       

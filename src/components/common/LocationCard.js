@@ -21,7 +21,7 @@ const LocationCard = ({
   isSelectable = false,
   onSelect,
   className = '',
-  facilitiesClassName = 'px-2 py-0.5 bg-secondary-100 text-secondary-500 text-xs rounded-full'
+  facilitiesClassName = 'px-2 py-0.5 bg-purple-100 text-purple-600 text-xs rounded-full'
 }) => {
   // 确保必要的数据存在
   if (!location) {

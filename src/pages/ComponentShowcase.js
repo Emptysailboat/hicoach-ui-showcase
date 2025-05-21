@@ -37,43 +37,50 @@ import RoleSwitcherScreen from '../components/312-RoleSwitcherScreen';
 import GuideSystem from '../components/313-GuideSystem';
 import GuideDetailPageExample from '../components/314-GuideDetailPage';
 // 导入教练相关组件
-import CoachOnboardingPage from '../components/201-教练主页-入职';
-import CoachHomePage from '../components/202-教练主页-常态';
-import VerifyIdentityPage from '../components/203-身份验证';
-import DBSUploadPage from '../components/204-DBS认证';
-import CertificationUploadPage from '../components/205-教练资格认证';
-import BankDetailsPage from '../components/206-收款信息';
-import CoachAvailabilityEntryPage from '../components/207-时间管理';
-import TeachingTimeSettings from '../components/208-教学时间设置';
-import CoachTimeOffPage from '../components/209-教练请假列表和设置';
-import CoachLocationDirectory from '../components/210-教练场地目录页';
-import CoachLocationAddPage from '../components/211-教练场地添加页';
-import PricingLandingPage from '../components/212-价格设定入口';
-import SingleLessonPricingPage from '../components/213-价格设定-单次课程';
-import PackagePricingPage from '../components/214-价格设定-多次课程';
-import CoachIntroPage from '../components/215-自我介绍';
-import CoachPendingLessonDetail from '../components/216-教练端-Pending状态课程卡';
-import CoachConfirmedLessonDetail from '../components/217-教练端-Confirm状态课程卡';
-import CoachCompletedLessonDetail from '../components/218-教练端-Completed状态课程卡';
-import CoachDeclinedLessonDetail from '../components/219-教练端-declined状态课程卡';
-import CoachCancelLesson from '../components/220-教练取消课程';
+// Import coach related components
+import CoachOnboardingPage from '../components/201-coach-home-onboarding';
+import CoachHomePage from '../components/202-coach-home-regular';
+import VerifyIdentityPage from '../components/203-identity-verification';
+import DBSUploadPage from '../components/204-dbs-certification';
+import CertificationUploadPage from '../components/205-coach-qualification';
+import BankDetailsPage from '../components/206-payment-info';
+import CoachAvailabilityEntryPage from '../components/207-time-management';
+import TeachingTimeSettings from '../components/208-teaching-schedule';
+import CoachTimeOffPage from '../components/209-coach-time-off';
+import CoachLocationDirectory from '../components/210-coach-location-directory';
+import CoachLocationAddPage from '../components/211-coach-location-add';
+import PricingLandingPage from '../components/212-pricing-entry';
+import SingleLessonPricingPage from '../components/213-pricing-single-lesson';
+import PackagePricingPage from '../components/214-pricing-package';
+import CoachIntroPage from '../components/215-self-introduction';
+import CoachPendingLessonDetail from '../components/216-coach-pending-lesson';
+import CoachConfirmedLessonDetail from '../components/217-coach-confirmed-lesson';
+import CoachCompletedLessonDetail from '../components/218-coach-completed-lesson';
+import CoachDeclinedLessonDetail from '../components/219-coach-declined-lesson';
+import CoachCancelLesson from '../components/220-coach-cancel-lesson';
 // 新增教练相关组件
-import CoachPerformanceOptimized from '../components/221-教练Performance';
-import CoachIncomeSummaryPage from '../components/222-教练收入详情';
-import CoachRatingsPage from '../components/223-教练评分';
-import CoachProfilePage from '../components/224-教练用户页';
-import CoachProfileSettingsPage from '../components/225-教练系统设置';
-import CoachPromotePage from '../components/226-教练推广';
-import CoachPauseAccountPage from '../components/227-教练暂停接单';
+// Import additional coach components
+import CoachPerformanceOptimized from '../components/221-coach-performance';
+import CoachIncomeSummaryPage from '../components/222-coach-income-details';
+import CoachRatingsPage from '../components/223-coach-ratings';
+import CoachProfilePage from '../components/224-coach-profile';
+import CoachProfileSettingsPage from '../components/225-coach-settings';
+import CoachPromotePage from '../components/226-coach-promotion';
+import CoachPauseAccountPage from '../components/227-coach-pause-bookings';
 // 导入通用组件
+// Import common components
 import CoachInfoCard from '../components/common/CoachInfoCard';
 import BottomNavigation from '../components/common/BottomNavigation';
 import PageHeader from '../components/common/PageHeader';
 import LessonDetailsCard from '../components/common/LessonDetailsCard';
 import PriceDetailsCard from '../components/common/PriceDetailsCard';
 import LocationCard from '../components/common/LocationCard';
+import ReviewsCard from '../components/common/ReviewsCard';
+import LessonCard from '../components/common/LessonCard';
+import ToggleSwitch from '../components/common/ToggleSwitch';
 
 // 添加Material Icons字体引入
+// Add Material Icons font
 const MaterialIconsHead = () => {
   return (
     <React.Fragment>
@@ -84,6 +91,7 @@ const MaterialIconsHead = () => {
 };
 
 // CoachInfoCard展示组件
+// CoachInfoCard showcase component
 const CoachInfoCardShowcase = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   
@@ -106,7 +114,7 @@ const CoachInfoCardShowcase = () => {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">标准卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Standard Card</h2>
         <CoachInfoCard 
           coach={coachData}
           isFavorite={isFavorite}
@@ -115,7 +123,7 @@ const CoachInfoCardShowcase = () => {
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">迷你卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Mini Card</h2>
         <CoachInfoCard 
           coach={coachData}
           isMiniCard={true}
@@ -125,7 +133,7 @@ const CoachInfoCardShowcase = () => {
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">无资质卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Card Without Qualifications</h2>
         <CoachInfoCard 
           coach={coachData}
           showQualifications={false}
@@ -135,7 +143,7 @@ const CoachInfoCardShowcase = () => {
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">无位置信息卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Card Without Location</h2>
         <CoachInfoCard 
           coach={coachData}
           showLocation={false}
@@ -148,16 +156,17 @@ const CoachInfoCardShowcase = () => {
 };
 
 // BottomNavigation展示组件
+// BottomNavigation showcase component
 const BottomNavigationShowcase = () => {
   const [activeTab, setActiveTab] = useState('home');
   
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">底部导航栏</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Bottom Navigation Bar</h2>
         <div className="relative h-80 border border-gray-200 rounded-lg">
           <div className="p-4 text-center text-gray-500">
-            页面内容区域
+            Page Content Area
           </div>
           <BottomNavigation 
             activeTab={activeTab}
@@ -170,24 +179,25 @@ const BottomNavigationShowcase = () => {
 };
 
 // PageHeader展示组件
+// PageHeader showcase component
 const PageHeaderShowcase = () => {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">带返回按钮的页面标题</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Page Header with Back Button</h2>
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <PageHeader 
             title="Page Title"
             onBack={() => {}}
           />
           <div className="p-4 text-center text-gray-500">
-            页面内容区域
+            Page Content Area
           </div>
         </div>
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">带右侧元素的页面标题</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Page Header with Right Element</h2>
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <PageHeader 
             title="Page Title"
@@ -199,17 +209,17 @@ const PageHeaderShowcase = () => {
             }
           />
           <div className="p-4 text-center text-gray-500">
-            页面内容区域
+            Page Content Area
           </div>
         </div>
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">仅标题的页面标题</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Page Header with Title Only</h2>
         <div className="border border-gray-200 rounded-lg overflow-hidden">
           <PageHeader title="Page Title" />
           <div className="p-4 text-center text-gray-500">
-            页面内容区域
+            Page Content Area
           </div>
         </div>
       </div>
@@ -218,6 +228,7 @@ const PageHeaderShowcase = () => {
 };
 
 // LessonDetailsCard展示组件
+// LessonDetailsCard showcase component
 const LessonDetailsCardShowcase = () => {
   const singleLessonData = {
     type: 'Private Lesson',
@@ -244,7 +255,7 @@ const LessonDetailsCardShowcase = () => {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">单次课程详情</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Single Lesson Details</h2>
         <LessonDetailsCard 
           lesson={singleLessonData}
           title="Single Lesson Details"
@@ -252,7 +263,7 @@ const LessonDetailsCardShowcase = () => {
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">周期课程详情</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Package Lesson Details</h2>
         <LessonDetailsCard 
           lesson={recurringLessonData}
           title="Package Lesson Details"
@@ -264,6 +275,7 @@ const LessonDetailsCardShowcase = () => {
 };
 
 // PriceDetailsCard展示组件
+// PriceDetailsCard showcase component
 const PriceDetailsCardShowcase = () => {
   const standardPriceData = {
     subtotal: 60,
@@ -283,14 +295,14 @@ const PriceDetailsCardShowcase = () => {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">基本价格详情</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Basic Price Details</h2>
         <PriceDetailsCard 
           {...standardPriceData}
         />
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">完整价格详情</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Complete Price Details</h2>
         <PriceDetailsCard 
           {...complexPriceData}
           title="Package Price Details"
@@ -301,6 +313,7 @@ const PriceDetailsCardShowcase = () => {
 };
 
 // LocationCard展示组件
+// LocationCard showcase component
 const LocationCardShowcase = () => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   
@@ -328,14 +341,14 @@ const LocationCardShowcase = () => {
   return (
     <div className="p-6 space-y-8">
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">场地详情卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Location Detail Card</h2>
         <LocationCard 
           location={locationData[0]}
         />
       </div>
       
       <div>
-        <h2 className="text-lg font-semibold text-primary-600 mb-3">可选择的场地卡片</h2>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Selectable Location Cards</h2>
         <div className="space-y-4">
           {locationData.map(location => (
             <LocationCard 
@@ -346,6 +359,204 @@ const LocationCardShowcase = () => {
               onSelect={handleSelect}
             />
           ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ReviewsCard展示组件
+// ReviewsCard showcase component
+const ReviewsCardShowcase = () => {
+  // 模拟评论数据
+  const reviewsData = {
+    rating: 4.8,
+    totalRatings: 24,
+    ratingDistribution: {
+      5: 85,
+      4: 10,
+      3: 5,
+      2: 0,
+      1: 0
+    },
+    reviews: [
+      {
+        name: "Emily W.",
+        rating: 5,
+        comment: "Excellent coach who really knows how to adapt to different skill levels. I've learned so much in just a few sessions.",
+        timeAgo: "1 week ago"
+      },
+      {
+        name: "Michael T.",
+        rating: 5,
+        comment: "Very professional and punctual. The lessons are well-structured and fun.",
+        timeAgo: "2 weeks ago"
+      },
+      {
+        name: "Sophia L.",
+        rating: 4,
+        comment: "Great teaching style, though sometimes sessions can run a bit longer than scheduled. Overall very good experience.",
+        timeAgo: "1 month ago"
+      }
+    ]
+  };
+  
+  // 没有评论的示例数据
+  const noReviewsData = {
+    rating: 0,
+    totalRatings: 0,
+    ratingDistribution: {
+      5: 0,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0
+    },
+    reviews: []
+  };
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Reviews Card with Data</h2>
+        <ReviewsCard 
+          rating={reviewsData.rating}
+          totalRatings={reviewsData.totalRatings}
+          ratingDistribution={reviewsData.ratingDistribution}
+          reviews={reviewsData.reviews}
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Reviews Card with No Reviews</h2>
+        <ReviewsCard 
+          rating={noReviewsData.rating}
+          totalRatings={noReviewsData.totalRatings}
+          ratingDistribution={noReviewsData.ratingDistribution}
+          reviews={noReviewsData.reviews}
+        />
+      </div>
+    </div>
+  );
+};
+
+// LessonCard展示组件
+// LessonCard showcase component
+const LessonCardShowcase = () => {
+  const lessonData = {
+    type: 'Private Lesson',
+    status: 'confirmed',
+    paymentStatus: 'Paid',
+    date: 'Mon, 15 Jun 2023',
+    time: '10:00 - 11:00',
+    location: 'Wilton Tennis Club',
+    price: '£30',
+    student: 'Sarah Parker'
+  };
+  
+  const pendingLessonData = {
+    type: 'Package Lesson (1 of 8)',
+    status: 'pending',
+    paymentStatus: 'Pending',
+    date: 'Wed, 17 Jun 2023',
+    time: '18:00 - 19:00',
+    location: 'Dundonald Playground',
+    price: '£25',
+    student: 'Michael Brown'
+  };
+  
+  const cancelledLessonData = {
+    type: 'Private Lesson',
+    status: 'cancelled',
+    paymentStatus: 'Refunded',
+    date: 'Fri, 19 Jun 2023',
+    time: '14:00 - 15:00',
+    location: 'Joseph Hood Recreational Playground',
+    price: '£30',
+    student: 'James Wilson'
+  };
+  
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Confirmed Lesson Card</h2>
+        <LessonCard 
+          {...lessonData}
+          onClick={() => console.log('Confirmed lesson clicked')}
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Pending Lesson Card</h2>
+        <LessonCard 
+          {...pendingLessonData}
+          onClick={() => console.log('Pending lesson clicked')}
+        />
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Cancelled Lesson Card</h2>
+        <LessonCard 
+          {...cancelledLessonData}
+          onClick={() => console.log('Cancelled lesson clicked')}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ToggleSwitch展示组件
+// ToggleSwitch showcase component
+const ToggleSwitchShowcase = () => {
+  const [isEnabled1, setIsEnabled1] = useState(false);
+  const [isEnabled2, setIsEnabled2] = useState(true);
+  
+  return (
+    <div className="p-6 space-y-8">
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Basic Toggle Switch</h2>
+        <div className="flex items-center space-x-4">
+          <ToggleSwitch 
+            isOn={isEnabled1}
+            onToggle={() => setIsEnabled1(!isEnabled1)}
+          />
+          <span className="text-sm text-gray-700">
+            {isEnabled1 ? 'Enabled' : 'Disabled'}
+          </span>
+        </div>
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Pre-enabled Toggle Switch</h2>
+        <div className="flex items-center space-x-4">
+          <ToggleSwitch 
+            isOn={isEnabled2}
+            onToggle={() => setIsEnabled2(!isEnabled2)}
+          />
+          <span className="text-sm text-gray-700">
+            {isEnabled2 ? 'Enabled' : 'Disabled'}
+          </span>
+        </div>
+      </div>
+      
+      <div>
+        <h2 className="text-lg font-semibold text-primary-600 mb-3">Disabled Toggle Switch</h2>
+        <div className="flex items-center space-x-4">
+          <ToggleSwitch 
+            isOn={true}
+            onToggle={() => {}}
+            disabled={true}
+          />
+          <span className="text-sm text-gray-700">Always Enabled (Disabled)</span>
+        </div>
+        
+        <div className="flex items-center space-x-4 mt-4">
+          <ToggleSwitch 
+            isOn={false}
+            onToggle={() => {}}
+            disabled={true}
+          />
+          <span className="text-sm text-gray-700">Always Disabled (Disabled)</span>
         </div>
       </div>
     </div>
@@ -406,6 +617,7 @@ const ComponentShowcase = () => {
       case '123-learnerProfile':
         return <LearnerProfilePage />;
       // 添加教练相关组件的渲染逻辑
+      // Add rendering logic for coach related components
       case '201-coachOnboarding':
         return <CoachOnboardingPage />;
       case '202-coachHome':
@@ -420,46 +632,47 @@ const ComponentShowcase = () => {
         return <BankDetailsPage />;
       case '207-timeManagement':
         return <CoachAvailabilityEntryPage />;
-      case '208-教学时间设置':
+      case '208-teachingSchedule':
         return <TeachingTimeSettings />;
-      case '209-教练请假列表和设置':
+      case '209-coachTimeOff':
         return <CoachTimeOffPage />;
-      case '210-教练场地目录页':
+      case '210-coachLocationDirectory':
         return <CoachLocationDirectory />;
-      case '211-教练场地添加页':
+      case '211-coachLocationAdd':
         return <CoachLocationAddPage />;
-      case '212-价格设定入口':
+      case '212-pricingEntry':
         return <PricingLandingPage />;
-      case '213-价格设定-单次课程':
+      case '213-pricingSingleLesson':
         return <SingleLessonPricingPage />;
-      case '214-价格设定-多次课程':
+      case '214-pricingPackage':
         return <PackagePricingPage />;
-      case '215-自我介绍':
+      case '215-selfIntroduction':
         return <CoachIntroPage />;
-      case '216-教练端-Pending状态课程卡':
+      case '216-coachPendingLesson':
         return <CoachPendingLessonDetail />;
-      case '217-教练端-Confirm状态课程卡':
+      case '217-coachConfirmedLesson':
         return <CoachConfirmedLessonDetail />;
-      case '218-教练端-Completed状态课程卡':
+      case '218-coachCompletedLesson':
         return <CoachCompletedLessonDetail />;
-      case '219-教练端-declined状态课程卡':
+      case '219-coachDeclinedLesson':
         return <CoachDeclinedLessonDetail />;
-      case '220-教练取消课程':
+      case '220-coachCancelLesson':
         return <CoachCancelLesson />;
       // 新增教练相关组件渲染逻辑
-      case '221-教练Performance':
+      // Add rendering logic for additional coach components
+      case '221-coachPerformance':
         return <CoachPerformanceOptimized />;
-      case '222-教练收入详情':
+      case '222-coachIncomeDetails':
         return <CoachIncomeSummaryPage />;
-      case '223-教练评分':
+      case '223-coachRatings':
         return <CoachRatingsPage />;
-      case '224-教练用户页':
+      case '224-coachProfile':
         return <CoachProfilePage />;
-      case '225-教练系统设置':
+      case '225-coachSettings':
         return <CoachProfileSettingsPage />;
-      case '226-教练推广':
+      case '226-coachPromotion':
         return <CoachPromotePage />;
-      case '227-教练暂停接单':
+      case '227-coachPauseBookings':
         return <CoachPauseAccountPage />;
       case '302-signUp':
         return <SignUpPage />;
@@ -488,6 +701,7 @@ const ComponentShowcase = () => {
       case '314-guideDetail':
         return <GuideDetailPageExample />;
       // 通用组件
+      // Common components
       case 'common-coachInfoCard':
         return <CoachInfoCardShowcase />;
       case 'common-bottomNavigation':
@@ -500,88 +714,101 @@ const ComponentShowcase = () => {
         return <PriceDetailsCardShowcase />;
       case 'common-locationCard':
         return <LocationCardShowcase />;
+      case 'common-reviewsCard':
+        return <ReviewsCardShowcase />;
+      case 'common-lessonCard':
+        return <LessonCardShowcase />;
+      case 'common-toggleSwitch':
+        return <ToggleSwitchShowcase />;
       default:
-        return <div className="flex items-center justify-center h-full">请选择一个组件进行展示</div>;
+        return <div className="flex items-center justify-center h-full">Please select a component to display</div>;
     }
   };
   
   const components = [
-    { id: 'welcome', name: '301-欢迎页面', category: 'General' },
-    { id: '101-learnerHome', name: '101-学员端主页', category: 'Learner' },
-    { id: '102-location', name: '102-位置选择页', category: 'Learner' },
-    { id: '103-messageSystem', name: '103-聊天通知页', category: 'Learner' },
-    { id: '104-coachSearch', name: '104-教练搜索结果页', category: 'Learner' },
-    { id: '105-coachDetail', name: '105-教练详细信息卡', category: 'Learner' },
-    { id: '106-bookingType', name: '106-预订类型选择', category: 'Learner' },
-    { id: '107-timeSelection', name: '107-单次预订-时间选择', category: 'Learner' },
-    { id: '108-bookingDetails', name: '108-单次预订-详情', category: 'Learner' },
-    { id: '109-bookingConfirmation', name: '109-单次预订-课程确认', category: 'Learner' },
-    { id: '110-recurringPackage', name: '110-循环课程-套餐选择', category: 'Learner' },
-    { id: '111-recurringTimeSelection', name: '111-循环课程-初始时间选择', category: 'Learner' },
-    { id: '112-recurringSchedule', name: '112-循环课程-课程排课确认和修改', category: 'Learner' },
-    { id: '113-recurringDetails', name: '113-循环预订-详情', category: 'Learner' },
-    { id: '114-recurringConfirmation', name: '114-循环预订-确认', category: 'Learner' },
-    { id: '115-payment', name: '115-支付页面', category: 'Learner' },
-    { id: '116-lessonsPage', name: '116-课程页(状态切换和Filter)', category: 'Learner' },
-    { id: '117-pendingLesson', name: '117-课程页-Pending状态课程卡', category: 'Learner' },
-    { id: '118-confirmedLesson', name: '118-课程页-Confirmed状态课程卡', category: 'Learner' },
-    { id: '119-completedLesson', name: '119-课程页-Completed状态课程卡', category: 'Learner' },
-    { id: '120-declinedLesson', name: '120-课程页-Declined状态课程卡', category: 'Learner' },
-    { id: '121-cancelLesson', name: '121-学员取消课程', category: 'Learner' },
-    { id: '122-favoriteCoaches', name: '122-收藏教练页', category: 'Learner' },
-    { id: '123-learnerProfile', name: '123-学员用户页', category: 'Learner' },
+    { id: 'welcome', name: '301-Welcome Page', category: 'General' },
+    { id: '101-learnerHome', name: '101-Learner Home Page', category: 'Learner' },
+    { id: '102-location', name: '102-Location Selection Page', category: 'Learner' },
+    { id: '103-messageSystem', name: '103-Message Notification System', category: 'Learner' },
+    { id: '104-coachSearch', name: '104-Coach Search Results', category: 'Learner' },
+    { id: '105-coachDetail', name: '105-Coach Detail Page', category: 'Learner' },
+    { id: '106-bookingType', name: '106-Booking Type Selection', category: 'Learner' },
+    { id: '107-timeSelection', name: '107-Single Booking Time Selection', category: 'Learner' },
+    { id: '108-bookingDetails', name: '108-Single Booking Details', category: 'Learner' },
+    { id: '109-bookingConfirmation', name: '109-Single Booking Confirmation', category: 'Learner' },
+    { id: '110-recurringPackage', name: '110-Recurring Booking Package', category: 'Learner' },
+    { id: '111-recurringTimeSelection', name: '111-Recurring Booking Time Selection', category: 'Learner' },
+    { id: '112-recurringSchedule', name: '112-Recurring Booking Schedule Confirmation', category: 'Learner' },
+    { id: '113-recurringDetails', name: '113-Recurring Booking Details', category: 'Learner' },
+    { id: '114-recurringConfirmation', name: '114-Recurring Booking Confirmation', category: 'Learner' },
+    { id: '115-payment', name: '115-Payment Page', category: 'Learner' },
+    { id: '116-lessonsPage', name: '116-Lessons Page', category: 'Learner' },
+    { id: '117-pendingLesson', name: '117-Pending Lesson Card', category: 'Learner' },
+    { id: '118-confirmedLesson', name: '118-Confirmed Lesson Card', category: 'Learner' },
+    { id: '119-completedLesson', name: '119-Completed Lesson Card', category: 'Learner' },
+    { id: '120-declinedLesson', name: '120-Declined Lesson Card', category: 'Learner' },
+    { id: '121-cancelLesson', name: '121-Student Cancel Lesson', category: 'Learner' },
+    { id: '122-favoriteCoaches', name: '122-Favorite Coaches Page', category: 'Learner' },
+    { id: '123-learnerProfile', name: '123-Learner Profile Page', category: 'Learner' },
     // 添加教练相关组件到列表
-    { id: '201-coachOnboarding', name: '201-教练主页-入职', category: 'Coach' },
-    { id: '202-coachHome', name: '202-教练主页-常态', category: 'Coach' },
-    { id: '203-verifyIdentity', name: '203-身份验证', category: 'Coach' },
-    { id: '204-dbsUpload', name: '204-DBS认证', category: 'Coach' },
-    { id: '205-certificationUpload', name: '205-教练资格认证', category: 'Coach' },
-    { id: '206-bankDetails', name: '206-收款信息', category: 'Coach' },
-    { id: '207-timeManagement', name: '207-时间管理', category: 'Coach' },
-    { id: '208-教学时间设置', name: '208-教学时间设置', category: 'Coach' },
-    { id: '209-教练请假列表和设置', name: '209-教练请假列表和设置', category: 'Coach' },
-    { id: '210-教练场地目录页', name: '210-教练场地目录页', category: 'Coach' },
-    { id: '211-教练场地添加页', name: '211-教练场地添加页', category: 'Coach' },
-    { id: '212-价格设定入口', name: '212-价格设定入口', category: 'Coach' },
-    { id: '213-价格设定-单次课程', name: '213-价格设定-单次课程', category: 'Coach' },
-    { id: '214-价格设定-多次课程', name: '214-价格设定-多次课程', category: 'Coach' },
-    { id: '215-自我介绍', name: '215-自我介绍', category: 'Coach' },
-    { id: '216-教练端-Pending状态课程卡', name: '216-教练端-Pending状态课程卡', category: 'Coach' },
-    { id: '217-教练端-Confirm状态课程卡', name: '217-教练端-Confirm状态课程卡', category: 'Coach' },
-    { id: '218-教练端-Completed状态课程卡', name: '218-教练端-Completed状态课程卡', category: 'Coach' },
-    { id: '219-教练端-declined状态课程卡', name: '219-教练端-declined状态课程卡', category: 'Coach' },
-    { id: '220-教练取消课程', name: '220-教练取消课程', category: 'Coach' },
+    // Add coach related components to the list
+    { id: '201-coachOnboarding', name: '201-Coach Home Onboarding', category: 'Coach' },
+    { id: '202-coachHome', name: '202-Coach Home Regular', category: 'Coach' },
+    { id: '203-verifyIdentity', name: '203-Identity Verification', category: 'Coach' },
+    { id: '204-dbsUpload', name: '204-DBS Certification', category: 'Coach' },
+    { id: '205-certificationUpload', name: '205-Coach Qualification', category: 'Coach' },
+    { id: '206-bankDetails', name: '206-Payment Info', category: 'Coach' },
+    { id: '207-timeManagement', name: '207-Time Management', category: 'Coach' },
+    { id: '208-teachingSchedule', name: '208-Teaching Schedule', category: 'Coach' },
+    { id: '209-coachTimeOff', name: '209-Coach Time Off', category: 'Coach' },
+    { id: '210-coachLocationDirectory', name: '210-Coach Location Directory', category: 'Coach' },
+    { id: '211-coachLocationAdd', name: '211-Coach Location Add', category: 'Coach' },
+    { id: '212-pricingEntry', name: '212-Pricing Entry', category: 'Coach' },
+    { id: '213-pricingSingleLesson', name: '213-Pricing Single Lesson', category: 'Coach' },
+    { id: '214-pricingPackage', name: '214-Pricing Package', category: 'Coach' },
+    { id: '215-selfIntroduction', name: '215-Self Introduction', category: 'Coach' },
+    { id: '216-coachPendingLesson', name: '216-Coach Pending Lesson', category: 'Coach' },
+    { id: '217-coachConfirmedLesson', name: '217-Coach Confirmed Lesson', category: 'Coach' },
+    { id: '218-coachCompletedLesson', name: '218-Coach Completed Lesson', category: 'Coach' },
+    { id: '219-coachDeclinedLesson', name: '219-Coach Declined Lesson', category: 'Coach' },
+    { id: '220-coachCancelLesson', name: '220-Coach Cancel Lesson', category: 'Coach' },
     // 新增教练相关组件到列表
-    { id: '221-教练Performance', name: '221-教练业绩表现', category: 'Coach' },
-    { id: '222-教练收入详情', name: '222-教练收入详情', category: 'Coach' },
-    { id: '223-教练评分', name: '223-教练评分', category: 'Coach' },
-    { id: '224-教练用户页', name: '224-教练用户页', category: 'Coach' },
-    { id: '225-教练系统设置', name: '225-教练系统设置', category: 'Coach' },
-    { id: '226-教练推广', name: '226-教练推广', category: 'Coach' },
-    { id: '227-教练暂停接单', name: '227-教练暂停接单', category: 'Coach' },
-    { id: '302-signUp', name: '302-注册页面', category: 'General' },
-    { id: '303-login', name: '303-登录页面', category: 'General' },
-    { id: '304-accountInfo', name: '304-用户页-账户信息', category: 'General' },
-    { id: '305-changePassword', name: '305-用户页-修改密码', category: 'General' },
-    { id: '306-paymentMethods', name: '306-用户页-付款方式', category: 'General' },
-    { id: '307-notificationSettings', name: '307-用户页-通知设置', category: 'General' },
-    { id: '308-calendarSync', name: '308-用户页-同步日历', category: 'General' },
-    { id: '309-privacySettings', name: '309-用户页-隐私设置', category: 'General' },
-    { id: '310-support', name: '310-用户页-支持', category: 'General' },
-    { id: '311-about', name: '311-用户页-关于', category: 'General' },
-    { id: '312-roleSwitcher', name: '312-用户页-切换身份', category: 'General' },
-    { id: '313-guideSystem', name: '313-博客目录页', category: 'General' },
-    { id: '314-guideDetail', name: '314-博客详情页', category: 'General' },
+    // Add additional coach components to the list
+    { id: '221-coachPerformance', name: '221-Coach Performance', category: 'Coach' },
+    { id: '222-coachIncomeDetails', name: '222-Coach Income Details', category: 'Coach' },
+    { id: '223-coachRatings', name: '223-Coach Ratings', category: 'Coach' },
+    { id: '224-coachProfile', name: '224-Coach Profile', category: 'Coach' },
+    { id: '225-coachSettings', name: '225-Coach Settings', category: 'Coach' },
+    { id: '226-coachPromotion', name: '226-Coach Promotion', category: 'Coach' },
+    { id: '227-coachPauseBookings', name: '227-Coach Pause Bookings', category: 'Coach' },
+    { id: '302-signUp', name: '302-Sign Up Page', category: 'General' },
+    { id: '303-login', name: '303-Login Page', category: 'General' },
+    { id: '304-accountInfo', name: '304-Account Information Page', category: 'General' },
+    { id: '305-changePassword', name: '305-Change Password Page', category: 'General' },
+    { id: '306-paymentMethods', name: '306-Payment Methods Page', category: 'General' },
+    { id: '307-notificationSettings', name: '307-Notification Settings Page', category: 'General' },
+    { id: '308-calendarSync', name: '308-Calendar Sync Page', category: 'General' },
+    { id: '309-privacySettings', name: '309-Privacy Settings Page', category: 'General' },
+    { id: '310-support', name: '310-Support Page', category: 'General' },
+    { id: '311-about', name: '311-About Page', category: 'General' },
+    { id: '312-roleSwitcher', name: '312-Role Switcher Screen', category: 'General' },
+    { id: '313-guideSystem', name: '313-Guide System', category: 'General' },
+    { id: '314-guideDetail', name: '314-Guide Detail Page', category: 'General' },
     // 通用组件
-    { id: 'common-coachInfoCard', name: '教练信息卡组件', category: 'Common Components' },
-    { id: 'common-bottomNavigation', name: '底部导航栏组件', category: 'Common Components' },
-    { id: 'common-pageHeader', name: '页面标题组件', category: 'Common Components' },
-    { id: 'common-lessonDetailsCard', name: '课程详情卡组件', category: 'Common Components' },
-    { id: 'common-priceDetailsCard', name: '价格详情卡组件', category: 'Common Components' },
-    { id: 'common-locationCard', name: '场地信息卡组件', category: 'Common Components' },
+    // Common components
+    { id: 'common-coachInfoCard', name: 'Coach Info Card Component', category: 'Common Components' },
+    { id: 'common-bottomNavigation', name: 'Bottom Navigation Component', category: 'Common Components' },
+    { id: 'common-pageHeader', name: 'Page Header Component', category: 'Common Components' },
+    { id: 'common-lessonDetailsCard', name: 'Lesson Details Card Component', category: 'Common Components' },
+    { id: 'common-priceDetailsCard', name: 'Price Details Card Component', category: 'Common Components' },
+    { id: 'common-locationCard', name: 'Location Card Component', category: 'Common Components' },
+    { id: 'common-reviewsCard', name: 'Reviews Card Component', category: 'Common Components' },
+    { id: 'common-lessonCard', name: 'Lesson Card Component', category: 'Common Components' },
+    { id: 'common-toggleSwitch', name: 'Toggle Switch Component', category: 'Common Components' },
   ];
   
   // 按分类分组组件
+  // Group components by category
   const groupedComponents = components.reduce((groups, component) => {
     const category = component.category || '其他';
     if (!groups[category]) {
@@ -600,9 +827,10 @@ const ComponentShowcase = () => {
       
       <div className="flex flex-1 overflow-hidden">
         {/* 侧边栏导航 - 使用fixed height和overflow */}
+        {/* Sidebar navigation - using fixed height and overflow */}
         <div className="w-64 flex-shrink-0 bg-white shadow-md flex flex-col h-full">
           <div className="p-4 border-b">
-            <h2 className="text-lg font-semibold">UI组件</h2>
+            <h2 className="text-lg font-semibold">UI Components</h2>
           </div>
           <div className="overflow-y-auto flex-1 p-4">
             {Object.entries(groupedComponents).map(([category, items]) => (
@@ -626,6 +854,7 @@ const ComponentShowcase = () => {
         </div>
         
         {/* 组件展示区域 - 独立滚动区域 */}
+        {/* Component display area - independent scrolling area */}
         <div className="flex-1 flex flex-col h-full">
           <div className="p-6 overflow-y-auto flex-1">
             <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
@@ -639,7 +868,7 @@ const ComponentShowcase = () => {
       
       <footer className="bg-white p-4 shadow-md flex-shrink-0">
         <p className="text-center text-sm text-gray-500">
-          HiCoach UI组件展示平台 | 基于React和Tailwind CSS构建
+          HiCoach UI Component Showcase | Built with React and Tailwind CSS
         </p>
       </footer>
     </div>

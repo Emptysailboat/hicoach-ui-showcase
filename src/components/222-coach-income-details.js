@@ -608,7 +608,8 @@ const DownloadModal = memo(({ isOpen, onClose, downloadFormat, setDownloadFormat
               <div>
                 <label className="block text-sm text-gray-600 mb-1">Start Date</label>
                 <input
-                  type="date"
+                  type="text"
+                  placeholder="DD/MM/YYYY"
                   value={customDateRange.startDate}
                   onChange={(e) => setCustomDateRange(prev => ({ ...prev, startDate: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -617,7 +618,8 @@ const DownloadModal = memo(({ isOpen, onClose, downloadFormat, setDownloadFormat
               <div>
                 <label className="block text-sm text-gray-600 mb-1">End Date</label>
                 <input
-                  type="date"
+                  type="text"
+                  placeholder="DD/MM/YYYY"
                   value={customDateRange.endDate}
                   onChange={(e) => setCustomDateRange(prev => ({ ...prev, endDate: e.target.value }))}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
@@ -728,15 +730,6 @@ const DownloadModal = memo(({ isOpen, onClose, downloadFormat, setDownloadFormat
         <div className="space-y-3">
           <button 
             className="w-full bg-green-600 text-white rounded-lg py-3 font-medium flex items-center justify-center"
-            onClick={handleExport}
-            disabled={isExporting || (downloadPeriod === 'custom' && (!customDateRange.startDate || !customDateRange.endDate))}
-          >
-            <span className="material-icons mr-2">download</span>
-            <span>Download {downloadFormat.toUpperCase()}</span>
-          </button>
-          
-          <button 
-            className="w-full bg-gray-600 text-white rounded-lg py-3 font-medium flex items-center justify-center"
             onClick={handleEmailToMe}
             disabled={isExporting || (downloadPeriod === 'custom' && (!customDateRange.startDate || !customDateRange.endDate))}
           >

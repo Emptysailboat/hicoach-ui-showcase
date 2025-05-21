@@ -24,7 +24,7 @@ const LessonDetailsCard = ({
   lesson,
   title = 'Lesson Details',
   className = '',
-  skillTagClassName = 'bg-secondary-100 text-secondary-500'
+  skillTagClassName = 'bg-purple-100 text-purple-600'
 }) => {
   // 判断是否为周期性课程
   const isRecurring = !!lesson.sessions;
