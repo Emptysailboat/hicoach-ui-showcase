@@ -1,33 +1,89 @@
 import React, { useState } from 'react';
-import { Camera, MapPin, Upload, CheckCircle, X } from 'lucide-react';
 import PageHeader from './common/PageHeader';
 
 const CoachLocationAddPage = () => {
   // 表单状态
-  const [locationName, setLocationName] = useState('');
-  const [addressLine1, setAddressLine1] = useState('');
-  const [addressLine2, setAddressLine2] = useState('');
-  const [city, setCity] = useState('');
-  const [postcode, setPostcode] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [locationType, setLocationType] = useState('public'); // 'public' or 'private'
-  const [courts, setCourts] = useState('1');
   const [amenities, setAmenities] = useState({
-    parking: false,
+    indoor: false,
+    outdoor: false,
+    indoor_outdoor: false,
+    cafe_shop: false,
+    changing_room: false,
     showers: false,
-    changing_rooms: false,
-    cafe: false,
-    pro_shop: false,
-    disabled_access: false,
-    spectator_seating: false,
-    indoor_courts: false
+    spectator_seating: false
   });
-  const [photos, setPhotos] = useState([]);
+  const [isMainLocation, setIsMainLocation] = useState(false);
+  const [hasCourtFee, setHasCourtFee] = useState(false);
+  const [courtFeeAmount, setCourtFeeAmount] = useState('');
+  const [courtFeeFrequency, setCourtFeeFrequency] = useState('hour'); // 'hour', 'session', 'day'
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // 模拟搜索结果
+  const mockSearchResults = [
+    {
+      id: 1,
+      name: 'Wimbledon Tennis Club',
+      address: 'Church Road, Wimbledon, London SW19 5AE',
+      type: 'Tennis Club'
+    },
+    {
+      id: 2,
+      name: 'All England Lawn Tennis Club',
+      address: 'Church Road, Wimbledon, London SW19 5AE',
+      type: 'Tennis Club'
+    },
+    {
+      id: 3,
+      name: 'Queen\'s Club',
+      address: 'Palliser Road, London W14 9EQ',
+      type: 'Sports Club'
+    }
+  ];
+  
+  // 处理搜索
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.length > 2) {
+      setIsSearching(true);
+      // 模拟API搜索
+      setTimeout(() => {
+        setSearchResults(mockSearchResults.filter(location => 
+          location.name.toLowerCase().includes(query.toLowerCase()) ||
+          location.address.toLowerCase().includes(query.toLowerCase())
+        ));
+        setIsSearching(false);
+      }, 500);
+    } else {
+      setSearchResults([]);
+    }
+  };
+  
+  // 选择位置
+  const handleLocationSelect = (location) => {
+    setSelectedLocation(location);
+    setSearchResults([]);
+    setSearchQuery(location.name);
+  };
   
   // 处理表单提交
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!selectedLocation) {
+      alert('Please select a location from search results');
+      return;
+    }
+    
+    if (hasCourtFee && (!courtFeeAmount || parseFloat(courtFeeAmount) <= 0)) {
+      alert('Please enter a valid court fee amount');
+      return;
+    }
+    
     setIsSubmitting(true);
     
     // 模拟API调用
@@ -38,7 +94,6 @@ const CoachLocationAddPage = () => {
       // 在实际应用中，这里会导航回位置列表页面
       setTimeout(() => {
         console.log('Navigate to locations list');
-        // resetForm(); // 重置表单（如果需要）
       }, 1500);
     }, 1000);
   };
@@ -51,27 +106,22 @@ const CoachLocationAddPage = () => {
     }));
   };
   
-  // 处理照片上传
-  const handlePhotoUpload = () => {
-    // 在实际应用中，这里会打开文件选择器
-    // 模拟文件上传
-    const newPhoto = {
-      id: Date.now(),
-      url: 'https://via.placeholder.com/100x100'
-    };
-    setPhotos([...photos, newPhoto]);
-  };
-  
-  // 删除照片
-  const handlePhotoDelete = (id) => {
-    setPhotos(photos.filter(photo => photo.id !== id));
-  };
-  
   // 处理返回按钮点击
   const handleBack = () => {
     // 在实际应用中，这里会导航回上一页
     console.log('Navigate back');
   };
+  
+  // 设施选项配置
+  const amenityOptions = [
+    { key: 'indoor', label: 'Indoor', icon: 'home' },
+    { key: 'outdoor', label: 'Outdoor', icon: 'wb_sunny' },
+    { key: 'indoor_outdoor', label: 'Indoor & Outdoor', icon: 'compare_arrows' },
+    { key: 'cafe_shop', label: 'Cafe / Shop', icon: 'local_cafe' },
+    { key: 'changing_room', label: 'Changing Room', icon: 'meeting_room' },
+    { key: 'showers', label: 'Showers', icon: 'shower' },
+    { key: 'spectator_seating', label: 'Spectator Seating', icon: 'event_seat' }
+  ];
   
   // 渲染成功状态
   if (showSuccess) {
@@ -79,7 +129,7 @@ const CoachLocationAddPage = () => {
       <div className="flex flex-col h-screen bg-gray-50 max-w-md mx-auto">
         <div className="flex-1 flex flex-col items-center justify-center p-6">
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-            <CheckCircle className="h-8 w-8 text-green-600" />
+            <i className="material-icons text-green-600" style={{fontSize: "32px"}}>check_circle</i>
           </div>
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Location Added!</h2>
           <p className="text-gray-600 text-center mb-6">
@@ -98,293 +148,336 @@ const CoachLocationAddPage = () => {
       {/* 表单内容 */}
       <div className="flex-1 overflow-auto p-4">
         <form onSubmit={handleSubmit}>
-          {/* 位置信息部分 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Location Details</h2>
+          {/* 位置搜索部分 */}
+          <div className="bg-white rounded-xl shadow-sm p-5 mb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Search Location</h2>
             
-            {/* 位置名称 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Location Name <span className="text-red-500">*</span>
+            {/* 搜索框 */}
+            <div className="mb-4 relative">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Location Search <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
-                value={locationName}
-                onChange={(e) => setLocationName(e.target.value)}
-                placeholder="E.g. Wimbledon Tennis Club"
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                required
-              />
-            </div>
-            
-            {/* 地址 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Address Line 1 <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={addressLine1}
-                onChange={(e) => setAddressLine1(e.target.value)}
-                placeholder="Street address"
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                required
-              />
-            </div>
-            
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Address Line 2
-              </label>
-              <input
-                type="text"
-                value={addressLine2}
-                onChange={(e) => setAddressLine2(e.target.value)}
-                placeholder="Apartment, suite, etc. (optional)"
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-              />
-            </div>
-            
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  City <span className="text-red-500">*</span>
-                </label>
+              <div className="relative">
                 <input
                   type="text"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="City"
-                  className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Enter location name, address, or postcode"
+                  className="w-full p-3 border border-gray-200 rounded-xl text-gray-700 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent pr-12 bg-gray-50 focus:bg-white transition-all duration-200"
                   required
                 />
+                <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                  {isSearching ? (
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-green-500"></div>
+                  ) : (
+                    <i className="material-icons-outlined text-gray-400" style={{fontSize: "20px"}}>search</i>
+                  )}
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Postcode <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={postcode}
-                  onChange={(e) => setPostcode(e.target.value)}
-                  placeholder="Postcode"
-                  className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  required
-                />
-              </div>
+              
+              {/* 搜索结果 */}
+              {searchResults.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                  {searchResults.map(result => (
+                    <button
+                      key={result.id}
+                      type="button"
+                      className="w-full text-left p-4 border-b border-gray-100 last:border-b-0 first:rounded-t-xl last:rounded-b-xl"
+                      onClick={() => handleLocationSelect(result)}
+                    >
+                      <div className="font-medium text-gray-800 text-sm">{result.name}</div>
+                      <div className="text-xs text-gray-500 mt-1">{result.address}</div>
+                      <div className="text-xs text-green-600 mt-1 font-medium">{result.type}</div>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             
-            {/* 地图展示区（模拟） */}
-            <div className="bg-gray-100 rounded-lg h-40 mb-4 flex items-center justify-center border border-gray-200">
-              <div className="text-center">
-                <MapPin className="h-6 w-6 text-gray-400 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">Map preview will appear here</p>
+            {/* 地图预览 */}
+            <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl h-48 mb-4 flex items-center justify-center border border-gray-200 relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-r from-green-100/30 to-blue-100/30"></div>
+              <div className="text-center z-10">
+                <div className="bg-white rounded-full p-3 mb-3 mx-auto w-fit shadow-sm">
+                  <i className="material-icons-outlined text-green-600" style={{fontSize: "28px"}}>map</i>
+                </div>
+                <p className="text-sm text-gray-600 font-medium">Map Preview</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {selectedLocation ? 'Location selected' : 'Search for a location to view map'}
+                </p>
               </div>
+              {selectedLocation && (
+                <div className="absolute top-3 right-3 bg-green-500 text-white rounded-full p-1">
+                  <i className="material-icons" style={{fontSize: "16px"}}>place</i>
+                </div>
+              )}
             </div>
             
-            <button
-              type="button"
-              className="w-full py-2 border border-purple-500 text-purple-600 rounded-lg text-sm font-medium"
-            >
-              Verify Location
-            </button>
+            {/* 选中的位置 */}
+            {selectedLocation && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-800 text-sm">{selectedLocation.name}</div>
+                    <div className="text-xs text-gray-600 mt-1">{selectedLocation.address}</div>
+                  </div>
+                  <div className="bg-green-100 rounded-full p-1">
+                    <i className="material-icons text-green-600" style={{fontSize: "20px"}}>check_circle</i>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* 场地类型与设施 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Facility Information</h2>
+          <div className="bg-white rounded-xl shadow-sm p-5 mb-4">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Facility Information</h2>
             
             {/* 场地类型 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
                 Location Type <span className="text-red-500">*</span>
               </label>
-              <div className="flex space-x-3">
-                <label className="flex items-center">
+              <div className="grid grid-cols-1 gap-3">
+                <label className={`relative cursor-pointer transition-all duration-200 ${
+                  locationType === 'public' 
+                    ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300' 
+                    : 'bg-gray-50 border-2 border-gray-200'
+                } rounded-xl p-4`}>
                   <input
                     type="radio"
                     name="locationType"
                     value="public"
                     checked={locationType === 'public'}
                     onChange={() => setLocationType('public')}
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 mr-2"
+                    className="sr-only"
                   />
-                  <span className="text-sm text-gray-700">Public Facility</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className={`rounded-full p-2 mr-3 ${
+                        locationType === 'public' ? 'bg-green-100' : 'bg-gray-100'
+                      }`}>
+                        <i className={`material-icons ${
+                          locationType === 'public' ? 'text-green-600' : 'text-gray-500'
+                        }`} style={{fontSize: "20px"}}>public</i>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-800">Public</div>
+                        <div className="text-xs text-gray-500 mt-1">Community courts and clubs</div>
+                      </div>
+                    </div>
+                    {locationType === 'public' && (
+                      <i className="material-icons text-green-600" style={{fontSize: "20px"}}>check_circle</i>
+                    )}
+                  </div>
                 </label>
-                <label className="flex items-center">
+                
+                <label className={`relative cursor-pointer transition-all duration-200 ${
+                  locationType === 'private' 
+                    ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300' 
+                    : 'bg-gray-50 border-2 border-gray-200'
+                } rounded-xl p-4`}>
                   <input
                     type="radio"
                     name="locationType"
                     value="private"
                     checked={locationType === 'private'}
                     onChange={() => setLocationType('private')}
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 mr-2"
+                    className="sr-only"
                   />
-                  <span className="text-sm text-gray-700">Private/Home Court</span>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className={`rounded-full p-2 mr-3 ${
+                        locationType === 'private' ? 'bg-green-100' : 'bg-gray-100'
+                      }`}>
+                        <i className={`material-icons ${
+                          locationType === 'private' ? 'text-green-600' : 'text-gray-500'
+                        }`} style={{fontSize: "20px"}}>business</i>
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-800">Private / Commercial</div>
+                        <div className="text-xs text-gray-500 mt-1">Private clubs and facilities</div>
+                      </div>
+                    </div>
+                    {locationType === 'private' && (
+                      <i className="material-icons text-green-600" style={{fontSize: "20px"}}>check_circle</i>
+                    )}
+                  </div>
                 </label>
               </div>
             </div>
             
-            {/* 球场数量 */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Number of Courts <span className="text-red-500">*</span>
-              </label>
-              <select
-                value={courts}
-                onChange={(e) => setCourts(e.target.value)}
-                className="w-full p-2.5 border border-gray-300 rounded-lg text-gray-700 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                required
-              >
-                <option value="1">1 Court</option>
-                <option value="2">2 Courts</option>
-                <option value="3">3 Courts</option>
-                <option value="4">4 Courts</option>
-                <option value="5">5 Courts</option>
-                <option value="6+">6+ Courts</option>
-              </select>
-            </div>
-            
             {/* 设施 */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Amenities Available
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Location Features
               </label>
-              <div className="grid grid-cols-2 gap-2">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.parking}
-                    onChange={() => handleAmenityChange('parking')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
+              <div className="grid grid-cols-1 gap-2">
+                {amenityOptions.map(option => (
+                  <label 
+                    key={option.key}
+                    className={`relative cursor-pointer transition-all duration-200 ${
+                      amenities[option.key] 
+                        ? 'bg-gradient-to-r from-green-50 to-emerald-50 border border-green-300' 
+                        : 'bg-gray-50 border border-gray-200'
+                    } rounded-lg p-3`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={amenities[option.key]}
+                      onChange={() => handleAmenityChange(option.key)}
+                      className="sr-only"
+                    />
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <div className={`rounded-full p-1.5 mr-3 ${
+                          amenities[option.key] ? 'bg-purple-100' : 'bg-gray-100'
+                        }`}>
+                          <i className={`material-icons ${
+                            amenities[option.key] ? 'text-purple-600' : 'text-gray-500'
+                          }`} style={{fontSize: "16px"}}>{option.icon}</i>
+                        </div>
+                        <span className={`text-sm font-medium ${
+                          amenities[option.key] ? 'text-purple-700' : 'text-gray-700'
+                        }`}>{option.label}</span>
+                      </div>
+                      {amenities[option.key] && (
+                        <i className="material-icons text-green-600" style={{fontSize: "18px"}}>check_circle</i>
+                      )}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          {/* 主要位置设置 */}
+          <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-sm font-semibold text-gray-800">Set as Main Location</h3>
+                <p className="text-xs text-gray-500 mt-1">This will be your primary teaching location</p>
+              </div>
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="mainLocation"
+                  checked={isMainLocation}
+                  onChange={(e) => setIsMainLocation(e.target.checked)}
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="mainLocation"
+                  className={`flex items-center cursor-pointer ${
+                    isMainLocation ? 'bg-green-500' : 'bg-gray-300'
+                  } relative inline-block w-12 h-6 rounded-full transition-colors duration-300 ease-in-out shadow-inner`}
+                >
+                  <span
+                    className={`${
+                      isMainLocation ? 'translate-x-6' : 'translate-x-1'
+                    } inline-block w-4 h-4 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out`}
                   />
-                  <span className="text-sm text-gray-700">Parking</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.showers}
-                    onChange={() => handleAmenityChange('showers')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Showers</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.changing_rooms}
-                    onChange={() => handleAmenityChange('changing_rooms')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Changing Rooms</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.cafe}
-                    onChange={() => handleAmenityChange('cafe')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Cafe/Refreshments</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.pro_shop}
-                    onChange={() => handleAmenityChange('pro_shop')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Pro Shop</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.disabled_access}
-                    onChange={() => handleAmenityChange('disabled_access')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Disabled Access</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.spectator_seating}
-                    onChange={() => handleAmenityChange('spectator_seating')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Spectator Seating</span>
-                </label>
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={amenities.indoor_courts}
-                    onChange={() => handleAmenityChange('indoor_courts')}
-                    className="rounded text-purple-600 focus:ring-purple-500 h-4 w-4 mr-2"
-                  />
-                  <span className="text-sm text-gray-700">Indoor Courts</span>
                 </label>
               </div>
             </div>
           </div>
           
-          {/* 场地照片 */}
-          <div className="bg-white rounded-lg shadow-sm p-4 mb-6">
-            <h2 className="text-base font-medium text-gray-800 mb-3">Location Photos</h2>
+          {/* 场地费用设置 */}
+          <div className="bg-white rounded-xl shadow-sm p-5 mb-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Court Fees</h3>
             
-            <div className="mb-4">
-              <p className="text-sm text-gray-600 mb-3">
-                Add photos of the facility to help students find the courts (optional).
-              </p>
-              
-              <div className="grid grid-cols-3 gap-3">
-                {/* 已上传照片 */}
-                {photos.map(photo => (
-                  <div key={photo.id} className="relative">
-                    <img 
-                      src={photo.url} 
-                      alt="Location" 
-                      className="h-24 w-full object-cover rounded-lg"
-                    />
-                    <button 
-                      type="button"
-                      className="absolute -top-2 -right-2 bg-red-100 rounded-full p-1"
-                      onClick={() => handlePhotoDelete(photo.id)}
-                    >
-                      <X className="h-4 w-4 text-red-500" />
-                    </button>
-                  </div>
-                ))}
-                
-                {/* 添加照片按钮 */}
-                {photos.length < 6 && (
-                  <button
-                    type="button"
-                    className="h-24 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-gray-50"
-                    onClick={handlePhotoUpload}
-                  >
-                    <Camera className="h-6 w-6 text-gray-400" />
-                    <span className="text-xs text-gray-500 mt-1">Add Photo</span>
-                  </button>
-                )}
+            {/* 是否收费 */}
+            <div className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl mb-4">
+              <div>
+                <p className="text-sm font-medium text-gray-800">Does this location charge court fees?</p>
+                <p className="text-xs text-gray-500 mt-1">Additional cost for using the courts</p>
               </div>
-              
-              {photos.length > 0 && (
-                <p className="text-xs text-gray-500 mt-2">
-                  {photos.length}/6 photos added
-                </p>
-              )}
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  id="hasCourtFee"
+                  checked={hasCourtFee}
+                  onChange={(e) => setHasCourtFee(e.target.checked)}
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="hasCourtFee"
+                  className={`flex items-center cursor-pointer ${
+                    hasCourtFee ? 'bg-green-500' : 'bg-gray-300'
+                  } relative inline-block w-12 h-6 rounded-full transition-colors duration-300 ease-in-out shadow-inner`}
+                >
+                  <span
+                    className={`${
+                      hasCourtFee ? 'translate-x-6' : 'translate-x-1'
+                    } inline-block w-4 h-4 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out`}
+                  />
+                </label>
+              </div>
             </div>
+            
+            {/* 费用详情 */}
+            {hasCourtFee && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Amount <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">£</span>
+                      <input
+                        type="number"
+                        value={courtFeeAmount}
+                        onChange={(e) => setCourtFeeAmount(e.target.value)}
+                        placeholder="0.00"
+                        step="0.01"
+                        min="0"
+                        className="w-full pl-8 pr-3 py-2.5 border border-gray-200 rounded-xl text-gray-700 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
+                        required={hasCourtFee}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Per <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      value={courtFeeFrequency}
+                      onChange={(e) => setCourtFeeFrequency(e.target.value)}
+                      className="w-full p-2.5 border border-gray-200 rounded-xl text-gray-700 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
+                      required={hasCourtFee}
+                    >
+                      <option value="hour">Hour</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div className="bg-purple-50 border border-purple-200 rounded-xl p-3">
+                  <div className="flex items-start">
+                    <i className="material-icons text-purple-600 mr-2 mt-0.5" style={{fontSize: "16px"}}>info</i>
+                    <div>
+                      <p className="text-sm text-purple-800 font-medium">Court Fee Information</p>
+                      <p className="text-xs text-purple-700 mt-1">
+                        This fee will be displayed to students when they book lessons at this location. 
+                        You can update this information anytime.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* 提交按钮 */}
           <button
             type="submit"
-            className="w-full py-2.5 bg-green-600 text-white rounded-lg font-medium flex items-center justify-center"
-            disabled={isSubmitting}
+            className="w-full py-3 bg-green-600 text-white rounded-xl font-semibold flex items-center justify-center shadow-lg transition-all duration-200"
+            disabled={isSubmitting || !selectedLocation}
           >
             {isSubmitting ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
                 Adding Location...
               </>
             ) : (

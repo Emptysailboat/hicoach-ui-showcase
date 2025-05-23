@@ -7,6 +7,21 @@ const CoachProfileSettingsPage = () => {
 
   const isCompleted = (id) => completedItems.includes(id);
   
+  // 统一的状态标签样式组件
+  const StatusTag = ({ completed }) => {
+    return completed ? (
+      <span className="text-xs py-1 px-2 bg-green-100 text-green-600 rounded-full flex items-center whitespace-nowrap">
+        <span className="material-icons text-xs mr-1">check_circle</span>
+        Completed
+      </span>
+    ) : (
+      <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full flex items-center whitespace-nowrap">
+        <span className="material-icons text-xs mr-1">priority_high</span>
+        Required
+      </span>
+    );
+  };
+  
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 max-w-md mx-auto border border-gray-200 rounded-md overflow-hidden">
       {/* 顶部标题栏 */}
@@ -60,16 +75,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">Verify Your Identity</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      {isCompleted('verify-identity') ? (
-                        <span className="text-xs py-1 px-2 bg-green-100 text-green-600 rounded-full flex items-center whitespace-nowrap">
-                          <span className="material-icons text-sm mr-1">check_circle</span>
-                          Completed
-                        </span>
-                      ) : (
-                        <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                          Required
-                        </span>
-                      )}
+                      <StatusTag completed={isCompleted('verify-identity')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>
@@ -90,9 +96,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">DBS Certificate Upload</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                        Required
-                      </span>
+                      <StatusTag completed={isCompleted('dbs-certificate')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>
@@ -113,9 +117,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">Professional Certification</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                        Required
-                      </span>
+                      <StatusTag completed={isCompleted('professional-cert')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>
@@ -138,16 +140,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">Location</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      {isCompleted('location') ? (
-                        <span className="text-xs py-1 px-2 bg-green-100 text-green-600 rounded-full flex items-center whitespace-nowrap">
-                          <span className="material-icons text-sm mr-1">check_circle</span>
-                          Completed
-                        </span>
-                      ) : (
-                        <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                          Required
-                        </span>
-                      )}
+                      <StatusTag completed={isCompleted('location')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>
@@ -168,9 +161,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">Pricing Setting</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                        Required
-                      </span>
+                      <StatusTag completed={isCompleted('pricing')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>
@@ -191,9 +182,7 @@ const CoachProfileSettingsPage = () => {
                   <div className="flex items-center justify-between w-full">
                     <span className="text-gray-800 font-medium block text-left">Introduction</span>
                     <div className="flex items-center flex-shrink-0 ml-2">
-                      <span className="text-xs py-1 px-2 bg-yellow-100 text-yellow-600 rounded-full whitespace-nowrap">
-                        Required
-                      </span>
+                      <StatusTag completed={isCompleted('introduction')} />
                       <span className="material-icons text-gray-400 ml-2 flex-shrink-0">chevron_right</span>
                     </div>
                   </div>

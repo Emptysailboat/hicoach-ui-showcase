@@ -48,7 +48,7 @@ const CoachPromotePage = () => {
       {/* Toast 通知 */}
       {showToast && (
         <div className="fixed top-20 left-0 right-0 mx-auto w-4/5 bg-gray-800 text-white py-2.5 px-4 rounded-lg z-50 flex items-center justify-center shadow-lg" style={{ maxWidth: "320px" }}>
-          <span className="material-icons-outlined text-sm mr-2">check_circle</span>
+          <span className="material-icons text-sm mr-2">check_circle</span>
           <span className="text-sm">{toastMessage}</span>
         </div>
       )}
@@ -60,7 +60,7 @@ const CoachPromotePage = () => {
       />
       
       {/* 主要内容区 - 可滚动 */}
-      <div className="flex-1 overflow-y-auto pb-16 pt-4 scroll-smooth">
+      <div className="flex-1 overflow-y-auto pb-16 pt-4">
         {/* 提示文本 */}
         <div className="px-4 mb-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Grow Your Coaching Business</h2>
@@ -72,7 +72,7 @@ const CoachPromotePage = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <div className="flex items-center mb-3">
               <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
-                <span className="material-icons-outlined">share</span>
+                <span className="material-icons">share</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-800">Share Your Link</h3>
             </div>
@@ -97,12 +97,12 @@ const CoachPromotePage = () => {
             >
               {linkCopied ? (
                 <>
-                  <span className="material-icons-outlined mr-2">check_circle</span>
+                  <span className="material-icons mr-2">check_circle</span>
                   Copied!
                 </>
               ) : (
                 <>
-                  <span className="material-icons-outlined mr-2">content_copy</span>
+                  <span className="material-icons mr-2">content_copy</span>
                   Copy Link
                 </>
               )}
@@ -115,7 +115,7 @@ const CoachPromotePage = () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200 p-4">
             <div className="flex items-center mb-3">
               <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
-                <span className="material-icons-outlined">card_giftcard</span>
+                <span className="material-icons">card_giftcard</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-800">Promotion Code</h3>
             </div>
@@ -143,12 +143,12 @@ const CoachPromotePage = () => {
             >
               {codeCopied ? (
                 <>
-                  <span className="material-icons-outlined mr-2">check_circle</span>
+                  <span className="material-icons mr-2">check_circle</span>
                   Code Copied!
                 </>
               ) : (
                 <>
-                  <span className="material-icons-outlined mr-2">content_copy</span>
+                  <span className="material-icons mr-2">content_copy</span>
                   Copy Promotion Code
                 </>
               )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Plus, Package, Trash2, CheckCircle, AlertTriangle } from 'lucide-react';
 import PageHeader from './common/PageHeader';
+import ToggleSwitch from './common/ToggleSwitch';
 
 const PackagePricingPage = () => {
   // 状态管理
@@ -9,6 +9,7 @@ const PackagePricingPage = () => {
       id: 1,
       name: "5-Lesson Package",
       lessons: 5,
+      singleLessonPrice: 40,
       discount: 10,
       active: true
     },
@@ -16,6 +17,7 @@ const PackagePricingPage = () => {
       id: 2,
       name: "10-Lesson Package",
       lessons: 10,
+      singleLessonPrice: 40,
       discount: 15,
       active: true
     }
@@ -23,14 +25,14 @@ const PackagePricingPage = () => {
   
   const [editMode, setEditMode] = useState(false);
   const [editingPackage, setEditingPackage] = useState(null);
-  const [packageName, setPackageName] = useState('');
   const [numberOfLessons, setNumberOfLessons] = useState('');
+  const [singleLessonPrice, setSingleLessonPrice] = useState('');
   const [discountPercent, setDiscountPercent] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
-  const [showNameError, setShowNameError] = useState(false);
   const [showLessonsError, setShowLessonsError] = useState(false);
+  const [showPriceError, setShowPriceError] = useState(false);
   const [showDiscountError, setShowDiscountError] = useState(false);
   
   // 处理返回按钮点击
@@ -43,8 +45,8 @@ const PackagePricingPage = () => {
   const handleAddNew = () => {
     setEditMode(true);
     setEditingPackage(null);
-    setPackageName('');
     setNumberOfLessons('');
+    setSingleLessonPrice('');
     setDiscountPercent('');
     clearErrors();
   };
@@ -53,8 +55,8 @@ const PackagePricingPage = () => {
   const handleEdit = (pkg) => {
     setEditMode(true);
     setEditingPackage(pkg.id);
-    setPackageName(pkg.name);
     setNumberOfLessons(pkg.lessons.toString());
+    setSingleLessonPrice(pkg.singleLessonPrice.toString());
     setDiscountPercent(pkg.discount.toString());
     clearErrors();
   };
@@ -70,8 +72,8 @@ const PackagePricingPage = () => {
   
   // 清除错误提示
   const clearErrors = () => {
-    setShowNameError(false);
     setShowLessonsError(false);
+    setShowPriceError(false);
     setShowDiscountError(false);
   };
   
@@ -79,19 +81,19 @@ const PackagePricingPage = () => {
   const validateForm = () => {
     let isValid = true;
     
-    // 验证套餐名称
-    if (!packageName.trim()) {
-      setShowNameError(true);
-      isValid = false;
-    }
-    
     // 验证课程数量
     if (!numberOfLessons || isNaN(parseInt(numberOfLessons)) || parseInt(numberOfLessons) <= 1) {
       setShowLessonsError(true);
       isValid = false;
     }
     
-    // 验证折扣
+    // 验证单节课价格
+    if (!singleLessonPrice || isNaN(parseFloat(singleLessonPrice)) || parseFloat(singleLessonPrice) <= 0) {
+      setShowPriceError(true);
+      isValid = false;
+    }
+    
+    // 验证折扣 (允许为0)
     if (!discountPercent || isNaN(parseFloat(discountPercent)) || parseFloat(discountPercent) < 0 || parseFloat(discountPercent) > 50) {
       setShowDiscountError(true);
       isValid = false;
@@ -106,6 +108,8 @@ const PackagePricingPage = () => {
       return;
     }
     
+    const packageName = `${numberOfLessons}-Lesson Package`;
+    
     if (editingPackage) {
       // 更新现有套餐
       setPackages(prevPackages =>
@@ -113,8 +117,9 @@ const PackagePricingPage = () => {
           pkg.id === editingPackage
             ? { 
                 ...pkg, 
-                name: packageName, 
+                name: packageName,
                 lessons: parseInt(numberOfLessons), 
+                singleLessonPrice: parseFloat(singleLessonPrice),
                 discount: parseFloat(discountPercent)
               }
             : pkg
@@ -126,6 +131,7 @@ const PackagePricingPage = () => {
         id: Date.now(),
         name: packageName,
         lessons: parseInt(numberOfLessons),
+        singleLessonPrice: parseFloat(singleLessonPrice),
         discount: parseFloat(discountPercent),
         active: true
       };
@@ -154,6 +160,52 @@ const PackagePricingPage = () => {
     setDeletingId(id);
     setShowConfirmDelete(true);
   };
+
+  // 计算套餐价格
+  const calculatePackagePrice = (lessons, price, discount) => {
+    const originalTotal = lessons * price;
+    const discountAmount = originalTotal * (discount / 100);
+    return originalTotal - discountAmount;
+  };
+
+  // 计算费用结构
+  const calculateFeeStructure = (lessonPrice, numberOfLessonsValue, discountValue) => {
+    if (!lessonPrice || !numberOfLessonsValue) return null;
+    
+    const lessons = parseInt(numberOfLessonsValue) || 0;
+    const discount = parseFloat(discountValue) || 0;
+    const singlePrice = parseFloat(lessonPrice) || 0;
+    
+    // 单节课费用计算
+    const platformFee = singlePrice * 0.04;
+    const bookingFee = 0.99;
+    const studentPaysSingle = singlePrice + platformFee + bookingFee;
+    const coachReceivesSingle = singlePrice * 0.97; // 扣除3%手续费
+    
+    // 套餐费用计算
+    const packageOriginalTotal = lessons * singlePrice;
+    const packageDiscountAmount = packageOriginalTotal * (discount / 100);
+    const packageFinalPrice = packageOriginalTotal - packageDiscountAmount;
+    const packagePlatformFee = packageFinalPrice * 0.04;
+    const studentPaysPackage = packageFinalPrice + packagePlatformFee + bookingFee;
+    const coachReceivesPackage = packageFinalPrice * 0.97;
+    
+    return {
+      single: {
+        studentPays: studentPaysSingle,
+        coachReceives: coachReceivesSingle
+      },
+      package: {
+        originalTotal: packageOriginalTotal,
+        discountAmount: packageDiscountAmount,
+        finalPrice: packageFinalPrice,
+        studentPays: studentPaysPackage,
+        coachReceives: coachReceivesPackage,
+        lessons: lessons,
+        discount: discount
+      }
+    };
+  };
   
   // 渲染套餐列表
   const renderPackagesTable = () => {
@@ -168,42 +220,41 @@ const PackagePricingPage = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className={`h-10 w-10 rounded-full ${pkg.active ? 'bg-purple-100' : 'bg-gray-200'} flex items-center justify-center mr-3`}>
-                  <Package className={`h-5 w-5 ${pkg.active ? 'text-purple-600' : 'text-gray-500'}`} />
+                  <i 
+                    className={`material-icons-outlined ${pkg.active ? 'text-purple-600' : 'text-gray-500'}`}
+                    style={{fontSize: "20px"}}
+                  >
+                    inventory_2
+                  </i>
                 </div>
                 <div>
                   <h3 className={`font-medium ${pkg.active ? 'text-gray-800' : 'text-gray-500'}`}>
                     {pkg.name}
                   </h3>
                   <p className={`text-sm ${pkg.active ? 'text-gray-600' : 'text-gray-400'}`}>
-                    {pkg.lessons} lessons • {pkg.discount}% discount
+                    {pkg.lessons} lessons • {pkg.discount}% discount • £{calculatePackagePrice(pkg.lessons, pkg.singleLessonPrice, pkg.discount).toFixed(2)}
                   </p>
                 </div>
               </div>
               
               <div className="flex items-center">
                 {/* 激活/停用开关 */}
-                <label className="inline-flex items-center cursor-pointer mr-4">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only peer"
-                    checked={pkg.active}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      toggleActive(pkg.id);
-                    }} 
+                <div className="mr-4" onClick={(e) => e.stopPropagation()}>
+                  <ToggleSwitch 
+                    isOn={pkg.active} 
+                    onToggle={() => toggleActive(pkg.id)} 
                   />
-                  <div className="relative w-9 h-5 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-green-500"></div>
-                </label>
+                </div>
                 
                 {/* 删除按钮 */}
                 <button 
-                  className="p-1.5 rounded-full hover:bg-gray-100"
+                  className="p-1.5 rounded-full"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleDeleteClick(pkg.id);
                   }}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500" />
+                  <i className="material-icons-outlined text-gray-500" style={{fontSize: "18px"}}>delete</i>
                 </button>
               </div>
             </div>
@@ -215,37 +266,13 @@ const PackagePricingPage = () => {
   
   // 渲染编辑表单
   const renderEditForm = () => {
+    const feeStructure = calculateFeeStructure(singleLessonPrice, numberOfLessons, discountPercent);
+    
     return (
       <div className="p-4">
         <h2 className="text-lg font-medium text-gray-800 mb-4">
           {editingPackage ? 'Edit Package' : 'Add New Package'}
         </h2>
-        
-        {/* 套餐名称 */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Package Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={packageName}
-            onChange={(e) => {
-              setPackageName(e.target.value);
-              setShowNameError(false);
-            }}
-            placeholder="e.g. 5-Lesson Package"
-            className={`w-full p-2.5 border rounded-lg text-gray-700 text-sm ${
-              showNameError 
-                ? 'border-red-500 focus:ring-red-500' 
-                : 'border-gray-300 focus:ring-purple-500'
-            } focus:border-transparent focus:ring-2`}
-          />
-          {showNameError && (
-            <p className="mt-1 text-sm text-red-600">
-              Please enter a package name
-            </p>
-          )}
-        </div>
         
         {/* 课程数量 */}
         <div className="mb-4">
@@ -273,9 +300,42 @@ const PackagePricingPage = () => {
             </p>
           )}
         </div>
+
+        {/* 单节课价格 */}
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Single Lesson Price (£) <span className="text-red-500">*</span>
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <span className="text-gray-500">£</span>
+            </div>
+            <input
+              type="number"
+              value={singleLessonPrice}
+              onChange={(e) => {
+                setSingleLessonPrice(e.target.value);
+                setShowPriceError(false);
+              }}
+              placeholder="0.00"
+              className={`w-full pl-8 p-2.5 border rounded-lg text-gray-700 text-sm ${
+                showPriceError 
+                  ? 'border-red-500 focus:ring-red-500' 
+                  : 'border-gray-300 focus:ring-purple-500'
+              } focus:border-transparent focus:ring-2`}
+              min="0.01"
+              step="0.01"
+            />
+          </div>
+          {showPriceError && (
+            <p className="mt-1 text-sm text-red-600">
+              Please enter a valid price (must be greater than 0)
+            </p>
+          )}
+        </div>
         
         {/* 折扣百分比 */}
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Discount Percentage <span className="text-red-500">*</span>
           </label>
@@ -307,6 +367,69 @@ const PackagePricingPage = () => {
             </p>
           )}
         </div>
+
+        {/* 实时收费概览 */}
+        {feeStructure && (
+          <div className="mb-4 bg-purple-50 border border-purple-200 rounded-lg p-3">
+            <h4 className="text-sm font-medium text-purple-800 mb-2">Revenue Overview</h4>
+            
+            {/* 单节课收费 */}
+            <div className="mb-3">
+              <h5 className="text-xs font-medium text-purple-700 mb-1">Single Lesson:</h5>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="text-purple-600">
+                  Student pays: <span className="font-medium">£{feeStructure.single.studentPays.toFixed(2)}</span>
+                </div>
+                <div className="text-purple-600">
+                  You receive: <span className="font-medium">£{feeStructure.single.coachReceives.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 套餐收费 */}
+            {feeStructure.package.lessons > 1 && (
+              <div className="border-t border-purple-200 pt-2">
+                <h5 className="text-xs font-medium text-purple-700 mb-1">
+                  {feeStructure.package.lessons}-Lesson Package {feeStructure.package.discount > 0 && `(${feeStructure.package.discount}% off)`}:
+                </h5>
+                <div className="space-y-1 text-xs text-purple-600">
+                  {feeStructure.package.discount > 0 && (
+                    <div className="flex justify-between">
+                      <span>Original total:</span>
+                      <span>£{feeStructure.package.originalTotal.toFixed(2)}</span>
+                    </div>
+                  )}
+                  {feeStructure.package.discount > 0 && (
+                    <div className="flex justify-between">
+                      <span>Discount (-{feeStructure.package.discount}%):</span>
+                      <span>-£{feeStructure.package.discountAmount.toFixed(2)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between font-medium">
+                    <span>Student pays:</span>
+                    <span>£{feeStructure.package.studentPays.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between font-medium">
+                    <span>You receive:</span>
+                    <span>£{feeStructure.package.coachReceives.toFixed(2)}</span>
+                  </div>
+                  {feeStructure.package.discount > 0 && (
+                    <div className="text-xs text-purple-500 mt-1">
+                      Student saves £{(feeStructure.package.studentPays - (feeStructure.single.studentPays * feeStructure.package.lessons)).toFixed(2)} vs individual lessons
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 折扣提示 */}
+        <div className="mb-6">
+          <p className="text-sm text-purple-600">
+            Discount percentage is not required and can be 0, but offering some discount helps encourage package bookings.
+          </p>
+        </div>
         
         <div className="flex justify-end space-x-3">
           <button
@@ -335,7 +458,7 @@ const PackagePricingPage = () => {
         <div className="bg-white rounded-lg p-5 mx-4 max-w-sm w-full">
           <div className="flex flex-col items-center mb-4">
             <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-3">
-              <AlertTriangle className="h-6 w-6 text-red-600" />
+              <i className="material-icons text-red-600" style={{fontSize: "24px"}}>warning</i>
             </div>
             <h3 className="text-lg font-semibold text-gray-800 mb-1">Delete Package</h3>
             <p className="text-gray-600 text-center">
@@ -371,7 +494,7 @@ const PackagePricingPage = () => {
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30">
           <div className="bg-white rounded-xl shadow-lg p-4 flex items-center">
             <div className="bg-green-100 rounded-full p-2 mr-3">
-              <CheckCircle className="h-5 w-5 text-green-600" />
+              <i className="material-icons text-green-600" style={{fontSize: "20px"}}>check_circle</i>
             </div>
             <span className="text-gray-800 font-medium">Package updated successfully</span>
           </div>
@@ -398,26 +521,22 @@ const PackagePricingPage = () => {
             {/* 添加新套餐按钮 */}
             <div className="p-4 bg-white">
               <button 
-                className="w-full py-2.5 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg font-medium flex items-center justify-center hover:bg-gray-50"
+                className="w-full py-2.5 border-2 border-dashed border-gray-300 text-gray-600 rounded-lg font-medium flex items-center justify-center"
                 onClick={handleAddNew}
               >
-                <Plus className="h-5 w-5 mr-1.5" />
+                <i className="material-icons mr-1.5" style={{fontSize: "20px"}}>add</i>
                 Add New Package
               </button>
             </div>
             
             {/* 套餐说明 */}
             <div className="p-4 bg-white">
-              <div className="flex items-start bg-blue-50 p-3 rounded-lg">
+              <div className="flex items-start bg-purple-50 p-3 rounded-lg">
                 <div className="mt-0.5 mr-3 flex-shrink-0">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-blue-600">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"></circle>
-                    <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"></path>
-                    <circle cx="12" cy="16" r="1" fill="currentColor"></circle>
-                  </svg>
+                  <i className="material-icons text-purple-600" style={{fontSize: "20px"}}>info</i>
                 </div>
                 <div>
-                  <p className="text-sm text-blue-800">
+                  <p className="text-sm text-purple-800">
                     Packages are a great way to encourage repeat bookings. The discount is applied to your normal hourly rate.
                   </p>
                 </div>
