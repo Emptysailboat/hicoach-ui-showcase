@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/hicoach-ui-showcase/static/css/main.2c9a439f.css",
-    "main.js": "/hicoach-ui-showcase/static/js/main.725789ad.js",
+    "main.css": "/hicoach-ui-showcase/static/css/main.1283770b.css",
+    "main.js": "/hicoach-ui-showcase/static/js/main.12d5b67d.js",
     "static/js/453.c3dc5309.chunk.js": "/hicoach-ui-showcase/static/js/453.c3dc5309.chunk.js",
     "index.html": "/hicoach-ui-showcase/index.html",
-    "main.2c9a439f.css.map": "/hicoach-ui-showcase/static/css/main.2c9a439f.css.map",
-    "main.725789ad.js.map": "/hicoach-ui-showcase/static/js/main.725789ad.js.map",
+    "main.1283770b.css.map": "/hicoach-ui-showcase/static/css/main.1283770b.css.map",
+    "main.12d5b67d.js.map": "/hicoach-ui-showcase/static/js/main.12d5b67d.js.map",
     "453.c3dc5309.chunk.js.map": "/hicoach-ui-showcase/static/js/453.c3dc5309.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.2c9a439f.css",
-    "static/js/main.725789ad.js"
+    "static/css/main.1283770b.css",
+    "static/js/main.12d5b67d.js"
   ]
 }
