@@ -114,14 +114,14 @@ const CoachLocationDirectory = () => {
   const renderTypeTag = (type) => {
     return (
       <div className={`
-        flex items-center px-2.5 py-1 rounded-full text-xs font-medium 
+        flex items-center px-3 py-1.5 rounded-lg text-sm font-medium 
         ${type === 'public' 
           ? 'bg-blue-50 text-blue-700 border border-blue-200' 
           : 'bg-orange-50 text-orange-700 border border-orange-200'}
       `}>
-        <i className={`material-icons mr-1 ${
+        <i className={`material-icons-round mr-1.5 ${
           type === 'public' ? 'text-blue-600' : 'text-orange-600'
-        }`} style={{fontSize: "14px"}}>
+        }`} style={{fontSize: "16px"}}>
           {type === 'public' ? 'public' : 'business'}
         </i>
         {type === 'public' ? 'Public' : 'Private'}
@@ -142,31 +142,31 @@ const CoachLocationDirectory = () => {
   
   // 创建顶部导航栏右侧元素
   const rightElement = (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center space-x-2">
       {!showSearch && (
         <button 
-          className="p-2 rounded-full transition-colors duration-200"
+          className="w-10 h-10 rounded-full flex items-center justify-center active:bg-gray-100 active:scale-95 transition-all duration-150"
           onClick={() => setShowSearch(true)}
         >
-          <i className="material-icons-outlined text-gray-600" style={{fontSize: "20px"}}>search</i>
+          <i className="material-icons-round text-gray-600" style={{fontSize: "20px"}}>search</i>
         </button>
       )}
       
       <button 
-        className={`p-2 rounded-full transition-colors duration-200 ${
-          showFilter ? 'bg-green-100' : ''
+        className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-150 active:scale-95 ${
+          showFilter ? 'bg-green-100' : 'active:bg-gray-100'
         }`}
         onClick={() => setShowFilter(!showFilter)}
       >
         <div className="relative">
           <i 
-            className={showFilter ? "material-icons-outlined text-green-600" : "material-icons-outlined text-gray-600"}
+            className={showFilter ? "material-icons-round text-green-600" : "material-icons-round text-gray-600"}
             style={{fontSize: "20px"}}
           >
             filter_list
           </i>
           {showFilter && (
-            <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-600 rounded-full"></div>
+            <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-600 rounded-full"></div>
           )}
         </div>
       </button>
@@ -179,10 +179,10 @@ const CoachLocationDirectory = () => {
       {showSearch ? (
         <div className="bg-white px-4 py-4 flex items-center border-b border-gray-200 shadow-sm">
           <button 
-            className="p-1.5 rounded-full transition-colors duration-200" 
+            className="w-10 h-10 rounded-full flex items-center justify-center active:bg-gray-100 active:scale-95 transition-all duration-150" 
             onClick={clearSearch}
           >
-            <i className="material-icons-outlined text-gray-700" style={{fontSize: "20px"}}>close</i>
+            <i className="material-icons-round text-gray-700" style={{fontSize: "20px"}}>close</i>
           </button>
           
           <div className="flex-1 flex items-center px-3">
@@ -191,15 +191,15 @@ const CoachLocationDirectory = () => {
               placeholder="Search locations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full p-2 text-gray-800 text-sm focus:outline-none bg-gray-50 rounded-lg focus:bg-white focus:ring-2 focus:ring-green-500 transition-all duration-200"
+              className="w-full h-11 px-4 text-gray-800 text-sm bg-gray-50 rounded-lg border border-gray-200 focus:outline-none focus:bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
               autoFocus
             />
             {searchQuery && (
               <button 
-                className="p-1.5 ml-2 rounded-full transition-colors duration-200" 
+                className="w-8 h-8 ml-2 rounded-full flex items-center justify-center active:bg-gray-100 active:scale-95 transition-all duration-150" 
                 onClick={() => setSearchQuery('')}
               >
-                <i className="material-icons-outlined text-gray-500" style={{fontSize: "18px"}}>close</i>
+                <i className="material-icons-round text-gray-500" style={{fontSize: "18px"}}>close</i>
               </button>
             )}
           </div>
@@ -218,30 +218,30 @@ const CoachLocationDirectory = () => {
           <p className="text-sm font-semibold text-gray-700 mb-3">Location Type</p>
           <div className="flex space-x-2">
             <button 
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`h-11 px-4 rounded-lg text-sm font-medium transition-all duration-150 active:scale-98 ${
                 filterType === 'all' 
                   ? 'bg-green-100 text-green-800 border border-green-300' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 text-gray-700 border border-gray-200 active:bg-gray-200'
               }`}
               onClick={() => setFilterType('all')}
             >
               All
             </button>
             <button 
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`h-11 px-4 rounded-lg text-sm font-medium transition-all duration-150 active:scale-98 ${
                 filterType === 'public' 
                   ? 'bg-green-100 text-green-800 border border-green-300' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 text-gray-700 border border-gray-200 active:bg-gray-200'
               }`}
               onClick={() => setFilterType('public')}
             >
               Public
             </button>
             <button 
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`h-11 px-4 rounded-lg text-sm font-medium transition-all duration-150 active:scale-98 ${
                 filterType === 'private' 
                   ? 'bg-green-100 text-green-800 border border-green-300' 
-                  : 'bg-gray-100 text-gray-700'
+                  : 'bg-gray-100 text-gray-700 border border-gray-200 active:bg-gray-200'
               }`}
               onClick={() => setFilterType('private')}
             >
@@ -261,7 +261,7 @@ const CoachLocationDirectory = () => {
                 {filteredLocations.length} locations found
               </p>
               <button 
-                className="text-xs text-green-600 font-semibold transition-colors duration-200"
+                className="text-sm text-green-600 font-semibold active:text-green-700 transition-colors duration-150"
                 onClick={() => {
                   setSearchQuery('');
                   setFilterType('all');
@@ -281,7 +281,7 @@ const CoachLocationDirectory = () => {
             {sortedLocations.map(location => (
               <div 
                 key={location.id} 
-                className={`bg-white rounded-xl shadow-sm transition-all duration-200 ${
+                className={`bg-white rounded-lg shadow-sm border border-gray-200 transition-all duration-200 ${
                   location.isMainLocation 
                     ? 'ring-2 ring-green-200 bg-gradient-to-br from-white to-green-50' 
                     : ''
@@ -289,27 +289,27 @@ const CoachLocationDirectory = () => {
               >
                 {/* 主要位置标识 */}
                 {location.isMainLocation && (
-                  <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-t-xl">
+                  <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2.5 rounded-t-lg">
                     <div className="flex items-center">
-                      <i className="material-icons mr-2" style={{fontSize: "16px"}}>star</i>
+                      <i className="material-icons-round mr-2" style={{fontSize: "16px"}}>star</i>
                       <span className="text-sm font-semibold">Main Location</span>
                     </div>
                   </div>
                 )}
                 
                 <div className="p-5">
-                  <div className="flex justify-between items-start mb-3">
+                  <div className="flex justify-between items-start mb-4">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
-                        <h2 className="text-lg font-semibold text-gray-800">{location.name}</h2>
+                        <h2 className="text-lg font-semibold text-gray-800 leading-6">{location.name}</h2>
                       </div>
                       
                       <div className="flex items-start mb-3">
-                        <i className="material-icons-outlined text-gray-500 mr-2 mt-0.5" style={{fontSize: "16px"}}>place</i>
-                        <p className="text-sm text-gray-600 flex-1">{location.address}</p>
+                        <i className="material-icons-round text-gray-500 mr-2 mt-0.5" style={{fontSize: "16px"}}>place</i>
+                        <p className="text-sm text-gray-600 flex-1 leading-5">{location.address}</p>
                       </div>
                       
-                      <div className="flex items-center mb-3">
+                      <div className="flex items-center mb-4">
                         {renderTypeTag(location.type)}
                       </div>
                     </div>
@@ -318,28 +318,28 @@ const CoachLocationDirectory = () => {
                   {/* 费用信息 */}
                   <div className="mb-4">
                     {location.hasCourtFee ? (
-                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-3">
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <i className="material-icons text-amber-600 mr-2" style={{fontSize: "16px"}}>payments</i>
+                            <i className="material-icons-round text-amber-600 mr-2" style={{fontSize: "16px"}}>payments</i>
                             <div>
-                              <p className="text-sm font-semibold text-amber-800">Court Fee Required</p>
-                              <p className="text-xs text-amber-700">Additional cost for court usage</p>
+                              <p className="text-sm font-semibold text-amber-800 leading-5">Court Fee Required</p>
+                              <p className="text-xs text-amber-700 leading-4">Additional cost for court usage</p>
                             </div>
                           </div>
                           <div className="text-right">
-                            <p className="text-lg font-bold text-amber-800">£{location.courtFeeAmount}</p>
-                            <p className="text-xs text-amber-600">per {location.courtFeeFrequency}</p>
+                            <p className="text-lg font-bold text-amber-800 leading-6">£{location.courtFeeAmount}</p>
+                            <p className="text-xs text-amber-600 leading-4">per {location.courtFeeFrequency}</p>
                           </div>
                         </div>
                       </div>
                     ) : (
-                      <div className="bg-green-50 border border-green-200 rounded-xl p-3">
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                         <div className="flex items-center">
-                          <i className="material-icons text-green-600 mr-2" style={{fontSize: "16px"}}>check_circle</i>
+                          <i className="material-icons-round text-green-600 mr-2" style={{fontSize: "16px"}}>check_circle</i>
                           <div>
-                            <p className="text-sm font-semibold text-green-800">No Court Fees</p>
-                            <p className="text-xs text-green-700">Free court usage included</p>
+                            <p className="text-sm font-semibold text-green-800 leading-5">No Court Fees</p>
+                            <p className="text-xs text-green-700 leading-4">Free court usage included</p>
                           </div>
                         </div>
                       </div>
@@ -353,11 +353,11 @@ const CoachLocationDirectory = () => {
                         {location.facilities.map((facility, index) => (
                           <div 
                             key={index}
-                            className="flex items-center px-2.5 py-1 bg-purple-50 text-purple-700 text-xs rounded-lg border border-purple-200"
+                            className="flex items-center px-3 py-1.5 bg-purple-50 text-purple-700 text-sm rounded-lg border border-purple-200"
                           >
                             <i 
-                              className="material-icons mr-1 text-purple-600" 
-                              style={{fontSize: "12px"}}
+                              className="material-icons-round mr-1.5 text-purple-600" 
+                              style={{fontSize: "14px"}}
                             >
                               {facilityIcons[facility] || 'check_circle'}
                             </i>
@@ -369,10 +369,10 @@ const CoachLocationDirectory = () => {
                   )}
                   
                   {/* 主要位置设置 */}
-                  <div className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-xl mb-4">
+                  <div className="flex items-center justify-between py-3 px-4 bg-gray-50 rounded-lg mb-4">
                     <div>
-                      <p className="text-sm font-medium text-gray-800">Set as Main Location</p>
-                      <p className="text-xs text-gray-500">Primary teaching location</p>
+                      <p className="text-sm font-medium text-gray-800 leading-5">Set as Main Location</p>
+                      <p className="text-xs text-gray-500 leading-4">Primary teaching location</p>
                     </div>
                     <div className="relative">
                       <input
@@ -386,12 +386,12 @@ const CoachLocationDirectory = () => {
                         htmlFor={`mainLocation-${location.id}`}
                         className={`flex items-center cursor-pointer ${
                           location.isMainLocation ? 'bg-green-500' : 'bg-gray-300'
-                        } relative inline-block w-12 h-6 rounded-full transition-colors duration-300 ease-in-out shadow-inner`}
+                        } relative inline-block w-12 h-6 rounded-full transition-colors duration-200 shadow-inner active:scale-95`}
                       >
                         <span
                           className={`${
                             location.isMainLocation ? 'translate-x-6' : 'translate-x-1'
-                          } inline-block w-4 h-4 bg-white rounded-full shadow-lg transform transition-transform duration-300 ease-in-out`}
+                          } inline-block w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-200`}
                         />
                       </label>
                     </div>
@@ -399,15 +399,15 @@ const CoachLocationDirectory = () => {
                   
                   {/* 操作按钮 */}
                   <div className="flex space-x-3">
-                    <button className="py-2.5 px-4 bg-green-100 border border-green-200 rounded-xl text-sm font-medium text-green-700 transition-all duration-200">
-                      <i className="material-icons" style={{fontSize: "16px"}}>edit</i>
+                    <button className="w-11 h-11 bg-green-100 border border-green-200 rounded-lg text-green-700 transition-all duration-150 active:bg-green-200 active:scale-95 flex items-center justify-center">
+                      <i className="material-icons-round" style={{fontSize: "18px"}}>edit</i>
                     </button>
                     
                     <button 
-                      className="py-2.5 px-4 bg-red-100 border border-red-200 rounded-xl text-sm font-medium text-red-700 transition-all duration-200"
+                      className="w-11 h-11 bg-red-100 border border-red-200 rounded-lg text-red-700 transition-all duration-150 active:bg-red-200 active:scale-95 flex items-center justify-center"
                       onClick={() => deleteLocation(location.id)}
                     >
-                      <i className="material-icons" style={{fontSize: "16px"}}>delete</i>
+                      <i className="material-icons-round" style={{fontSize: "18px"}}>delete</i>
                     </button>
                   </div>
                 </div>
@@ -417,14 +417,14 @@ const CoachLocationDirectory = () => {
         ) : (
           <div className="flex flex-col items-center justify-center h-full p-6">
             <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mb-4">
-              <i className="material-icons-outlined text-gray-400" style={{fontSize: "32px"}}>location_off</i>
+              <i className="material-icons-round text-gray-400" style={{fontSize: "32px"}}>location_off</i>
             </div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">No locations found</h3>
-            <p className="text-gray-500 text-center mb-6 max-w-sm">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2 leading-6">No locations found</h3>
+            <p className="text-gray-500 text-center mb-6 max-w-sm text-sm leading-5">
               Try adjusting your search or filters to find what you're looking for.
             </p>
             <button 
-              className="px-6 py-3 bg-green-600 text-white rounded-xl text-sm font-semibold transition-all duration-200 shadow-lg"
+              className="h-11 px-6 bg-green-600 text-white rounded-lg text-sm font-semibold transition-all duration-150 shadow-md active:bg-green-700 active:scale-98"
               onClick={() => {
                 setSearchQuery('');
                 setFilterType('all');
@@ -439,8 +439,8 @@ const CoachLocationDirectory = () => {
       
       {/* 底部添加按钮 */}
       <div className="bg-white border-t border-gray-200 p-4 shadow-lg">
-        <button className="w-full py-3 bg-green-600 text-white rounded-xl font-semibold flex items-center justify-center transition-all duration-200 shadow-lg">
-          <i className="material-icons mr-2" style={{fontSize: "20px"}}>add</i>
+        <button className="w-full h-12 bg-green-600 text-white rounded-lg font-semibold flex items-center justify-center transition-all duration-150 shadow-md active:bg-green-700 active:scale-98">
+          <i className="material-icons-round mr-2" style={{fontSize: "20px"}}>add</i>
           Add New Location
         </button>
       </div>
